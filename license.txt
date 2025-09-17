@@ -1,0 +1,81 @@
+XGC CORP. Commercial Software License Agreement (EULA)
+Version 1.1 – Template
+Effective Date: <<2025-08-15>>
+Licensor: XGC CORP. (“XGC”, “we”, “our”)
+Licensee: The individual or entity accepting this Agreement (“Customer”, “you”).
+
+---
+
+1. Definitions
+- Software: The proprietary XGCERP software, in object code, identified in an Order, including Documentation and any Updates provided under this Agreement.
+- Documentation: User/technical materials provided by XGC.
+- Subscription Services (SaaS): Hosted access to the Software operated by or for XGC.
+- Open‑Source Software (OSS): Third‑party software distributed under licenses approved by the Open Source Initiative.
+- Order: An ordering document (quote, SOW, or invoice) referencing this Agreement.
+- Update: Bug fixes, patches, and minor enhancements XGC makes generally available.
+
+2. License Grant (On‑Prem)
+Subject to compliance and payment of fees, XGC grants you a non‑exclusive, non‑transferable, non‑sublicensable license to install and use the Software internally in object code form solely for your business purposes.
+
+3. SaaS Access (If Applicable)
+If you purchase Subscription Services, XGC provides you and your Authorized Users with remote access to and use of the Software as a service during the subscription term.
+
+4. Restrictions
+Except where expressly permitted by law, you must not:
+(a) reverse‑engineer, decompile, or disassemble the Software;
+(b) modify or create derivative works of the Software;
+(c) rent, lease, lend, sell, sublicense, assign, or otherwise transfer the Software;
+(d) remove/obscure proprietary notices;
+(e) circumvent license or usage controls;
+(f) use the Software to develop a competing product.
+
+5. Ownership; Feedback
+The Software is licensed, not sold. XGC retains all rights, title, and interest in and to the Software and Documentation.
+
+6. Open‑Source Software (OSS) & Third‑Party Materials
+- The Software may include OSS. Those components are licensed under their own terms. See THIRD_PARTY_NOTICES.txt for details.
+- If an OSS license requires source distribution (e.g., GPL/AGPL), XGC (or you, if you redistribute) will provide Corresponding Source in accordance with that license.
+
+7. Support, Updates & Services
+If purchased, XGC will provide support and Updates per policy or SOW.
+
+8. Fees & Taxes
+Fees are non‑refundable except as provided. You are responsible for taxes, excluding XGC’s income taxes.
+
+9. Confidentiality
+Both parties will protect confidential information and only use it as permitted.
+
+10. Data; Security (SaaS)
+For SaaS, you remain the owner of your data. XGC will implement reasonable security safeguards.
+
+11. Warranties & Disclaimers
+Limited warranty: For 60 days, the Software will substantially conform to Documentation. Remedy: repair, replacement, or refund.
+Disclaimer: Except as above, the Software is provided “AS IS.”
+
+12. Indemnification
+XGC will defend you against certain IP infringement claims, subject to limitations. You indemnify XGC against claims arising from your data or misuse.
+
+13. Limitation of Liability
+No indirect or consequential damages. Liability cap: fees paid in the prior 12 months.
+
+14. Term; Termination
+Agreement continues per Order. Either party may terminate for uncured breach. Upon termination, you must cease use and destroy copies.
+
+15. Miscellaneous
+This Agreement is the entire agreement. Governed by applicable law. Non‑assignable without consent except for mergers/acquisitions.
+
+---
+
+Annex A – License Header
+Copyright (c) <<YEAR>> XGC CORP.
+This file is part of XGCERP proprietary software and is licensed under the XGC CORP. Commercial Software License Agreement.
+
+Annex B – Source Offer (Copyleft Components)
+Where distribution obligations are triggered by GPL/AGPL components, XGC (or you, if redistributing) will provide Corresponding Source via:
+Email: legal@xgccorp.com
+Postal: 372 Bay Street, Suite 1800, Toronto, ON, M5H 2W9, Canada
+
+Annex C – THIRD_PARTY_NOTICES.txt (Template)
+This product includes third‑party software licensed under separate terms. See included notices and source links.
+
+---
