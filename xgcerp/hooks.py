@@ -478,7 +478,7 @@ scheduler_events = {
 	],
 }
 
-email_brand_image = "assets/xgcerp/images/xgcerp-logo.jpg"
+email_brand_image = "assets/xgcerp/images/xgcerp-logo.png"
 
 default_mail_footer = """
 	<span>
