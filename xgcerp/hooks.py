@@ -7,13 +7,13 @@ app_color = "#e74c3c"
 app_email = "hello@frappe.io"
 app_license = "GNU General Public License (v3)"
 source_link = "https://github.com/frappe/xgcerp"
-app_logo_url = "/assets/xgcerp/images/xgcerp-logo.svg"
+app_logo_url = "/assets/xgcerp/images/xgc-carbon-logo-sq.png"
 
 
 add_to_apps_screen = [
 	{
 		"name": "xgcerp",
-		"logo": "/assets/xgcerp/images/xgcerp-logo-blue.png",
+                "logo": "/assets/xgcerp/images/xgc-carbon-logo-sq.png",
 		"title": "XGCerp",
 		"route": "/app/home",
 		"has_permission": "xgcerp.check_app_permission",
@@ -109,8 +109,8 @@ calendars = ["Task", "Work Order", "Sales Order", "Holiday List", "ToDo"]
 website_generators = ["BOM", "Sales Partner"]
 
 website_context = {
-	"favicon": "/assets/xgcerp/images/xgcerp-favicon.svg",
-	"splash_image": "/assets/xgcerp/images/xgcerp-logo.svg",
+    "favicon": "/assets/xgcerp/images/favicon-32x32.png",
+    "splash_image": "/assets/xgcerp/images/xgc_carbon_wide.png",
 }
 
 # nosemgrep
@@ -478,7 +478,7 @@ scheduler_events = {
 	],
 }
 
-email_brand_image = "assets/xgcerp/images/xgcerp-logo.png"
+email_brand_image = "assets/xgcerp/images/xgc_carbon_wide.png"
 
 default_mail_footer = """
 	<span>
