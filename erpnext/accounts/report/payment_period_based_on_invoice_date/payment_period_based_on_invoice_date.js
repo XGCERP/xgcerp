@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -27,7 +28,8 @@ frappe.query_reports["Payment Period Based On Invoice Date"] = {
 			fieldname: "payment_type",
 			label: __("Payment Type"),
 			fieldtype: "Select",
-			options: __("Incoming") + "\n" + __("Outgoing"),
+			options: __("Incoming") + "
+" + __("Outgoing"),
 			default: __("Incoming"),
 		},
 		{

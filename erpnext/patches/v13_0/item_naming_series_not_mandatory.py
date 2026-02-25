@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 from erpnext.utilities.naming import set_by_naming_series

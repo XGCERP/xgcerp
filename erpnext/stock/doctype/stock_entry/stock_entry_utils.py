@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 
@@ -57,12 +58,15 @@ def make_stock_entry(**args):
 
 	def process_serial_numbers(serial_nos_list):
 		serial_nos_list = [
-			"\n".join(serial_num["serial_no"] for serial_num in serial_nos_list if serial_num.serial_no)
+			"
+".join(serial_num["serial_no"] for serial_num in serial_nos_list if serial_num.serial_no)
 		]
 
-		uniques = list(set(serial_nos_list[0].split("\n")))
+		uniques = list(set(serial_nos_list[0].split("
+")))
 
-		return "\n".join(uniques)
+		return "
+".join(uniques)
 
 	s = frappe.new_doc("Stock Entry")
 	args = frappe._dict(args)

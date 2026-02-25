@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -75,7 +76,10 @@ frappe.query_reports["Material Requirements Planning Report"] = {
 			label: __("Type of Material"),
 			fieldtype: "Select",
 			default: "All",
-			options: "\nFinished Goods\nRaw Materials\nAll",
+			options: "
+Finished Goods
+Raw Materials
+All",
 		},
 		{
 			fieldname: "add_safety_stock",
@@ -92,7 +96,8 @@ frappe.query_reports["Material Requirements Planning Report"] = {
 			fieldname: "bucket_view",
 			label: __("View Data Based on"),
 			fieldtype: "Select",
-			options: "Delivery Date\nRelease Date",
+			options: "Delivery Date
+Release Date",
 			default: "Delivery Date",
 			depends_on: "eval:doc.show_in_bucket_view == 1",
 		},
@@ -101,7 +106,9 @@ frappe.query_reports["Material Requirements Planning Report"] = {
 			label: __("Bucket Size"),
 			fieldtype: "Select",
 			default: "Monthly",
-			options: "Daily\nWeekly\nMonthly",
+			options: "Daily
+Weekly
+Monthly",
 			depends_on: "eval:doc.show_in_bucket_view == 1",
 		},
 	],

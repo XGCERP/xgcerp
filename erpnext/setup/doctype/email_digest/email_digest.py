@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -96,7 +97,8 @@ class EmailDigest(Document):
 		)
 
 		if self.recipient_list:
-			recipient_list = self.recipient_list.split("\n")
+			recipient_list = self.recipient_list.split("
+")
 		else:
 			recipient_list = []
 		for p in user_list:

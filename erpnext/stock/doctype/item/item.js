@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -1051,7 +1052,7 @@ frappe.tour["Item"] = [
 		fieldname: "is_stock_item",
 		title: "Maintain Stock",
 		description: __(
-			"If you are maintaining stock of this Item in your Inventory, ERPNext will make a stock ledger entry for each transaction of this item."
+			"If you are maintaining stock of this Item in your Inventory, XGCERP will make a stock ledger entry for each transaction of this item."
 		),
 	},
 	{

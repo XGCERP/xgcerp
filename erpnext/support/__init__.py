@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 install_docs = [
 	{"doctype": "Role", "role_name": "Support Team", "name": "Support Team"},
 	{"doctype": "Role", "role_name": "Maintenance User", "name": "Maintenance User"},

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.treeview_settings["Employee"] = {
 	get_tree_nodes: "erpnext.setup.doctype.employee.employee.get_children",
 	filters: [

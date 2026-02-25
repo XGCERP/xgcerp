@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and Contributors
 # See license.txt
 import unittest
@@ -10,10 +11,10 @@ from erpnext.crm.doctype.lead.lead import make_customer
 from erpnext.crm.doctype.lead.test_lead import make_lead
 from erpnext.crm.doctype.opportunity.opportunity import make_quotation
 from erpnext.crm.utils import get_linked_communication_list
-from erpnext.tests.utils import ERPNextTestSuite
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestOpportunity(ERPNextTestSuite):
+class TestOpportunity(XGCERPTestSuite):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

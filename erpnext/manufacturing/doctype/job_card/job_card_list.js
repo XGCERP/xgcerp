@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["Job Card"] = {
 	has_indicator_for_draft: true,
 	add_fields: ["expected_start_date", "expected_end_date"],

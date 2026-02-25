@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 # coding=utf-8
@@ -111,7 +112,8 @@ def make_custom_fields(update=True):
 				fieldtype="Select",
 				insert_after="sb_e_invoicing",
 				print_hide=1,
-				options="\n".join(map(lambda x: frappe.safe_decode(x, encoding="utf-8"), fiscal_regimes)),
+				options="
+".join(map(lambda x: frappe.safe_decode(x, encoding="utf-8"), fiscal_regimes)),
 			),
 			dict(
 				fieldname="fiscal_code",
@@ -127,7 +129,8 @@ def make_custom_fields(update=True):
 				fieldtype="Select",
 				insert_after="fiscal_code",
 				print_hide=1,
-				options="\n".join(
+				options="
+".join(
 					map(lambda x: frappe.safe_decode(x, encoding="utf-8"), vat_collectability_options)
 				),
 			),
@@ -167,7 +170,9 @@ def make_custom_fields(update=True):
 				fieldtype="Select",
 				insert_after="share_capital_amount",
 				print_hide=1,
-				options="\nSU-Socio Unico\nSM-Piu Soci",
+				options="
+SU-Socio Unico
+SM-Piu Soci",
 				description=_("Applicable if the company is a limited liability company"),
 			),
 			dict(
@@ -176,7 +181,9 @@ def make_custom_fields(update=True):
 				fieldtype="Select",
 				insert_after="no_of_members",
 				print_hide=1,
-				options="\nLS-In Liquidazione\nLN-Non in Liquidazione",
+				options="
+LS-In Liquidazione
+LN-Non in Liquidazione",
 			),
 		],
 		"Sales Taxes and Charges": [
@@ -187,8 +194,10 @@ def make_custom_fields(update=True):
 				insert_after="included_in_print_rate",
 				print_hide=1,
 				depends_on='eval:doc.charge_type!="Actual" && doc.rate==0.0',
-				options="\n"
-				+ "\n".join(map(lambda x: frappe.safe_decode(x, encoding="utf-8"), tax_exemption_reasons)),
+				options="
+"
+				+ "
+".join(map(lambda x: frappe.safe_decode(x, encoding="utf-8"), tax_exemption_reasons)),
 			),
 			dict(
 				fieldname="tax_exemption_law",
@@ -255,7 +264,8 @@ def make_custom_fields(update=True):
 				fieldtype="Select",
 				insert_after="included_in_print_rate",
 				print_hide=1,
-				options="\n".join(
+				options="
+".join(
 					map(lambda x: frappe.safe_decode(x, encoding="utf-8"), mode_of_payment_codes)
 				),
 			)
@@ -267,7 +277,8 @@ def make_custom_fields(update=True):
 				fieldtype="Select",
 				insert_after="mode_of_payment",
 				print_hide=1,
-				options="\n".join(
+				options="
+".join(
 					map(lambda x: frappe.safe_decode(x, encoding="utf-8"), mode_of_payment_codes)
 				),
 				fetch_from="mode_of_payment.mode_of_payment_code",
@@ -325,7 +336,8 @@ def make_custom_fields(update=True):
 				fieldtype="Select",
 				insert_after="taxes_and_charges",
 				print_hide=1,
-				options="\n".join(
+				options="
+".join(
 					map(lambda x: frappe.safe_decode(x, encoding="utf-8"), vat_collectability_options)
 				),
 				fetch_from="company.vat_collectability",
@@ -374,7 +386,25 @@ def make_custom_fields(update=True):
 				label="Type of Document",
 				fieldtype="Select",
 				insert_after="customer_fiscal_code",
-				options="\nTD01\nTD02\nTD03\nTD04\nTD05\nTD06\nTD16\nTD17\nTD18\nTD19\nTD20\nTD21\nTD22\nTD23\nTD24\nTD25\nTD26\nTD27",
+				options="
+TD01
+TD02
+TD03
+TD04
+TD05
+TD06
+TD16
+TD17
+TD18
+TD19
+TD20
+TD21
+TD22
+TD23
+TD24
+TD25
+TD26
+TD27",
 			),
 		],
 		"Purchase Invoice Item": invoice_item_fields,
@@ -456,7 +486,25 @@ def make_custom_fields(update=True):
 				insert_after="fiscal_code",
 				print_hide=1,
 				read_only=1,
-				options="\nRF01\nRF02\nRF04\nRF05\nRF06\nRF07\nRF08\nRF09\nRF10\nRF11\nRF12\nRF13\nRF14\nRF15\nRF16\nRF17\nRF18\nRF19",
+				options="
+RF01
+RF02
+RF04
+RF05
+RF06
+RF07
+RF08
+RF09
+RF10
+RF11
+RF12
+RF13
+RF14
+RF15
+RF16
+RF17
+RF18
+RF19",
 			),
 		],
 	}

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -105,13 +106,15 @@ class SMSCenter(Document):
 
 		rec_list = ""
 		for d in rec:
-			rec_list += d[0] + " - " + d[1] + "\n"
+			rec_list += d[0] + " - " + d[1] + "
+"
 		self.receiver_list = rec_list
 
 	def get_receiver_nos(self):
 		receiver_nos = []
 		if self.receiver_list:
-			for d in self.receiver_list.split("\n"):
+			for d in self.receiver_list.split("
+"):
 				receiver_no = d
 				if "-" in d:
 					receiver_no = receiver_no.split("-")[1]

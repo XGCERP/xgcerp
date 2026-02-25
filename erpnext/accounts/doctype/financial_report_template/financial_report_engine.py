@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -789,7 +790,8 @@ class FilterExpressionParser:
 		errors = self.validator.validate(report_row)
 		if not errors.is_valid:
 			error_messages = [str(issue) for issue in errors.issues]
-			frappe.log_error(f"Filter validation errors found:\n{'<br><br>'.join(error_messages)}")
+			frappe.log_error(f"Filter validation errors found:
+{'<br><br>'.join(error_messages)}")
 			return None
 
 		try:
@@ -1271,7 +1273,8 @@ class FormulaCalculator:
 		if validation_result.issues:
 			# TODO: Throw?
 			messages = "<br><br>".join(issue.message for issue in validation_result.issues)
-			frappe.log_error(f"Formula validation errors found:\n{messages}")
+			frappe.log_error(f"Formula validation errors found:
+{messages}")
 			return [0.0] * len(self.period_list)
 
 		results = []

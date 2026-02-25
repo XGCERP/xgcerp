@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -592,7 +593,12 @@ frappe.ui.form.on("Sales Order", {
 				fieldtype: "Select",
 				fieldname: "frequency",
 				label: __("Frequency"),
-				options: "\nWeekly\nMonthly\nQuarterly\nHalf Yearly\nYearly",
+				options: "
+Weekly
+Monthly
+Quarterly
+Half Yearly
+Yearly",
 			},
 			{
 				fieldtype: "Int",

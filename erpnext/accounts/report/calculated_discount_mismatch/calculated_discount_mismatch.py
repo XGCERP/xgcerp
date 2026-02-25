@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -88,8 +89,8 @@ def get_data():
 		.where(VERSION.creation > LAST_MODIFIED_DATE_THRESHOLD)
 		.where(Tuple(VERSION.ref_doctype, VERSION.docname).isin(list(transactions_with_discount_percentage)))
 		.where(
-			VERSION.data.like('%"discount\\_amount"%')
-			| VERSION.data.like('%"additional\\_discount\\_percentage"%')
+			VERSION.data.like('%"discount\_amount"%')
+			| VERSION.data.like('%"additional\_discount\_percentage"%')
 		)
 		.orderby(VERSION.creation, order=Order.desc)
 		.run(as_dict=True)

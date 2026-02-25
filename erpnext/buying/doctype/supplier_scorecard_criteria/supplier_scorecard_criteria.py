@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2017, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -38,7 +39,8 @@ class SupplierScorecardCriteria(Document):
 
 	def validate_formula(self):
 		# evaluate the formula with 0's to make sure it is valid
-		test_formula = self.formula.replace("\r", "").replace("\n", "")
+		test_formula = self.formula.replace("", "").replace("
+", "")
 
 		regex = r"\{(.*?)\}"
 

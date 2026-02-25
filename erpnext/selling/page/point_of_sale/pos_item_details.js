@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 erpnext.PointOfSale.ItemDetails = class {
 	constructor({ wrapper, events, settings }) {
 		this.wrapper = wrapper;
@@ -354,7 +355,8 @@ erpnext.PointOfSale.ItemDetails = class {
 		if (this.serial_no_control && this.batch_no_control) {
 			const selected_serial_nos = this.serial_no_control
 				.get_value()
-				.split(`\n`)
+				.split(`
+`)
 				.filter((s) => s);
 			if (!selected_serial_nos.length) return;
 
@@ -372,7 +374,8 @@ erpnext.PointOfSale.ItemDetails = class {
 			}, {});
 			// set current item's batch no and serial no
 			const batch_no = Object.keys(batch_serial_map)[0];
-			const batch_serial_nos = batch_serial_map[batch_no].join(`\n`);
+			const batch_serial_nos = batch_serial_map[batch_no].join(`
+`);
 			// eg. 10 selected serial no. -> 5 belongs to first batch other 5 belongs to second batch
 			const serial_nos_belongs_to_other_batch =
 				selected_serial_nos.length !== batch_serial_map[batch_no].length;
@@ -455,7 +458,8 @@ erpnext.PointOfSale.ItemDetails = class {
 					frappe.msgprint(__("Fetched only {0} available serial numbers.", [records_length]));
 					this.qty_control.set_value(records_length);
 				}
-				numbers = auto_fetched_serial_numbers.join(`\n`);
+				numbers = auto_fetched_serial_numbers.join(`
+`);
 				this.serial_no_control.set_value(numbers);
 			});
 		});

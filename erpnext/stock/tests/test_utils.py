@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import json
 
 import frappe
@@ -50,7 +51,9 @@ class StockTestMixin:
 						# ignore empty fifo bins
 						continue
 
-				self.assertEqual(v, act_value, msg=f"{k} doesn't match \n{exp_sle}\n{act_sle}")
+				self.assertEqual(v, act_value, msg=f"{k} doesn't match 
+{exp_sle}
+{act_sle}")
 
 	def assertGLEs(self, doc, expected_gles, gle_filters=None, order_by=None):
 		filters = {"voucher_no": doc.name, "voucher_type": doc.doctype, "is_cancelled": 0}
@@ -67,7 +70,9 @@ class StockTestMixin:
 		for exp_gle, act_gle in zip(expected_gles, actual_gles, strict=False):
 			for k, exp_value in exp_gle.items():
 				act_value = act_gle[k]
-				self.assertEqual(exp_value, act_value, msg=f"{k} doesn't match \n{exp_gle}\n{act_gle}")
+				self.assertEqual(exp_value, act_value, msg=f"{k} doesn't match 
+{exp_gle}
+{act_gle}")
 
 
 class TestStockUtilities(IntegrationTestCase, StockTestMixin):

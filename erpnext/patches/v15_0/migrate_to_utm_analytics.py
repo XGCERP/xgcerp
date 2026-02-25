@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import click
 import frappe
 from frappe.query_builder.functions import Coalesce
@@ -59,8 +60,10 @@ def execute():
 		insert_query.run()
 
 	click.secho(
-		f"Inserted {len(lead_sources)} Lead Sources into UTM Sources and deleted Lead Source.\n"
-		f"Inserted {len(campaigns)} Campaigns into UTM Campaigns.\n"
+		f"Inserted {len(lead_sources)} Lead Sources into UTM Sources and deleted Lead Source.
+"
+		f"Inserted {len(campaigns)} Campaigns into UTM Campaigns.
+"
 		"You can also make use of the new UTM Medium for analytics, now.",
 		fg="green",
 	)

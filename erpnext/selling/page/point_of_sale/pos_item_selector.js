@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 import onScan from "onscan.js";
 
 erpnext.PointOfSale.ItemSelector = class {

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
@@ -14,7 +15,25 @@ def execute():
 				label="Type of Document",
 				fieldtype="Select",
 				insert_after="customer_fiscal_code",
-				options="\nTD01\nTD02\nTD03\nTD04\nTD05\nTD06\nTD16\nTD17\nTD18\nTD19\nTD20\nTD21\nTD22\nTD23\nTD24\nTD25\nTD26\nTD27",
+				options="
+TD01
+TD02
+TD03
+TD04
+TD05
+TD06
+TD16
+TD17
+TD18
+TD19
+TD20
+TD21
+TD22
+TD23
+TD24
+TD25
+TD26
+TD27",
 			),
 		]
 	}

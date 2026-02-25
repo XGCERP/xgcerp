@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2020, Frappe and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -11,7 +12,8 @@ def execute():
 	email_digests = frappe.db.get_list("Email Digest", fields=["name", "recipient_list"])
 	for email_digest in email_digests:
 		if email_digest.recipient_list:
-			for recipient in email_digest.recipient_list.split("\n"):
+			for recipient in email_digest.recipient_list.split("
+"):
 				doc = frappe.get_doc(
 					{
 						"doctype": "Email Digest Recipient",

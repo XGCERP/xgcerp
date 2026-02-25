@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 
@@ -250,7 +251,8 @@ class IntegrationTestSubcontractingInwardOrder(IntegrationTestCase):
 		self.assertEqual(sorted(serial_list), sorted(delivery_serial_list))
 
 		delivery_serial_list[-1] = extra_serial[0]
-		delivery.items[0].serial_no = "\n".join(delivery_serial_list)
+		delivery.items[0].serial_no = "
+".join(delivery_serial_list)
 		self.assertRaises(frappe.ValidationError, delivery.submit)
 
 	def test_fg_item_fields(self):

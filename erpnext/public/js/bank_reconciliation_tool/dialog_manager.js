@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.provide("erpnext.accounts.bank_reconciliation");
 
 erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
@@ -175,7 +176,9 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 				label: __("Action"),
 				fieldname: "action",
 				fieldtype: "Select",
-				options: `Match Against Voucher\nCreate Voucher\nUpdate Bank Transaction`,
+				options: `Match Against Voucher
+Create Voucher
+Update Bank Transaction`,
 				default: "Match Against Voucher",
 			},
 			{
@@ -186,7 +189,8 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 				label: __("Document Type"),
 				fieldname: "document_type",
 				fieldtype: "Select",
-				options: `Payment Entry\nJournal Entry`,
+				options: `Payment Entry
+Journal Entry`,
 				default: "Payment Entry",
 				depends_on: "eval:doc.action=='Create Voucher'",
 			},
@@ -316,7 +320,21 @@ erpnext.accounts.bank_reconciliation.DialogManager = class DialogManager {
 				fieldtype: "Select",
 				label: "Journal Entry Type",
 				options:
-					"Journal Entry\nInter Company Journal Entry\nBank Entry\nCash Entry\nCredit Card Entry\nDebit Note\nCredit Note\nContra Entry\nExcise Entry\nWrite Off Entry\nOpening Entry\nDepreciation Entry\nExchange Rate Revaluation\nDeferred Revenue\nDeferred Expense",
+					"Journal Entry
+Inter Company Journal Entry
+Bank Entry
+Cash Entry
+Credit Card Entry
+Debit Note
+Credit Note
+Contra Entry
+Excise Entry
+Write Off Entry
+Opening Entry
+Depreciation Entry
+Exchange Rate Revaluation
+Deferred Revenue
+Deferred Expense",
 				depends_on: "eval:doc.action=='Create Voucher' &&  doc.document_type=='Journal Entry'",
 				mandatory_depends_on:
 					"eval:doc.action=='Create Voucher' &&  doc.document_type=='Journal Entry'",

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 from erpnext.assets.doctype.asset_depreciation_schedule.asset_depreciation_schedule import (

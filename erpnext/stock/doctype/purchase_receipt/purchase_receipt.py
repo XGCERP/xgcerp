@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -824,8 +825,10 @@ class PurchaseReceipt(BuyingController):
 		if warehouse_with_no_account:
 			frappe.msgprint(
 				_("No accounting entries for the following warehouses")
-				+ ": \n"
-				+ "\n".join(warehouse_with_no_account)
+				+ ": 
+"
+				+ "
+".join(warehouse_with_no_account)
 			)
 
 	def add_provisional_gl_entry(
@@ -1584,7 +1587,8 @@ def make_stock_entry(source_name, target_doc=None):
 		if source_doc.serial_and_batch_bundle:
 			serial_nos = get_serial_nos_from_bundle(source_doc.serial_and_batch_bundle)
 			if serial_nos:
-				serial_nos = "\n".join(serial_nos)
+				serial_nos = "
+".join(serial_nos)
 
 			batches = get_batches_from_bundle(source_doc.serial_and_batch_bundle)
 			if batches:

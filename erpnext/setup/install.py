@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -14,7 +15,7 @@ from erpnext.setup.utils import identity as _
 from .default_success_action import get_default_success_action
 
 default_mail_footer = """<div style="padding: 7px; text-align: right; color: #888"><small>Sent via
-	<a style="color: #888" href="http://frappe.io/erpnext">ERPNext</a></div>"""
+	<a style="color: #888" href="http://frappe.io/erpnext">XGCERP</a></div>"""
 
 
 def after_install():
@@ -147,7 +148,7 @@ def create_custom_company_links():
 	"""Add link fields to Company in Email Account and Communication.
 
 	These DocTypes are provided by the Frappe Framework but need to be associated
-	with a company in ERPNext to allow for multitenancy. I.e. one company should
+	with a company in XGCERP to allow for multitenancy. I.e. one company should
 	not be able to access emails and communications from another company.
 	"""
 	create_custom_fields(
@@ -236,7 +237,7 @@ def add_standard_navbar_items():
 
 
 def add_app_name():
-	frappe.db.set_single_value("System Settings", "app_name", "ERPNext")
+	frappe.db.set_single_value("System Settings", "app_name", "XGCERP")
 
 
 def update_roles():

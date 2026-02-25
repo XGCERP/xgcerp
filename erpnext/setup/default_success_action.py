@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 from frappe import _
 
 doctype_list = [
@@ -28,7 +29,9 @@ def get_default_success_action():
 			"ref_doctype": doctype,
 			"message": get_message(doctype),
 			"first_success_message": get_first_success_message(doctype),
-			"next_actions": "new\nprint\nemail",
+			"next_actions": "new
+print
+email",
 		}
 		for doctype in doctype_list
 	]

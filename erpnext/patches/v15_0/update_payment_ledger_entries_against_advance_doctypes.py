@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 from erpnext.accounts.utils import get_advance_payment_doctypes

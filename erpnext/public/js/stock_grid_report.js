@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -98,7 +99,8 @@ erpnext.StockGridReport = class StockGridReport extends frappe.views.TreeGridRep
 
 		var value_diff = 0.0;
 
-		$.each(sl.serial_no.trim().split("\n"), function (i, sr) {
+		$.each(sl.serial_no.trim().split("
+"), function (i, sr) {
 			if (sr) {
 				value_diff += flt(me.serialized_buying_rates[sr.trim().toLowerCase()]);
 			}

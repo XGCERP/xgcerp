@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 import unittest
@@ -8,10 +9,10 @@ from frappe.utils import random_string, today
 
 from erpnext.crm.doctype.lead.lead import make_opportunity
 from erpnext.crm.utils import get_linked_prospect
-from erpnext.tests.utils import ERPNextTestSuite
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestLead(ERPNextTestSuite):
+class TestLead(XGCERPTestSuite):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

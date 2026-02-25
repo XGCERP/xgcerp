@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -29,7 +30,11 @@ frappe.query_reports["Landed Cost Report"] = {
 			fieldname: "raw_material_voucher_type",
 			label: __("Raw Material Voucher Type"),
 			fieldtype: "Select",
-			options: "\nPurchase Receipt\nPurchase Invoice\nStock Entry\nSubcontracting Receipt",
+			options: "
+Purchase Receipt
+Purchase Invoice
+Stock Entry
+Subcontracting Receipt",
 		},
 		{
 			fieldname: "raw_material_voucher_no",

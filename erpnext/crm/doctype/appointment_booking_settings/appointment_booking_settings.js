@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.ui.form.on("Appointment Booking Settings", "validate", check_times);
 function check_times(frm) {
 	$.each(frm.doc.availability_of_slots || [], function (i, d) {

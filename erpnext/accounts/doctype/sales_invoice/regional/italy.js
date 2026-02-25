@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.ui.form.on("Sales Invoice", {
 	refresh: (frm) => {
 		if (frm.doc.docstatus == 1) {

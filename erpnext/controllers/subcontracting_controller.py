@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -779,7 +780,8 @@ class SubcontractingController(StockController):
 				if serial_nos:
 					serial_nos = [sn.get("serial_no") for sn in serial_nos]
 					serial_nos = get_filtered_serial_nos(serial_nos, self, "supplied_items")
-					row.serial_no = "\n".join(serial_nos)
+					row.serial_no = "
+".join(serial_nos)
 
 			elif (
 				item_details.has_batch_no
@@ -904,7 +906,8 @@ class SubcontractingController(StockController):
 		key = (rm_obj.rm_item_code, item_row.item_code, item_row.get(self.subcontract_data.order_field))
 		if self.available_materials.get(key) and self.available_materials[key]["serial_no"]:
 			used_serial_nos = self.available_materials[key]["serial_no"][0 : cint(rm_obj.consumed_qty)]
-			rm_obj.serial_no = "\n".join(used_serial_nos)
+			rm_obj.serial_no = "
+".join(used_serial_nos)
 
 			# Removed the used serial nos from the list
 			for sn in used_serial_nos:
@@ -1076,7 +1079,8 @@ class SubcontractingController(StockController):
 			incorrect_sn = set(serial_nos).difference(self.__transferred_items.get(key).get("serial_no"))
 
 			if incorrect_sn:
-				incorrect_sn = "\n".join(incorrect_sn)
+				incorrect_sn = "
+".join(incorrect_sn)
 				link = get_link_to_form(
 					self.subcontract_data.order_doctype, row.get(self.subcontract_data.order_field)
 				)
@@ -1502,7 +1506,8 @@ def add_items_in_ste(ste_doc, row, qty, rm_details, rm_detail_field="sco_rm_deta
 			"t_warehouse": row.item_details["s_warehouse"],
 			"item_code": row.item_details["rm_item_code"],
 			"subcontracted_item": row.item_details["main_item_code"],
-			"serial_no": "\n".join(row.serial_no) if row.serial_no else "",
+			"serial_no": "
+".join(row.serial_no) if row.serial_no else "",
 			"use_serial_batch_fields": 1,
 		}
 	)

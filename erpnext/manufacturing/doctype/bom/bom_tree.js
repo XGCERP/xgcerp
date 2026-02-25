@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.treeview_settings["BOM"] = {
 	get_tree_nodes: "erpnext.manufacturing.doctype.bom.bom.get_children",
 	filters: [

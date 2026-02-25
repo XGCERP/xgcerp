@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 def extract(fileobj, *args, **kwargs):
 	"""Split file into lines and yield one translation unit per line."""
 	for line_no, line in enumerate(fileobj.readlines()):

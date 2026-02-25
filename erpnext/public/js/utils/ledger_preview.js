@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.provide("erpnext.accounts");
 
 erpnext.accounts.ledger_preview = {

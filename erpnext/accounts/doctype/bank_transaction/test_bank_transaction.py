@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 
@@ -38,7 +39,7 @@ class TestBankTransaction(IntegrationTestCase):
 		add_transactions(bank_account=bank_account)
 		add_vouchers(gl_account=gl_account)
 
-	# This test checks if ERPNext is able to provide a linked payment for a bank transaction based on the amount of the bank transaction.
+	# This test checks if XGCERP is able to provide a linked payment for a bank transaction based on the amount of the bank transaction.
 	def test_linked_payments(self):
 		bank_transaction = frappe.get_doc(
 			"Bank Transaction",
@@ -107,7 +108,7 @@ class TestBankTransaction(IntegrationTestCase):
 		self.assertEqual(bank_transaction.unallocated_amount, 1700)
 		self.assertEqual(bank_transaction.payment_entries, [])
 
-	# Check if ERPNext can correctly filter a linked payments based on the debit/credit amount
+	# Check if XGCERP can correctly filter a linked payments based on the debit/credit amount
 	def test_debit_credit_output(self):
 		bank_transaction = frappe.get_doc(
 			"Bank Transaction",

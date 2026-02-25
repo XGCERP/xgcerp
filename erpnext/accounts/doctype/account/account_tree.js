@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.provide("frappe.treeview_settings");
 
 frappe.treeview_settings["Account"] = {
@@ -150,7 +151,8 @@ frappe.treeview_settings["Account"] = {
 			fieldtype: "Select",
 			fieldname: "root_type",
 			label: __("Root Type"),
-			options: ["Asset", "Liability", "Equity", "Income", "Expense"].join("\n"),
+			options: ["Asset", "Liability", "Equity", "Income", "Expense"].join("
+"),
 			depends_on: "eval:doc.is_group && !doc.parent_account",
 		},
 		{

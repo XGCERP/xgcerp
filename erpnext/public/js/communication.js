@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.ui.form.on("Communication", {
 	refresh: (frm) => {
 		// setup custom Make button only if Communication is Email

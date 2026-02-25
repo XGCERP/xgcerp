@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["Stock Closing Entry"] = {
 	add_fields: ["status"],
 	get_indicator: function (doc) {

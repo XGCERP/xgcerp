@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -83,14 +84,16 @@ frappe.query_reports["Accounts Receivable"] = {
 			fieldname: "ageing_based_on",
 			label: __("Ageing Based On"),
 			fieldtype: "Select",
-			options: "Posting Date\nDue Date",
+			options: "Posting Date
+Due Date",
 			default: "Due Date",
 		},
 		{
 			fieldname: "calculate_ageing_with",
 			label: __("Calculate Ageing With"),
 			fieldtype: "Select",
-			options: "Report Date\nToday Date",
+			options: "Report Date
+Today Date",
 			default: "Report Date",
 		},
 		{

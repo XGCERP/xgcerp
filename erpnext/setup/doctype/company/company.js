@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -256,7 +257,8 @@ erpnext.company.set_chart_of_accounts_options = function (doc) {
 			},
 			callback: function (r) {
 				if (!r.exc) {
-					set_field_options("chart_of_accounts", [""].concat(r.message).join("\n"));
+					set_field_options("chart_of_accounts", [""].concat(r.message).join("
+"));
 					if (r.message.includes(selected_value))
 						cur_frm.set_value("chart_of_accounts", selected_value);
 				}

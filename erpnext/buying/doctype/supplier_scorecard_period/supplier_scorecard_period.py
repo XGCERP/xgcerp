@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2017, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -104,7 +105,8 @@ class SupplierScorecardPeriod(Document):
 		return weighed_score
 
 	def get_eval_statement(self, formula):
-		my_eval_statement = formula.replace("\r", "").replace("\n", "")
+		my_eval_statement = formula.replace("", "").replace("
+", "")
 
 		for var in self.variables:
 			if var.value:

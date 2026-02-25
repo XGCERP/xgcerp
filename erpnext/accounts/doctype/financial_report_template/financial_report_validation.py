@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -539,7 +540,7 @@ def extract_reference_codes_from_formula(formula: str, available_codes: list[str
 	found_codes = []
 	for code in available_codes:
 		# Match complete words only to avoid partial matches
-		pattern = r"\b" + re.escape(code) + r"\b"
+		pattern = r"" + re.escape(code) + r""
 		if re.search(pattern, formula):
 			found_codes.append(code)
 	return found_codes

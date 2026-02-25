@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 erpnext.PointOfSale.PastOrderList = class {
 	constructor({ wrapper, events }) {
 		this.wrapper = wrapper;
@@ -66,7 +67,8 @@ erpnext.PointOfSale.PastOrderList = class {
 			df: {
 				label: __("Invoice Status"),
 				fieldtype: "Select",
-				options: ["Draft", "Paid", "Consolidated", "Return", "Partly Paid"].join("\n"),
+				options: ["Draft", "Paid", "Consolidated", "Return", "Partly Paid"].join("
+"),
 				placeholder: __("Filter by invoice status"),
 				onchange: function () {
 					if (me.$component.is(":visible")) me.refresh_list();

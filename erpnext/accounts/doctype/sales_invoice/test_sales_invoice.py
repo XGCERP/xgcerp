@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -48,10 +49,10 @@ from erpnext.stock.doctype.stock_reconciliation.test_stock_reconciliation import
 )
 from erpnext.stock.get_item_details import get_item_tax_map
 from erpnext.stock.utils import get_incoming_rate, get_stock_balance
-from erpnext.tests.utils import ERPNextTestSuite
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestSalesInvoice(ERPNextTestSuite):
+class TestSalesInvoice(XGCERPTestSuite):
 	def setUp(self):
 		from erpnext.stock.doctype.stock_ledger_entry.test_stock_ledger_entry import create_items
 

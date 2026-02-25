@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -1488,7 +1489,11 @@ class update_entries_after:
 				order by posting_date desc
 				limit 1
 			""",
-				(sle.company, serial_no, serial_no + "\n%", "%\n" + serial_no, "%\n" + serial_no + "\n%"),
+				(sle.company, serial_no, serial_no + "
+%", "%
+" + serial_no, "%
+" + serial_no + "
+%"),
 			)
 
 			incoming_values += flt(incoming_rate[0][0]) if incoming_rate else 0
@@ -1705,7 +1710,9 @@ class update_entries_after:
 				msg_list.append(msg)
 
 		if msg_list:
-			message = "\n\n".join(msg_list)
+			message = "
+
+".join(msg_list)
 			if self.verbose:
 				frappe.throw(message, NegativeStockError, title=_("Insufficient Stock"))
 			else:
@@ -1842,9 +1849,13 @@ def get_stock_ledger_entries(
 		"""
 		).format(
 			frappe.db.escape(serial_no),
-			frappe.db.escape(f"{serial_no}\n%"),
-			frappe.db.escape(f"%\n{serial_no}"),
-			frappe.db.escape(f"%\n{serial_no}\n%"),
+			frappe.db.escape(f"{serial_no}
+%"),
+			frappe.db.escape(f"%
+{serial_no}"),
+			frappe.db.escape(f"%
+{serial_no}
+%"),
 		)
 
 	if not previous_sle.get("posting_date"):

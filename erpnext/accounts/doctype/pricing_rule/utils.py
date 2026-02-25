@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # MIT License. See license.txt
 
@@ -345,7 +346,8 @@ def filter_pricing_rules(args, pricing_rules, doc=None):
 		frappe.throw(
 			_(
 				"Multiple Price Rules exists with same criteria, please resolve conflict by assigning priority. Price Rules: {0}"
-			).format("\n".join(d.name for d in pricing_rules)),
+			).format("
+".join(d.name for d in pricing_rules)),
 			MultiplePricingRuleConflict,
 		)
 	elif pricing_rules:

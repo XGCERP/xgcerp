@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import unittest
 from functools import partial
 
@@ -7,7 +8,7 @@ from frappe.core.doctype.user_permission.user_permission import add_user_permiss
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 
 from erpnext.controllers import queries
-from erpnext.tests.utils import ERPNextTestSuite
+from erpnext.tests.utils import XGCERPTestSuite
 
 
 def add_default_params(func, doctype):
@@ -17,7 +18,7 @@ def add_default_params(func, doctype):
 EXTRA_TEST_RECORD_DEPENDENCIES = ["Item", "BOM", "Account"]
 
 
-class TestQueries(ERPNextTestSuite):
+class TestQueries(XGCERPTestSuite):
 	# All tests are based on self.globalTestRecords[doctype]
 
 	@classmethod

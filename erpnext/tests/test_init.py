@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import unittest
 
 import frappe
@@ -14,22 +15,22 @@ class TestInit(IntegrationTestCase):
 
 		names = [
 			"Warehouse Name",
-			"ERPNext Foundation India",
+			"XGCERP Foundation India",
 			f"Gold - Member - {abbr}",
 			f" - {abbr}",
-			"ERPNext - Foundation - India",
-			f"ERPNext Foundation India - {abbr}",
+			"XGCERP - Foundation - India",
+			f"XGCERP Foundation India - {abbr}",
 			f"No-Space-{abbr}",
 			"- Warehouse",
 		]
 
 		expected_names = [
 			f"Warehouse Name - {abbr}",
-			f"ERPNext Foundation India - {abbr}",
+			f"XGCERP Foundation India - {abbr}",
 			f"Gold - Member - {abbr}",
 			f" - {abbr}",
-			f"ERPNext - Foundation - India - {abbr}",
-			f"ERPNext Foundation India - {abbr}",
+			f"XGCERP - Foundation - India - {abbr}",
+			f"XGCERP Foundation India - {abbr}",
 			f"No-Space-{abbr} - {abbr}",
 			f"- Warehouse - {abbr}",
 		]

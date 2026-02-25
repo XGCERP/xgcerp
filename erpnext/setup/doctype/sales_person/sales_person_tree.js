@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.treeview_settings["Sales Person"] = {
 	fields: [
 		{ fieldtype: "Data", fieldname: "sales_person_name", label: __("New Sales Person Name"), reqd: true },

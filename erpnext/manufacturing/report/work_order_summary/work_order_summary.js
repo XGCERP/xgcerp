@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -15,7 +16,9 @@ frappe.query_reports["Work Order Summary"] = {
 			label: __("Based On"),
 			fieldname: "based_on",
 			fieldtype: "Select",
-			options: "Creation Date\nPlanned Date\nActual Date",
+			options: "Creation Date
+Planned Date
+Actual Date",
 			default: "Creation Date",
 		},
 		{

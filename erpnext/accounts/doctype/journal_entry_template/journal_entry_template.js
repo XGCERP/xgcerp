@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2020, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -10,8 +11,10 @@ frappe.ui.form.on("Journal Entry Template", {
 				method: "erpnext.accounts.doctype.journal_entry_template.journal_entry_template.get_naming_series",
 				callback: function (r) {
 					if (r.message) {
-						frm.set_df_property("naming_series", "options", r.message.split("\n"));
-						frm.set_value("naming_series", r.message.split("\n")[0]);
+						frm.set_df_property("naming_series", "options", r.message.split("
+"));
+						frm.set_value("naming_series", r.message.split("
+")[0]);
 						frm.refresh_field("naming_series");
 					}
 				},

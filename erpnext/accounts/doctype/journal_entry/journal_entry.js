@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -619,7 +620,8 @@ $.extend(erpnext.journal_entry, {
 	quick_entry: function (frm) {
 		var naming_series_options = frm.fields_dict.naming_series.df.options;
 		var naming_series_default =
-			frm.fields_dict.naming_series.df.default || naming_series_options.split("\n")[0];
+			frm.fields_dict.naming_series.df.default || naming_series_options.split("
+")[0];
 
 		var dialog = new frappe.ui.Dialog({
 			title: __("Quick Journal Entry"),

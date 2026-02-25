@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -21,7 +22,10 @@ frappe.query_reports["Sales Partner Commission Summary"] = {
 			fieldname: "doctype",
 			label: __("Document Type"),
 			fieldtype: "Select",
-			options: "Sales Order\nDelivery Note\nSales Invoice\nPOS Invoice",
+			options: "Sales Order
+Delivery Note
+Sales Invoice
+POS Invoice",
 			default: "Sales Order",
 		},
 		{

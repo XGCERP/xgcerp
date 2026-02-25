@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -901,7 +902,7 @@ def update_company_current_month_sales(company):
 		)
 	).run(pluck=True)[0] or 0
 
-	# Fieldname in standard ERPNext is `total_monthly_sales`
+	# Fieldname in standard XGCERP is `total_monthly_sales`
 	frappe.db.set_value(
 		"Company",
 		company,

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -95,7 +96,8 @@ class BOMTree:
 		)
 
 	def __repr__(self, level: int = 0) -> str:
-		rep = "┃  " * (level - 1) + "┣━ " * (level > 0) + str(self) + "\n"
+		rep = "┃  " * (level - 1) + "┣━ " * (level > 0) + str(self) + "
+"
 		for child in self.child_items:
 			rep += child.__repr__(level=level + 1)
 		return rep

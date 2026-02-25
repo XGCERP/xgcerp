@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 
@@ -17,7 +18,8 @@ def execute():
 	for property_setter in property_setters:
 		existing_value = frappe.db.get_value("Property Setter", property_setter, "value") or ""
 
-		raw_options = [option.strip() for option in existing_value.split("\n")]
+		raw_options = [option.strip() for option in existing_value.split("
+")]
 		# Preserve a single leading blank (for the empty select option) but drop spurious trailing blanks
 		options = raw_options[:1] + [o for o in raw_options[1:] if o]
 
@@ -29,5 +31,6 @@ def execute():
 			"Property Setter",
 			property_setter,
 			"value",
-			"\n".join(options),
+			"
+".join(options),
 		)

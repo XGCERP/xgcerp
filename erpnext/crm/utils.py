@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 from frappe.desk.notifications import notify_mentions
 from frappe.model.document import Document

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and contributors
 # License: GNU GPL v3. See LICENSE
 

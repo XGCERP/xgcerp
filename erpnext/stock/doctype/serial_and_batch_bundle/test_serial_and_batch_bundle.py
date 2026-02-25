@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 
@@ -699,7 +700,8 @@ class TestSerialandBatchBundle(IntegrationTestCase):
 					"actual_qty": row.qty,
 					"item_code": sn_item,
 					"warehouse": "_Test Warehouse - _TC",
-					"serial_no": "\n".join(serial_nos),
+					"serial_no": "
+".join(serial_nos),
 					"company": "_Test Company",
 				}
 			)
@@ -723,7 +725,8 @@ class TestSerialandBatchBundle(IntegrationTestCase):
 			item_code=sn_item,
 			qty=2,
 			source="_Test Warehouse - _TC",
-			serial_no="\n".join(serial_nos),
+			serial_no="
+".join(serial_nos),
 			use_serial_batch_fields=True,
 			do_not_submit=True,
 		)

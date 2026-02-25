@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 from collections import defaultdict
 
 import frappe
@@ -32,8 +33,10 @@ def execute():
 				return True
 
 			elif doc_row.get("serial_no") and return_doc_row.get("serial_no"):
-				doc_sn = doc_row.serial_no.split("\n")
-				return_doc_sn = return_doc_row.serial_no.split("\n")
+				doc_sn = doc_row.serial_no.split("
+")
+				return_doc_sn = return_doc_row.serial_no.split("
+")
 
 				if set(doc_sn) & set(return_doc_sn):
 					# if two rows have serial nos in common, map them

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -7,14 +8,17 @@ frappe.query_reports["Opportunity Summary by Sales Stage"] = {
 			fieldname: "based_on",
 			label: __("Based On"),
 			fieldtype: "Select",
-			options: "Opportunity Owner\nSource\nOpportunity Type",
+			options: "Opportunity Owner
+Source
+Opportunity Type",
 			default: "Opportunity Owner",
 		},
 		{
 			fieldname: "data_based_on",
 			label: __("Data Based On"),
 			fieldtype: "Select",
-			options: "Number\nAmount",
+			options: "Number
+Amount",
 			default: "Number",
 		},
 		{

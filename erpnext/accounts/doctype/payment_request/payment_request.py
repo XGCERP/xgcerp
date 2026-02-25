@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import json
 
 import frappe
@@ -503,9 +504,11 @@ class PaymentRequest(Document):
 
 	def _allocate_payment_request_to_pe_references(self, references):
 		"""
-		Allocate the Payment Request to the Payment Entry references based on\n
+		Allocate the Payment Request to the Payment Entry references based on
+
 		    - Allocated Amount.
-		    - Outstanding Amount of Payment Request.\n
+		    - Outstanding Amount of Payment Request.
+
 		Payment Request is doc itself and references are the rows of Payment Entry.
 		"""
 		if len(references) == 1:
@@ -619,8 +622,10 @@ def make_payment_request(**args):
 							f"(already requested in PR {existing_pr})"
 						)
 				frappe.throw(
-					_("The following payment schedule(s) already exist:\n{0}").format(
-						"\n".join(duplicate_schedules)
+					_("The following payment schedule(s) already exist:
+{0}").format(
+						"
+".join(duplicate_schedules)
 					)
 				)
 

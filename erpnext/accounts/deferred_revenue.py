@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 from frappe import _
 from frappe.email import sendmail_to_system_managers
@@ -538,7 +539,8 @@ def make_gl_entries(
 def send_mail(deferred_process):
 	title = _("Error while processing deferred accounting for {0}").format(deferred_process)
 	link = get_link_to_form("Process Deferred Accounting", deferred_process)
-	content = _("Deferred accounting failed for some invoices:") + "\n"
+	content = _("Deferred accounting failed for some invoices:") + "
+"
 	content += _(
 		"Please check Process Deferred Accounting {0} and submit manually after resolving errors."
 	).format(link)

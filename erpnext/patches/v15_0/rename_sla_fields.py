@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import rename_fieldname
 from frappe.model.utils.rename_field import rename_field

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -117,7 +118,7 @@ def if_lending_app_not_installed(function):
 	return wrapper
 
 
-class ERPNextTestSuite(IntegrationTestCase):
+class XGCERPTestSuite(IntegrationTestCase):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

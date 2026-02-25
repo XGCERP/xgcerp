@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -949,7 +950,10 @@ def get_service_level_agreement_fields():
 			"fieldname": "agreement_status",
 			"fieldtype": "Select",
 			"label": "Service Level Agreement Status",
-			"options": "First Response Due\nResolution Due\nFulfilled\nFailed",
+			"options": "First Response Due
+Resolution Due
+Fulfilled
+Failed",
 			"read_only": 1,
 		},
 		{

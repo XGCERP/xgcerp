@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2019, Frappe and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -19,7 +20,8 @@ def execute():
 		property_setter_doc = frappe.get_doc(
 			"Property Setter", {"doc_type": "Task", "field_name": "status", "property": "options"}
 		)
-		property_setter_doc.value += "\nTemplate"
+		property_setter_doc.value += "
+Template"
 		property_setter_doc.save()
 
 	for template_name in frappe.get_all("Project Template"):

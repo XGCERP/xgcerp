@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -52,7 +53,9 @@ frappe.query_reports["Serial No and Batch Traceability"] = {
 			fieldname: "traceability_direction",
 			label: __("Tracebility Direction"),
 			fieldtype: "Select",
-			options: "Backward\nForward\nBoth",
+			options: "Backward
+Forward
+Both",
 			default: "Backward",
 		},
 	],

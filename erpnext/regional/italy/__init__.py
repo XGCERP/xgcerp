@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 fiscal_regimes = [
 	"RF01-Ordinario",
 	"RF02-Contribuenti minimi (art.1, c.96-117, L. 244/07)",

@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["Lead"] = {
 	get_indicator: function (doc) {
 		var indicator = [__(doc.status), frappe.utils.guess_colour(doc.status), "status,=," + doc.status];

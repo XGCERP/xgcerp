@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 import datetime
@@ -1727,7 +1728,8 @@ def get_job_details(start, end, filters=None):
 			"from_time": d.from_time,
 			"to_time": d.to_time,
 			"name": d.name,
-			"subject": "\n".join(subject_data),
+			"subject": "
+".join(subject_data),
 			"color": color if color else "#89bcde",
 		}
 

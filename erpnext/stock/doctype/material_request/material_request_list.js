@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["Material Request"] = {
 	add_fields: ["material_request_type", "status", "per_ordered", "per_received", "transfer_status"],
 	get_indicator: function (doc) {

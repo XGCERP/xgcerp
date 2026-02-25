@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -75,7 +76,8 @@ frappe.ui.form.on("Inventory Dimension", {
 
 	set_parent_fields(frm) {
 		if (frm.doc.apply_to_all_doctypes) {
-			let options = ["\n", frm.doc.reference_document];
+			let options = ["
+", frm.doc.reference_document];
 
 			frm.set_df_property("fetch_from_parent", "options", options);
 		} else if (frm.doc.document_type && frm.doc.istable) {
@@ -87,7 +89,8 @@ frappe.ui.form.on("Inventory Dimension", {
 				},
 				callback: (r) => {
 					if (r.message && r.message.length) {
-						frm.set_df_property("fetch_from_parent", "options", ["\n"].concat(r.message));
+						frm.set_df_property("fetch_from_parent", "options", ["
+"].concat(r.message));
 					} else {
 						frm.set_df_property("fetch_from_parent", "hidden", 1);
 					}

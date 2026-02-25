@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 
@@ -14,7 +15,8 @@ def execute():
 
 def set_issue_priority():
 	# Adds priority from issue to Issue Priority DocType as Priority is a new DocType.
-	for priority in frappe.get_meta("Issue").get_field("priority").options.split("\n"):
+	for priority in frappe.get_meta("Issue").get_field("priority").options.split("
+"):
 		if priority and not frappe.db.exists("Issue Priority", priority):
 			frappe.get_doc({"doctype": "Issue Priority", "name": priority}).insert(ignore_permissions=True)
 

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -237,7 +238,8 @@ class TestDeliveryNote(IntegrationTestCase):
 			do_not_submit=1,
 		)
 
-		se_doc.items[0].serial_no = "\n".join(serial_nos)
+		se_doc.items[0].serial_no = "
+".join(serial_nos)
 
 		frappe.flags.use_serial_and_batch_fields = True
 		se_doc.submit()
@@ -255,7 +257,8 @@ class TestDeliveryNote(IntegrationTestCase):
 			do_not_submit=1,
 		)
 
-		dn.items[0].serial_no = "\n".join(serial_nos)
+		dn.items[0].serial_no = "
+".join(serial_nos)
 		dn.submit()
 		dn.reload()
 
@@ -268,7 +271,8 @@ class TestDeliveryNote(IntegrationTestCase):
 		dn1 = make_sales_return(dn.name)
 
 		dn1.items[0].qty = -2
-		dn1.items[0].serial_no = "\n".join(get_serial_nos(serial_nos)[0:2])
+		dn1.items[0].serial_no = "
+".join(get_serial_nos(serial_nos)[0:2])
 		dn1.submit()
 		dn1.reload()
 
@@ -279,7 +283,8 @@ class TestDeliveryNote(IntegrationTestCase):
 		dn2 = make_sales_return(dn.name)
 
 		dn2.items[0].qty = -2
-		dn2.items[0].serial_no = "\n".join(get_serial_nos(serial_nos)[2:4])
+		dn2.items[0].serial_no = "
+".join(get_serial_nos(serial_nos)[2:4])
 		dn2.submit()
 		dn2.reload()
 
@@ -808,7 +813,8 @@ class TestDeliveryNote(IntegrationTestCase):
 			target_warehouse=target,
 			ignore_pricing_rule=0,
 			use_serial_batch_fields=1,
-			serial_no="\n".join(serial_nos),
+			serial_no="
+".join(serial_nos),
 		)
 
 		for serial_no in serial_nos:
@@ -1855,7 +1861,8 @@ class TestDeliveryNote(IntegrationTestCase):
 		)
 		se_doc.submit()
 
-		se_doc.items[0].db_set("serial_no", "\n".join(serial_nos))
+		se_doc.items[0].db_set("serial_no", "
+".join(serial_nos))
 
 		sle_data = frappe.get_all(
 			"Stock Ledger Entry",
@@ -1864,7 +1871,8 @@ class TestDeliveryNote(IntegrationTestCase):
 
 		sle_doc = frappe.get_doc("Stock Ledger Entry", sle_data.name)
 		self.assertFalse(sle_doc.serial_no)
-		sle_doc.db_set("serial_no", "\n".join(serial_nos))
+		sle_doc.db_set("serial_no", "
+".join(serial_nos))
 		sle_doc.reload()
 		self.assertTrue(sle_doc.serial_no)
 		self.assertFalse(sle_doc.is_cancelled)
@@ -1900,7 +1908,8 @@ class TestDeliveryNote(IntegrationTestCase):
 			expense_account="Cost of Goods Sold - _TC",
 			cost_center="Main - _TC",
 			use_serial_batch_fields=1,
-			serial_no="\n".join(serial_nos[0:3]),
+			serial_no="
+".join(serial_nos[0:3]),
 		)
 
 		dn.reload()
@@ -2393,7 +2402,8 @@ class TestDeliveryNote(IntegrationTestCase):
 				"conversion_factor": 1,
 				"warehouse": dn.items[0].warehouse,
 				"use_serial_batch_fields": 1,
-				"serial_no": "\n".join(serial_nos[0:2]),
+				"serial_no": "
+".join(serial_nos[0:2]),
 			},
 		)
 
@@ -2821,7 +2831,8 @@ class TestDeliveryNote(IntegrationTestCase):
 			qty=1,
 			rate=300,
 			use_serial_batch_fields=1,
-			serial_no="\n".join(serial_nos),
+			serial_no="
+".join(serial_nos),
 		)
 
 		dn.reload()
@@ -2836,14 +2847,16 @@ class TestDeliveryNote(IntegrationTestCase):
 			qty=1,
 			basic_rate=200,
 			use_serial_batch_fields=1,
-			serial_no="\n".join(serial_nos),
+			serial_no="
+".join(serial_nos),
 		)
 		dn1 = create_delivery_note(
 			item_code=item_code,
 			qty=1,
 			rate=300,
 			use_serial_batch_fields=1,
-			serial_no="\n".join(serial_nos),
+			serial_no="
+".join(serial_nos),
 		)
 
 		dn1.reload()

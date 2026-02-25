@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 
@@ -32,14 +33,16 @@ class TestStockLedgerReeport(IntegrationTestCase):
 
 		make_purchase_receipt(qty=10, item_code="_Test Item with Serial No")
 		data = report.get_data(filters=self.filters)
-		serial_nos = [item for item in data[-1][-1]["balance_serial_no"].split("\n")]
+		serial_nos = [item for item in data[-1][-1]["balance_serial_no"].split("
+")]
 
 		# Test 1: Since we have created an inward entry with Purchase Receipt of 10 qty, we should have 10 serial nos
 		self.assertEqual(len(serial_nos), 10)
 
 		create_delivery_note(qty=5, item_code="_Test Item with Serial No")
 		data = report.get_data(filters=self.filters)
-		serial_nos = [item for item in data[-1][-1]["balance_serial_no"].split("\n")]
+		serial_nos = [item for item in data[-1][-1]["balance_serial_no"].split("
+")]
 
 		# Test 2: Since we have created a delivery note of 5 qty, we should have 5 serial nos
 		self.assertEqual(len(serial_nos), 5)

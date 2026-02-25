@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -9,12 +10,12 @@ from erpnext.projects.doctype.project_template.test_project_template import make
 from erpnext.projects.doctype.task.test_task import create_task
 from erpnext.selling.doctype.sales_order.sales_order import make_project as make_project_from_so
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
-from erpnext.tests.utils import ERPNextTestSuite
+from erpnext.tests.utils import XGCERPTestSuite
 
 IGNORE_TEST_RECORD_DEPENDENCIES = ["Sales Order"]
 
 
-class TestProject(ERPNextTestSuite):
+class TestProject(XGCERPTestSuite):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

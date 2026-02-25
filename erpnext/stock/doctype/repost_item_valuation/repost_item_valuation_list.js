@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["Repost Item Valuation"] = {
 	add_fields: ["status", "name", "voucher_type", "voucher_no"],
 	get_indicator: function (doc) {

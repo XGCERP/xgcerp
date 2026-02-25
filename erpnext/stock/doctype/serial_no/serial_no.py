@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -149,7 +150,9 @@ def get_serial_nos(serial_no):
 	if isinstance(serial_no, list):
 		return serial_no
 
-	return [s.strip() for s in cstr(serial_no).strip().replace(",", "\n").split("\n") if s.strip()]
+	return [s.strip() for s in cstr(serial_no).strip().replace(",", "
+").split("
+") if s.strip()]
 
 
 def get_serial_nos_from_sle_list(bundles):
@@ -168,7 +171,8 @@ def clean_serial_no_string(serial_no: str) -> str:
 		return ""
 
 	serial_no_list = get_serial_nos(serial_no)
-	return "\n".join(serial_no_list)
+	return "
+".join(serial_no_list)
 
 
 def update_maintenance_status():
@@ -199,7 +203,8 @@ def auto_fetch_serial_number(
 		exclude_sr_nos = []
 	else:
 		exclude_sr_nos = safe_json_loads(exclude_sr_nos)
-		exclude_sr_nos = get_serial_nos(clean_serial_no_string("\n".join(exclude_sr_nos)))
+		exclude_sr_nos = get_serial_nos(clean_serial_no_string("
+".join(exclude_sr_nos)))
 
 	if batch_nos:
 		batch_nos_list = safe_json_loads(batch_nos)

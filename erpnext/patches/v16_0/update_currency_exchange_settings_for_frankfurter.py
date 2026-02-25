@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 
@@ -6,7 +7,8 @@ def execute():
 	settings = frappe.get_doc("Currency Exchange Settings")
 
 	if (
-		"frankfurter.dev" not in settings_meta.get_options("service_provider").split("\n")
+		"frankfurter.dev" not in settings_meta.get_options("service_provider").split("
+")
 		or settings.service_provider != "frankfurter.app"
 	):
 		return

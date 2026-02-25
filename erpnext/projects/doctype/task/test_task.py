@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -6,10 +7,10 @@ from frappe.tests import IntegrationTestCase
 from frappe.utils import add_days, getdate, nowdate
 
 from erpnext.projects.doctype.task.task import CircularReferenceError, ParentIsGroupError
-from erpnext.tests.utils import ERPNextTestSuite
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestTask(ERPNextTestSuite):
+class TestTask(XGCERPTestSuite):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

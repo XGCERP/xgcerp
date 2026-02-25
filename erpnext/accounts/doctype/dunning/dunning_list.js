@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["Dunning"] = {
 	get_indicator: function (doc) {
 		if (doc.status === "Resolved") {

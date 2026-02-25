@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -1797,7 +1798,8 @@ class TestStockEntry(IntegrationTestCase):
 			qty=2,
 			to_warehouse="_Test Warehouse - _TC",
 			use_serial_batch_fields=1,
-			serial_no="\n".join(serial_nos),
+			serial_no="
+".join(serial_nos),
 		)
 
 		self.assertTrue(se.items[0].use_serial_batch_fields)
@@ -1813,7 +1815,8 @@ class TestStockEntry(IntegrationTestCase):
 			qty=2,
 			from_warehouse="_Test Warehouse - _TC",
 			use_serial_batch_fields=1,
-			serial_no="\n".join(serial_nos),
+			serial_no="
+".join(serial_nos),
 		)
 
 		se1.reload()

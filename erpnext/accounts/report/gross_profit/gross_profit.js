@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -36,7 +37,19 @@ frappe.query_reports["Gross Profit"] = {
 			label: __("Group By"),
 			fieldtype: "Select",
 			options:
-				"Invoice\nItem Code\nItem Group\nBrand\nWarehouse\nCustomer\nCustomer Group\nTerritory\nSales Person\nProject\nCost Center\nMonthly\nPayment Term",
+				"Invoice
+Item Code
+Item Group
+Brand
+Warehouse
+Customer
+Customer Group
+Territory
+Sales Person
+Project
+Cost Center
+Monthly
+Payment Term",
 			default: "Invoice",
 		},
 		{

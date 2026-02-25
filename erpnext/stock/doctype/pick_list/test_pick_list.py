@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 
@@ -1127,7 +1128,8 @@ class TestPickList(IntegrationTestCase):
 		pl1.save()
 		self.assertEqual(pl1.locations[0].qty, 10)
 
-		serial_nos = pl1.locations[0].serial_no.split("\n")
+		serial_nos = pl1.locations[0].serial_no.split("
+")
 		self.assertEqual(len(serial_nos), 10)
 
 		so = make_sales_order(item_code=item, qty=110, rate=100)
@@ -1137,7 +1139,8 @@ class TestPickList(IntegrationTestCase):
 		self.assertEqual(pl.locations[0].qty, 110.0)
 		self.assertTrue(hasattr(pl, "locations"))
 
-		new_serial_nos = pl.locations[0].serial_no.split("\n")
+		new_serial_nos = pl.locations[0].serial_no.split("
+")
 		self.assertEqual(len(new_serial_nos), 110)
 
 		for sn in serial_nos:

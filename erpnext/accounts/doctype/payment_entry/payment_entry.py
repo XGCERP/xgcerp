@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -1256,7 +1257,8 @@ class PaymentEntry(AccountsController):
 					)
 				)
 
-		self.set("remarks", "\n".join(remarks))
+		self.set("remarks", "
+".join(remarks))
 
 	def set_transaction_currency_and_rate(self):
 		company_currency = erpnext.get_company_currency(self.company)
@@ -1852,7 +1854,8 @@ class PaymentEntry(AccountsController):
 
 	def set_matched_unset_payment_requests_to_response(self):
 		"""
-		Find matched Payment Requests for those references which have no Payment Request set.\n
+		Find matched Payment Requests for those references which have no Payment Request set.
+
 		And set to `frappe.response` to show in the frontend for allocation.
 		"""
 		if not self.references:
@@ -1870,7 +1873,8 @@ class PaymentEntry(AccountsController):
 	@frappe.whitelist()
 	def allocate_amount_to_references(self, paid_amount, paid_amount_change, allocate_payment_amount):
 		"""
-		Allocate `Allocated Amount` and `Payment Request` against `Reference` based on `Paid Amount` and `Outstanding Amount`.\n
+		Allocate `Allocated Amount` and `Payment Request` against `Reference` based on `Paid Amount` and `Outstanding Amount`.
+
 		:param paid_amount: Paid Amount / Received Amount.
 		:param paid_amount_change: Flag to check if `Paid Amount` is changed or not.
 		:param allocate_payment_amount: Flag to allocate amount or not. (Payment Request is also dependent on this flag)
@@ -2042,7 +2046,8 @@ class PaymentEntry(AccountsController):
 	@frappe.whitelist()
 	def set_matched_payment_requests(self, matched_payment_requests):
 		"""
-		Set `Payment Request` against `Reference` based on `matched_payment_requests`.\n
+		Set `Payment Request` against `Reference` based on `matched_payment_requests`.
+
 		:param matched_payment_requests: List of tuple of matched Payment Requests.
 
 		---
@@ -2075,7 +2080,8 @@ class PaymentEntry(AccountsController):
 
 def get_matched_payment_request_of_references(references=None):
 	"""
-	Get those `Payment Requests` which are matched with `References`.\n
+	Get those `Payment Requests` which are matched with `References`.
+
 	        - Amount must be same.
 	        - Only single `Payment Request` available for this amount.
 
@@ -2130,7 +2136,8 @@ def get_matched_payment_request_of_references(references=None):
 
 def get_references_outstanding_amount(references=None):
 	"""
-	Fetch accurate outstanding amount of `References`.\n
+	Fetch accurate outstanding amount of `References`.
+
 	    - If `Payment Term` is set, then fetch outstanding amount from `Payment Schedule`.
 	    - If `Payment Term` is not set, then fetch outstanding amount from `References` it self.
 
@@ -2147,7 +2154,8 @@ def get_references_outstanding_amount(references=None):
 
 def get_outstanding_of_references_with_payment_term(references=None):
 	"""
-	Fetch outstanding amount of `References` which have `Payment Term` set.\n
+	Fetch outstanding amount of `References` which have `Payment Term` set.
+
 	Example: {(reference_doctype, reference_name, payment_term): outstanding_amount, ...}
 	"""
 	if not references:
@@ -2178,7 +2186,8 @@ def get_outstanding_of_references_with_payment_term(references=None):
 
 def get_outstanding_of_references_with_no_payment_term(references):
 	"""
-	Fetch outstanding amount of `References` which have no `Payment Term` set.\n
+	Fetch outstanding amount of `References` which have no `Payment Term` set.
+
 	        - Fetch outstanding amount from `References` it self.
 
 	Note: `None` is used for allocation of `Payment Request`
@@ -2203,7 +2212,8 @@ def get_outstanding_of_references_with_no_payment_term(references):
 
 def get_payment_request_outstanding_set_in_references(references=None):
 	"""
-	Fetch outstanding amount of `Payment Request` which are set in `References`.\n
+	Fetch outstanding amount of `Payment Request` which are set in `References`.
+
 	Example: {payment_request: outstanding_amount, ...}
 	"""
 	if not references:
@@ -3017,8 +3027,10 @@ def get_payment_entry(
 
 def get_open_payment_requests_for_references(references=None):
 	"""
-	Fetch all unpaid Payment Requests for the references. \n
-	        - Each reference can have multiple Payment Requests. \n
+	Fetch all unpaid Payment Requests for the references. 
+
+	        - Each reference can have multiple Payment Requests. 
+
 
 	Example: {("Sales Invoice", "SINV-00001"): {"PREQ-00001": 1000, "PREQ-00002": 2000}}
 	"""
@@ -3064,7 +3076,8 @@ def get_open_payment_requests_for_references(references=None):
 
 def allocate_open_payment_requests_to_references(references=None, precision=None):
 	"""
-	Allocate unpaid Payment Requests to the references. \n
+	Allocate unpaid Payment Requests to the references. 
+
 	---
 	- Allocation based on below factors
 	    - Reference Allocated Amount

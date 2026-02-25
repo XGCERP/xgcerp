@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2020, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -329,6 +330,7 @@ def get_serial_nos_to_allocate(serial_nos, to_allocate):
 	if serial_nos:
 		allocated_serial_nos = serial_nos[0 : cint(to_allocate)]
 		serial_nos[:] = serial_nos[cint(to_allocate) :]  # pop out allocated serial nos and modify list
-		return "\n".join(allocated_serial_nos) if allocated_serial_nos else ""
+		return "
+".join(allocated_serial_nos) if allocated_serial_nos else ""
 	else:
 		return ""

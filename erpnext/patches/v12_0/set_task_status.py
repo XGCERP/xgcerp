@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 
@@ -11,7 +12,8 @@ def execute():
 	if property_setter_name:
 		property_setter = frappe.get_doc("Property Setter", property_setter_name)
 		if "Completed" not in property_setter.value:
-			property_setter.value = property_setter.value + "\nCompleted"
+			property_setter.value = property_setter.value + "
+Completed"
 			property_setter.save()
 
 	# renamed default status to Completed as status "Closed" is ambiguous

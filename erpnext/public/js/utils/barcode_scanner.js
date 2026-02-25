@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 erpnext.utils.BarcodeScanner = class BarcodeScanner {
 	constructor(opts) {
 		this.frm = opts.frm;
@@ -324,7 +325,8 @@ erpnext.utils.BarcodeScanner = class BarcodeScanner {
 
 			if (serial_no) {
 				this.validate_duplicate_serial_no(serial_no);
-				let serial_nos = this.dialog.get_value("serial_no") + "\n" + serial_no;
+				let serial_nos = this.dialog.get_value("serial_no") + "
+" + serial_no;
 				this.dialog.set_value("serial_no", serial_nos);
 			}
 
@@ -335,7 +337,8 @@ erpnext.utils.BarcodeScanner = class BarcodeScanner {
 
 	validate_duplicate_serial_no(serial_no) {
 		let serial_nos = this.dialog.get_value("serial_no")
-			? this.dialog.get_value("serial_no").split("\n")
+			? this.dialog.get_value("serial_no").split("
+")
 			: [];
 
 		if (serial_nos.includes(serial_no)) {
@@ -381,7 +384,8 @@ erpnext.utils.BarcodeScanner = class BarcodeScanner {
 			let new_serial_nos = "";
 
 			if (!!existing_serial_nos) {
-				new_serial_nos = existing_serial_nos + "\n" + serial_no;
+				new_serial_nos = existing_serial_nos + "
+" + serial_no;
 			} else {
 				new_serial_nos = serial_no;
 			}

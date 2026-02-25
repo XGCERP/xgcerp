@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -1068,7 +1069,8 @@ class JournalEntry(AccountsController):
 				)
 
 		if r:
-			self.remark = ("\n").join(r)  # User Remarks is not mandatory
+			self.remark = ("
+").join(r)  # User Remarks is not mandatory
 
 	def set_print_format_fields(self):
 		bank_amount = party_amount = total_amount = 0.0
@@ -1128,7 +1130,8 @@ class JournalEntry(AccountsController):
 			if d.debit or d.credit or (self.voucher_type == "Exchange Gain Or Loss"):
 				r = [d.user_remark, self.remark]
 				r = [x for x in r if x]
-				remarks = "\n".join(r)
+				remarks = "
+".join(r)
 
 				row = {
 					"account": d.account,

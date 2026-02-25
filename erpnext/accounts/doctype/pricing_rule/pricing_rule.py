@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 
 # For license information, please see license.txt
@@ -244,7 +245,8 @@ class PricingRule(Document):
 			fieldname = frappe.scrub(self.get(logic_field) or "")
 
 			# reset all values except for the logic field
-			options = (self.meta.get_options(logic_field) or "").split("\n")
+			options = (self.meta.get_options(logic_field) or "").split("
+")
 			for f in options:
 				if not f:
 					continue

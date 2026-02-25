@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -255,13 +256,15 @@ def update_stock(ctx, out, doc=None):
 			serial_nos = get_serial_nos_for_outward(kwargs)
 			serial_nos = get_filtered_serial_nos(serial_nos, doc)
 
-			out["serial_no"] = "\n".join(serial_nos[: cint(out.stock_qty)])
+			out["serial_no"] = "
+".join(serial_nos[: cint(out.stock_qty)])
 
 		elif out.has_serial_no and not ctx.get("serial_no"):
 			serial_nos = get_serial_nos_for_outward(kwargs)
 			serial_nos = get_filtered_serial_nos(serial_nos, doc)
 
-			out["serial_no"] = "\n".join(serial_nos[: cint(out.stock_qty)])
+			out["serial_no"] = "
+".join(serial_nos[: cint(out.stock_qty)])
 
 
 def has_incorrect_serial_nos(ctx, out):

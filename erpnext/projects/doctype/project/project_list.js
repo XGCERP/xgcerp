@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["Project"] = {
 	add_fields: ["status", "priority", "is_active", "percent_complete", "expected_end_date", "project_name"],
 	filters: [["status", "=", "Open"]],

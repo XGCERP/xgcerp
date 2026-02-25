@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -660,7 +661,8 @@ def make_return_doc(doctype: str, source_name: str, target_doc=None, return_agai
 			returned_serial_nos = get_returned_non_bundled_serial_nos(source_doc, source_parent)
 			serial_nos = list(set(get_serial_nos(source_doc.serial_no)) - set(returned_serial_nos))
 			if serial_nos:
-				target_doc.serial_no = "\n".join(serial_nos)
+				target_doc.serial_no = "
+".join(serial_nos)
 
 		if source_doc.get("rejected_serial_no"):
 			returned_serial_nos = get_returned_non_bundled_serial_nos(
@@ -670,7 +672,8 @@ def make_return_doc(doctype: str, source_name: str, target_doc=None, return_agai
 				set(get_serial_nos(source_doc.rejected_serial_no)) - set(returned_serial_nos)
 			)
 			if rejected_serial_nos:
-				target_doc.rejected_serial_no = "\n".join(rejected_serial_nos)
+				target_doc.rejected_serial_no = "
+".join(rejected_serial_nos)
 
 	def get_returned_non_bundled_serial_nos(child_doc, parent_doc, serial_no_field="serial_no"):
 		from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos

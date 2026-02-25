@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 /* eslint-disable no-unused-vars */
 erpnext.PointOfSale.Payment = class {
 	constructor({ events, wrapper, settings }) {

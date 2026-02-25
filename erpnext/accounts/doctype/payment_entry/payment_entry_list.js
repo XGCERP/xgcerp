@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["Payment Entry"] = {
 	onload: function (listview) {
 		if (listview.page.fields_dict.party_type) {

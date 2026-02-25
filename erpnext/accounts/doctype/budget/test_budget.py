@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 import unittest
@@ -15,10 +16,10 @@ from erpnext.accounts.doctype.budget.budget import (
 from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
-from erpnext.tests.utils import ERPNextTestSuite
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestBudget(ERPNextTestSuite):
+class TestBudget(XGCERPTestSuite):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

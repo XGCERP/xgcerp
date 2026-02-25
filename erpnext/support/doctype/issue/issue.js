@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.ui.form.on("Issue", {
 	onload: function (frm) {
 		frm.email_field = "raised_by";

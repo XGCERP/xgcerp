@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 from frappe import _
 from frappe.contacts.doctype.address.address import (
@@ -7,7 +8,7 @@ from frappe.contacts.doctype.address.address import (
 )
 
 
-class ERPNextAddress(Address):
+class XGCERPAddress(Address):
 	def validate(self):
 		self.validate_reference()
 		self.update_company_address()

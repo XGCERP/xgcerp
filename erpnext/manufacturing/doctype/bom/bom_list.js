@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["BOM"] = {
 	add_fields: ["is_active", "is_default", "total_cost", "has_variants"],
 	get_indicator: function (doc) {

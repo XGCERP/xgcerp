@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and Contributors
 # See license.txt
 import unittest
@@ -6,10 +7,10 @@ import frappe
 from frappe.tests import IntegrationTestCase
 
 from erpnext.projects.doctype.activity_cost.activity_cost import DuplicationError
-from erpnext.tests.utils import ERPNextTestSuite
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestActivityCost(ERPNextTestSuite):
+class TestActivityCost(XGCERPTestSuite):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

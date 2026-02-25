@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -1524,7 +1525,8 @@ class TestWorkOrder(IntegrationTestCase):
 			make_stock_entry(wo_doc.name, "Material Transfer for Manufacture", 4)
 		)
 
-		transferred_ste_doc.items[0].serial_no = "\n".join(serial_nos_list)
+		transferred_ste_doc.items[0].serial_no = "
+".join(serial_nos_list)
 		transferred_ste_doc.submit()
 
 		# First Manufacture stock entry
@@ -1871,7 +1873,8 @@ class TestWorkOrder(IntegrationTestCase):
 
 			if row.serial_no:
 				serial_nos = get_serial_nos(row.serial_no)
-				row.serial_no = "\n".join(serial_nos[:5])
+				row.serial_no = "
+".join(serial_nos[:5])
 
 		ste_doc.save()
 		ste_doc.submit()
@@ -2968,7 +2971,8 @@ class TestWorkOrder(IntegrationTestCase):
 
 		ste = frappe.get_doc(make_stock_entry(wo.name, "Manufacture", 4))
 		ste.items[0].use_serial_batch_fields = 1
-		ste.items[0].serial_no = "\n".join(
+		ste.items[0].serial_no = "
+".join(
 			get_serial_nos_from_bundle(rec_se.items[0].serial_and_batch_bundle)
 		)
 		ste.insert()

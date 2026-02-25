@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -1118,7 +1119,8 @@ class TestSubcontractingController(IntegrationTestCase):
 		scr1 = make_subcontracting_receipt(sco.name)
 		scr1.save()
 		scr1.supplied_items[0].consumed_qty = 5
-		scr1.supplied_items[0].serial_no = "\n".join(
+		scr1.supplied_items[0].serial_no = "
+".join(
 			sorted(itemwise_details.get("Subcontracted SRM Item 2").get("serial_no")[0:5])
 		)
 		scr1.submit()
@@ -1302,7 +1304,8 @@ def make_stock_transfer_entry(**args):
 			).name
 
 		if serial_nos and row.get("use_serial_batch_fields"):
-			item["serial_no"] = "\n".join(serial_nos)
+			item["serial_no"] = "
+".join(serial_nos)
 
 		items.append(item)
 

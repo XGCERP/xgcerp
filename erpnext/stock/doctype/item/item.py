@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -483,7 +484,8 @@ class Item(Document):
 
 		if len(self.barcodes) > 0:
 			for item_barcode in self.barcodes:
-				options = frappe.get_meta("Item Barcode").get_options("barcode_type").split("\n")
+				options = frappe.get_meta("Item Barcode").get_options("barcode_type").split("
+")
 				if item_barcode.barcode:
 					duplicate = frappe.db.sql(
 						"""select parent from `tabItem Barcode` where barcode = %s and parent != %s""",
@@ -658,7 +660,8 @@ class Item(Document):
 
 		if new_properties != [cstr(self.get(field)) for field in field_list]:
 			msg = _("To merge, following properties must be same for both items")
-			msg += ": \n" + ", ".join([_(self.meta.get_label(fld)) for fld in field_list])
+			msg += ": 
+" + ", ".join([_(self.meta.get_label(fld)) for fld in field_list])
 			frappe.throw(msg, title=_("Cannot Merge"), exc=DataValidationError)
 
 	def validate_duplicate_product_bundles_before_merge(self, old_name, new_name):

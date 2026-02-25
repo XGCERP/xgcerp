@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -15,14 +16,19 @@ frappe.query_reports["Project Summary"] = {
 			fieldname: "is_active",
 			label: __("Is Active"),
 			fieldtype: "Select",
-			options: "\nYes\nNo",
+			options: "
+Yes
+No",
 			default: "Yes",
 		},
 		{
 			fieldname: "status",
 			label: __("Status"),
 			fieldtype: "Select",
-			options: "\nOpen\nCompleted\nCancelled",
+			options: "
+Open
+Completed
+Cancelled",
 			default: "Open",
 		},
 		{
@@ -35,7 +41,10 @@ frappe.query_reports["Project Summary"] = {
 			fieldname: "priority",
 			label: __("Priority"),
 			fieldtype: "Select",
-			options: "\nLow\nMedium\nHigh",
+			options: "
+Low
+Medium
+High",
 		},
 	],
 };

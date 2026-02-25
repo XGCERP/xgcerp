@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 frappe.listview_settings["Issue"] = {
 	colwidths: { subject: 6 },
 	add_fields: ["priority"],

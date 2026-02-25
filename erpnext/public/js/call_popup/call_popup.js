@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
 class CallPopup {
 	constructor(call_log) {
 		this.caller_number = call_log.from;

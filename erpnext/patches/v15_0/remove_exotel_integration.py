@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import click
 import frappe
 from frappe import _
@@ -23,14 +24,15 @@ def execute():
 
 def notify_existing_users():
 	click.secho(
-		"Exotel integration is moved to a separate app and will be removed from ERPNext in version-15.\n"
+		"Exotel integration is moved to a separate app and will be removed from XGCERP in version-15.
+"
 		"Please install the app to continue using the integration: https://github.com/frappe/exotel_integration",
 		fg="yellow",
 	)
 
 	notification = {
 		"subject": _(
-			"WARNING: Exotel app has been separated from ERPNext, please install the app to continue using Exotel integration."
+			"WARNING: Exotel app has been separated from XGCERP, please install the app to continue using Exotel integration."
 		),
 		"type": "Alert",
 	}

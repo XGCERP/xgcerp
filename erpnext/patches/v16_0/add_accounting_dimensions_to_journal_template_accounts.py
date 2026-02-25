@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
 	get_dimensions,
 	make_dimension_in_accounting_doctypes,

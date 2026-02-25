@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -795,7 +796,8 @@ def make_address(args, is_primary_address=1, is_shipping_address=1):
 	if reqd_fields:
 		msg = _("Following fields are mandatory to create address:")
 		frappe.throw(
-			"{} <br><br> <ul>{}</ul>".format(msg, "\n".join(reqd_fields)),
+			"{} <br><br> <ul>{}</ul>".format(msg, "
+".join(reqd_fields)),
 			title=_("Missing Values Required"),
 		)
 

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -379,7 +380,7 @@ def get_comapny_wise_users(company):
 
 
 def notify_errors(exceptions_list):
-	subject = _("[Important] [ERPNext] Auto Reorder Errors")
+	subject = _("[Important] [XGCERP] Auto Reorder Errors")
 	content = (
 		_("Dear System Manager,")
 		+ "<br>"

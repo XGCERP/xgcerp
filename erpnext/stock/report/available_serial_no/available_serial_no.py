@@ -1,3 +1,4 @@
+# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -70,10 +71,12 @@ def update_available_serial_nos(available_serial_nos, sle):
 		else available_serial_nos.get(sle.serial_and_batch_bundle)
 	)
 	key = (sle.item_code, sle.warehouse)
-	sle.serial_no = "\n".join(serial_nos) if serial_nos else ""
+	sle.serial_no = "
+".join(serial_nos) if serial_nos else ""
 	if key not in available_serial_nos:
 		available_serial_nos.setdefault(key, serial_nos)
-		sle.balance_serial_no = "\n".join(serial_nos)
+		sle.balance_serial_no = "
+".join(serial_nos)
 		return
 
 	existing_serial_no = available_serial_nos[key]
@@ -83,7 +86,8 @@ def update_available_serial_nos(available_serial_nos, sle):
 		else:
 			existing_serial_no.append(sn)
 
-	sle.balance_serial_no = "\n".join(existing_serial_no)
+	sle.balance_serial_no = "
+".join(existing_serial_no)
 
 
 def get_columns(filters):
