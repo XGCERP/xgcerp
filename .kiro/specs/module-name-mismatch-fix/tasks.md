@@ -1,0 +1,109 @@
+# Implementation Plan
+
+- [x] 1. Write bug condition exploration test
+  - **Property 1: Fault Condition** - Module Name Mismatch Causes Installation Failure
+  - **CRITICAL**: This test MUST FAIL on unfixed code - failure confirms the bug exists
+  - **DO NOT attempt to fix the test or the code when it fails**
+  - **NOTE**: This test encodes the expected behavior - it will validate the fix when it passes after implementation
+  - **GOAL**: Surface counterexamples that demonstrate the bug exists
+  - **Scoped PBT Approach**: Scope the property to the concrete failing case - "XGCERP Integrations" in modules.txt with actual folder "erpnext_integrations"
+  - Test that when `modules.txt` contains "XGCERP Integrations", installation fails with ModuleNotFoundError
+  - Test that Python cannot import `erpnext.xgcerp_integrations` but can import `erpnext.erpnext_integrations`
+  - Test that `plaid_settings.json` has `"module": "XGCERP Integrations"` (mismatched with folder structure)
+  - Test that running `smart_rename.py` on a test copy changes "XGCERP Integrations" to "XGCERP Integrations"
+  - Run test on UNFIXED code
+  - **EXPECTED OUTCOME**: Test FAILS (this is correct - it proves the bug exists)
+  - Document counterexamples found:
+    - XGCERP installation fails with `ModuleNotFoundError: No module named 'erpnext.xgcerp_integrations'`
+    - Import `erpnext.xgcerp_integrations` fails but `erpnext.erpnext_integrations` succeeds
+    - `smart_rename.py` changes "XGCERP Integrations" to "XGCERP Integrations" in modules.txt
+  - Mark task complete when test is written, run, and failure is documented
+  - _Requirements: 2.1, 2.2, 2.3_
+
+- [x] 2. Write preservation property tests (BEFORE implementing fix)
+  - **Property 2: Preservation** - Other Modules and Rebranding Continue to Work
+  - **IMPORTANT**: Follow observation-first methodology
+  - Observe behavior on UNFIXED code for non-buggy inputs (other modules, other rebranding operations)
+  - Write property-based tests capturing observed behavior patterns:
+    - For all modules except "XGCERP Integrations", installation succeeds
+    - For all "XGCERP" patterns except "XGCERP Integrations", `smart_rename.py` renames to "XGCERP"
+    - Existing imports like `from erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings import ...` resolve correctly
+    - All integrations features (Plaid Settings, etc.) function correctly
+    - Other JSON module fields (not integrations) are rebranded correctly
+  - Property-based testing generates many test cases for stronger guarantees
+  - Run tests on UNFIXED code
+  - **EXPECTED OUTCOME**: Tests PASS (this confirms baseline behavior to preserve)
+  - Mark task complete when tests are written, run, and passing on unfixed code
+  - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9_
+
+- [x] 3. Fix for module name mismatch
+
+  - [x] 3.1 Revert module name in erpnext/modules.txt
+    - Change line 15 from `XGCERP Integrations` to `XGCERP Integrations`
+    - This restores the correct module name that matches the folder structure `erpnext_integrations/`
+    - Allows Frappe to successfully import `erpnext.erpnext_integrations` during installation
+    - _Bug_Condition: input.moduleNameInConfig == "XGCERP Integrations" AND input.actualFolderName == "erpnext_integrations" AND input.existingImportStatements CONTAIN "erpnext.erpnext_integrations" AND NOT canImportModule("erpnext.xgcerp_integrations")_
+    - _Expected_Behavior: Installation succeeds, module is importable, modules.txt contains "XGCERP Integrations"_
+    - _Preservation: All other modules continue to install and function correctly_
+    - _Requirements: 2.1, 2.2_
+
+  - [x] 3.2 Revert module field in plaid_settings.json
+    - Change line 75 in `erpnext/erpnext_integrations/doctype/plaid_settings/plaid_settings.json`
+    - Change `"module": "XGCERP Integrations"` to `"module": "XGCERP Integrations"`
+    - Ensures DocType metadata matches the actual module name
+    - Maintains consistency across all module references
+    - _Bug_Condition: JSON module field doesn't match actual folder structure_
+    - _Expected_Behavior: Module field matches folder name and import paths_
+    - _Preservation: Other JSON files continue to be rebranded correctly_
+    - _Requirements: 2.3_
+
+  - [x] 3.3 Add exclusion logic to scripts/smart_rename.py
+    - Add constant: `PRESERVE_INTEGRATIONS_MODULE = "XGCERP Integrations"`
+    - Add exclusion logic for modules.txt processing:
+      - Read file line by line
+      - Skip rebranding for lines containing "XGCERP Integrations"
+      - Apply rebranding to all other lines
+    - Add exclusion logic for JSON files:
+      - Check if file is a DocType JSON (contains `"module":` field)
+      - Skip rebranding for `"module": "XGCERP Integrations"` patterns
+      - Apply rebranding to all other content
+    - Update file processing loop to apply exclusions
+    - Add comments documenting why integrations module must be preserved
+    - _Bug_Condition: Script performs global find-and-replace without exclusions, causing recurring bug_
+    - _Expected_Behavior: Script preserves "XGCERP Integrations" while rebranding all other content_
+    - _Preservation: Script continues to rebrand all other modules and content correctly_
+    - _Requirements: 2.4, 2.5, 2.6, 2.7, 2.8_
+
+  - [x] 3.4 Verify bug condition exploration test now passes
+    - **Property 1: Expected Behavior** - Module Name Matches Folder Structure
+    - **IMPORTANT**: Re-run the SAME test from task 1 - do NOT write a new test
+    - The test from task 1 encodes the expected behavior
+    - When this test passes, it confirms the expected behavior is satisfied
+    - Run bug condition exploration test from step 1
+    - Verify XGCERP installation succeeds
+    - Verify `erpnext.erpnext_integrations` can be imported
+    - Verify modules.txt contains "XGCERP Integrations"
+    - Verify plaid_settings.json has `"module": "XGCERP Integrations"`
+    - Verify running `smart_rename.py` preserves "XGCERP Integrations"
+    - **EXPECTED OUTCOME**: Test PASSES (confirms bug is fixed)
+    - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
+
+  - [x] 3.5 Verify preservation tests still pass
+    - **Property 2: Preservation** - Other Modules and Rebranding Continue to Work
+    - **IMPORTANT**: Re-run the SAME tests from task 2 - do NOT write new tests
+    - Run preservation property tests from step 2
+    - Verify all other modules install successfully
+    - Verify `smart_rename.py` continues to rebrand other modules correctly
+    - Verify existing imports continue to resolve
+    - Verify integrations features continue to function
+    - Verify other JSON files are rebranded correctly
+    - **EXPECTED OUTCOME**: Tests PASS (confirms no regressions)
+    - Confirm all tests still pass after fix (no regressions)
+    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9_
+
+- [x] 4. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise
+  - Verify XGCERP installation completes successfully
+  - Verify integrations module is accessible and functional
+  - Verify upstream sync workflow preserves integrations module
+  - Verify no regressions in other modules or rebranding operations

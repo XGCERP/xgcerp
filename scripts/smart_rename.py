@@ -1,10 +1,23 @@
 # Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved.
+
 import os
 import shutil
+import re
 
 # --- CONFIGURATION ---
-OLD_BRAND = "XGCERP"
+OLD_BRAND = "ERPNext"
 NEW_BRAND = "XGCERP"
+
+# CRITICAL: Preserve "ERPNext Integrations" module name
+# The integrations module MUST remain as "ERPNext Integrations" because:
+# 1. The folder is named "erpnext_integrations/" (not "xgcerp_integrations/")
+# 2. All Python imports reference "erpnext.erpnext_integrations.*"
+# 3. Renaming this module breaks installation and all existing imports
+# This exclusion prevents the bug from recurring on future upstream syncs
+PRESERVE_INTEGRATIONS_MODULE = "ERPNext Integrations"
+
+# CRITICAL: Also preserve the Python module path
+PRESERVE_PYTHON_MODULE = "erpnext_integrations"
 
 NEW_PUBLISHER = "XGC CORP."
 NEW_DESCRIPTION = "Operating System for Carbon Sovereignty"
@@ -13,8 +26,9 @@ NEW_EMAIL = "db@xgccorp.com"
 # The path to your logo (assuming it's in the repo root)
 SOURCE_LOGO_NAME = "xgcerp-logo.svg"
 
-IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'env', 'logs'}
+IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'env', 'logs', 'scripts'}
 TARGET_EXTS = ('.json', '.py', '.js', '.html', '.csv', '.txt', '.md')
+
 
 def update_hooks_metadata(hooks_path):
     """Bakes branding into the core hooks.py file"""
@@ -24,7 +38,7 @@ def update_hooks_metadata(hooks_path):
     try:
         with open(hooks_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
-
+        
         with open(hooks_path, 'w', encoding='utf-8') as f:
             for line in lines:
                 # Update specific app metadata
@@ -38,10 +52,78 @@ def update_hooks_metadata(hooks_path):
                     f.write(f'source_link = "https://github.com/XGCERP/xgcerp"\n')
                 else:
                     # Fallback global replace for the rest of the file
-                    f.write(line.replace(OLD_BRAND, NEW_BRAND))
+                    # BUT preserve erpnext_integrations
+                    new_line = line.replace(OLD_BRAND, NEW_BRAND)
+                    # Restore any erpnext_integrations that got changed
+                    new_line = new_line.replace('xgcerp_integrations', PRESERVE_PYTHON_MODULE)
+                    f.write(new_line)
+        
         print(f"✅ Metadata updated in hooks.py")
     except Exception as e:
         print(f"❌ Error updating hooks.py: {e}")
+
+
+def smart_replace(content, filename):
+    """
+    Smart replacement that preserves erpnext_integrations in all contexts
+    """
+    # CRITICAL: Protect erpnext_integrations before doing any replacements
+    # Use a unique marker that won't appear in normal code
+    MARKER = "___PRESERVE_ERPNEXT_INTEGRATIONS___"
+    
+    # Protect all variations of erpnext_integrations
+    # IMPORTANT: Do longer patterns first to avoid partial replacements
+    protected = content
+    protected = protected.replace('erpnext.erpnext_integrations', f'erpnext.{MARKER}')
+    protected = protected.replace('"erpnext_integrations"', f'"{MARKER}"')
+    protected = protected.replace("'erpnext_integrations'", f"'{MARKER}'")
+    protected = protected.replace('erpnext_integrations', MARKER)
+    
+    # Special handling for modules.txt
+    if filename == 'modules.txt':
+        lines = protected.split('\n')
+        new_lines = []
+        for line in lines:
+            # Preserve "ERPNext Integrations" line unchanged
+            if PRESERVE_INTEGRATIONS_MODULE in line:
+                new_lines.append(line)
+            else:
+                # Apply rebranding to all other lines
+                new_lines.append(line.replace(OLD_BRAND, NEW_BRAND))
+        protected = '\n'.join(new_lines)
+    
+    # Special handling for JSON files to preserve integrations module field
+    elif filename.endswith('.json'):
+        # Check if this is a DocType JSON with module field
+        if '"module":' in protected:
+            # Preserve "module": "ERPNext Integrations" patterns
+            json_marker = "___PRESERVE_INTEGRATIONS_MODULE___"
+            protected = protected.replace(
+                f'"module": "{PRESERVE_INTEGRATIONS_MODULE}"',
+                f'"module": "{json_marker}"'
+            )
+            
+            # Apply global rebranding
+            protected = protected.replace(OLD_BRAND, NEW_BRAND)
+            
+            # Restore the preserved integrations module
+            protected = protected.replace(
+                f'"module": "{json_marker}"',
+                f'"module": "{PRESERVE_INTEGRATIONS_MODULE}"'
+            )
+        else:
+            # Regular JSON file without module field
+            protected = protected.replace(OLD_BRAND, NEW_BRAND)
+    
+    else:
+        # Regular file processing for all other files
+        protected = protected.replace(OLD_BRAND, NEW_BRAND)
+    
+    # Restore all protected erpnext_integrations references
+    protected = protected.replace(MARKER, PRESERVE_PYTHON_MODULE)
+    
+    return protected
+
 
 def run_rebrand():
     # Resolve root directory
@@ -51,26 +133,48 @@ def run_rebrand():
     # 1. Update hooks.py metadata
     hooks_path = os.path.join(root_dir, "erpnext", "hooks.py")
     update_hooks_metadata(hooks_path)
-
+    
     # 2. Global UI and Metadata Replace
     print(f"🚀 Starting Rebrand: {OLD_BRAND} -> {NEW_BRAND}")
+    print(f"🔒 Preserving: {PRESERVE_PYTHON_MODULE} module")
+    
     updated = 0
+    preserved = 0
+    
     for dirpath, dirnames, filenames in os.walk(root_dir):
         dirnames[:] = [d for d in dirnames if d not in IGNORE_DIRS]
+        
         for filename in filenames:
             if filename.endswith(TARGET_EXTS):
                 filepath = os.path.join(dirpath, filename)
+                
                 try:
                     with open(filepath, 'r', encoding='utf-8') as f:
                         content = f.read()
+                    
+                    # Check if file needs processing
                     if OLD_BRAND in content or 'xgccorp.com' in content:
-                        new_content = content.replace(OLD_BRAND, NEW_BRAND)
-                        new_content = new_content.replace('xgccorp.com', 'xgccorp.com')
+                        # Check if file contains erpnext_integrations
+                        has_integrations = PRESERVE_PYTHON_MODULE in content
+                        
+                        # Apply smart replacement
+                        new_content = smart_replace(content, filename)
+                        
+                        # Write back
                         with open(filepath, 'w', encoding='utf-8') as f:
                             f.write(new_content)
+                        
                         updated += 1
-                except: pass
-
+                        
+                        if has_integrations:
+                            preserved += 1
+                            # Verify preservation worked
+                            if PRESERVE_PYTHON_MODULE not in new_content:
+                                print(f"⚠️  WARNING: {filepath} lost erpnext_integrations!")
+                
+                except Exception as e:
+                    pass  # Skip files that can't be processed
+    
     # 3. Overwrite physical logos
     source_logo = os.path.join(root_dir, SOURCE_LOGO_NAME)
     if os.path.exists(source_logo):
@@ -80,14 +184,19 @@ def run_rebrand():
             os.path.join(root_dir, "erpnext", "public", "images", "erpnext-favicon.svg"),
             os.path.join(root_dir, "erpnext", "public", "images", "v16", "erpnext.svg")
         ]
+        
         for target in paths:
             os.makedirs(os.path.dirname(target), exist_ok=True)
             shutil.copyfile(source_logo, target)
+        
         print(f"🖼️  Overwrote core logos with {SOURCE_LOGO_NAME}")
     else:
         print(f"⚠️  Logo source not found at {source_logo}")
+    
+    print(f"✨ Rebrand complete!")
+    print(f"   📝 {updated} files modified")
+    print(f"   🔒 {preserved} files with preserved erpnext_integrations")
 
-    print(f"✨ Rebrand complete. {updated} files modified.")
 
 if __name__ == '__main__':
     run_rebrand()

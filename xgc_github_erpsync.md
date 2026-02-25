@@ -192,3 +192,18 @@ Now, whenever Frappe drops a release (like the `v16.7.0` release you just saw), 
 The script will handle the Git fetches, merges, Python renaming, Bash copyright injections, commit generation, and pushing the new `v16.7.0-xgc` tag directly to your proprietary GitHub repo.
 
 check `https://github.com/frappe/erpnext/releases` for latest releases
+
+This script
+
+```bash
+ ./scripts/sync_upstream.sh v16.7.0
+
+ ```
+ runs all the other scripts and commits to git 
+
+### Why this is the correct workflow for your fork:
+Atomic History: Instead of a "Merge" commit followed by an "Apply Branding" commit, you get one single commit that represents "Upstream Version + XGC Branding".
+
+Force Push is Necessary: Because git commit --amend changes the identity of the last commit, you must use --force to update GitHub. Since this is your proprietary "Operating System" fork and you are the primary maintainer, this is the standard way to maintain a "clean" vendor branch.
+
+Tag Safety: Using git tag -f ensures that if you ever need to re-run the script for the same version (e.g., you updated your logo), the tag will move to the newest, correct commit.

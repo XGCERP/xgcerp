@@ -12,7 +12,7 @@ Assets
 Portal
 Maintenance
 Regional
-XGCERP Integrations
+ERPNext Integrations
 Quality Management
 Communication
 Telephony
