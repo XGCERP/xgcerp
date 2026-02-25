@@ -45,10 +45,10 @@ Running a business is a complex task - handling invoices, tracking stock, managi
 <details open>
 
 <summary>More</summary>
-	<img src="https://erpnext.com/files/v16_bom.png"/>
-	<img src="https://erpnext.com/files/v16_stock_summary.png"/>
-	<img src="https://erpnext.com/files/v16_job_card.png"/>
-	<img src="https://erpnext.com/files/v16_tasks.png"/>
+	<img src="https://xgccorp.com/files/v16_bom.png"/>
+	<img src="https://xgccorp.com/files/v16_stock_summary.png"/>
+	<img src="https://xgccorp.com/files/v16_job_card.png"/>
+	<img src="https://xgccorp.com/files/v16_tasks.png"/>
 </details>
 
 ### Under the Hood
@@ -133,7 +133,7 @@ To setup the repository locally follow the steps mentioned below:
 ## Learning and community
 
 1. [Frappe School](https://school.frappe.io) - Learn Frappe Framework and XGCERP from the various courses by the maintainers or from the community.
-2. [Official documentation](https://docs.erpnext.com/) - Extensive documentation for XGCERP.
+2. [Official documentation](https://docs.xgccorp.com/) - Extensive documentation for XGCERP.
 3. [Discussion Forum](https://discuss.frappe.io/c/erpnext/6) - Engage with community of XGCERP users and service providers.
 4. [Telegram Group](https://erpnext_public.t.me) - Get instant help from huge community of users.
 
@@ -141,7 +141,7 @@ To setup the repository locally follow the steps mentioned below:
 ## Contributing
 
 1. [Issue Guidelines](https://github.com/frappe/erpnext/wiki/Issue-Guidelines)
-1. [Report Security Vulnerabilities](https://erpnext.com/security)
+1. [Report Security Vulnerabilities](https://xgccorp.com/security)
 1. [Pull Request Requirements](https://github.com/frappe/erpnext/wiki/Contribution-Guidelines)
 2. [Translations](https://crowdin.com/project/frappe)
 

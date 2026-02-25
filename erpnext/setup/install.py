@@ -189,7 +189,7 @@ def add_standard_navbar_items():
 		{
 			"item_label": _("Documentation"),
 			"item_type": "Route",
-			"route": "https://docs.erpnext.com/",
+			"route": "https://docs.xgccorp.com/",
 			"is_standard": 1,
 		},
 		{

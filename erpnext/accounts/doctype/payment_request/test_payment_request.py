@@ -113,7 +113,7 @@ class TestPaymentRequest(IntegrationTestCase):
 		pr = make_payment_request(
 			dt="Sales Order",
 			dn=so_inr.name,
-			recipient_id="saurabh@erpnext.com",
+			recipient_id="saurabh@xgccorp.com",
 			payment_gateway_account="_Test Gateway - INR - _TC",
 		)
 
@@ -127,7 +127,7 @@ class TestPaymentRequest(IntegrationTestCase):
 		pr = make_payment_request(
 			dt="Sales Invoice",
 			dn=si_usd.name,
-			recipient_id="saurabh@erpnext.com",
+			recipient_id="saurabh@xgccorp.com",
 			payment_gateway_account="_Test Gateway - USD - _TC",
 		)
 
@@ -309,7 +309,7 @@ class TestPaymentRequest(IntegrationTestCase):
 		pr = make_payment_request(
 			dt="Sales Order",
 			dn=so_inr.name,
-			recipient_id="saurabh@erpnext.com",
+			recipient_id="saurabh@xgccorp.com",
 			mute_email=1,
 			payment_gateway_account="_Test Gateway - INR - _TC",
 			submit_doc=1,
@@ -331,7 +331,7 @@ class TestPaymentRequest(IntegrationTestCase):
 		pr = make_payment_request(
 			dt="Sales Invoice",
 			dn=si_usd.name,
-			recipient_id="saurabh@erpnext.com",
+			recipient_id="saurabh@xgccorp.com",
 			mute_email=1,
 			payment_gateway_account="_Test Gateway - USD - _TC",
 			submit_doc=1,
@@ -375,7 +375,7 @@ class TestPaymentRequest(IntegrationTestCase):
 		pr = make_payment_request(
 			dt="Sales Invoice",
 			dn=si_usd.name,
-			recipient_id="saurabh@erpnext.com",
+			recipient_id="saurabh@xgccorp.com",
 			mute_email=1,
 			payment_gateway_account="_Test Gateway - USD - _TC",
 			submit_doc=1,
@@ -398,14 +398,14 @@ class TestPaymentRequest(IntegrationTestCase):
 
 		# Payment Request amount = 200
 		pr1 = make_payment_request(
-			dt="Sales Order", dn=so.name, recipient_id="nabin@erpnext.com", return_doc=1
+			dt="Sales Order", dn=so.name, recipient_id="nabin@xgccorp.com", return_doc=1
 		)
 		pr1.grand_total = 200
 		pr1.submit()
 
 		# Make a 2nd Payment Request
 		pr2 = make_payment_request(
-			dt="Sales Order", dn=so.name, recipient_id="nabin@erpnext.com", return_doc=1
+			dt="Sales Order", dn=so.name, recipient_id="nabin@xgccorp.com", return_doc=1
 		)
 
 		self.assertEqual(pr2.grand_total, 800)
@@ -421,7 +421,7 @@ class TestPaymentRequest(IntegrationTestCase):
 		po_doc.items[0].rate = 10
 		po_doc.save().submit()
 
-		pr = make_payment_request(dt=po_doc.doctype, dn=po_doc.name, recipient_id="nabin@erpnext.com")
+		pr = make_payment_request(dt=po_doc.doctype, dn=po_doc.name, recipient_id="nabin@xgccorp.com")
 		pr = frappe.get_doc(pr).save().submit()
 
 		pe = pr.create_payment_entry()

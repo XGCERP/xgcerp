@@ -16,7 +16,7 @@ class CommunicationMedium(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		from erpnext.communication.doctype.communication_medium_timeslot.communication_medium_timeslot import (
+		from xgccorp.communication.doctype.communication_medium_timeslot.communication_medium_timeslot import (
 			CommunicationMediumTimeslot,
 		)
 

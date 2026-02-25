@@ -1,48 +1,93 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
+# Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved.
 import os
+import shutil
 
-# Define the exact case-sensitive strings to swap
+# --- CONFIGURATION ---
 OLD_BRAND = "XGCERP"
 NEW_BRAND = "XGCERP"
 
-# Directories to ignore to prevent corrupting Git or build files
-IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'public', 'dist', 'env', 'logs'}
+NEW_PUBLISHER = "XGC CORP."
+NEW_DESCRIPTION = "Operating System for Carbon Sovereignty"
+NEW_EMAIL = "db@xgccorp.com"
+
+# The path to your logo (assuming it's in the repo root)
+SOURCE_LOGO_NAME = "xgcerp-logo.svg"
+
+IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'env', 'logs'}
 TARGET_EXTS = ('.json', '.py', '.js', '.html', '.csv', '.txt', '.md')
 
-def process_directory(root_dir):
-    updated_count = 0
+def update_hooks_metadata(hooks_path):
+    """Bakes branding into the core hooks.py file"""
+    if not os.path.exists(hooks_path):
+        return
+    
+    try:
+        with open(hooks_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+
+        with open(hooks_path, 'w', encoding='utf-8') as f:
+            for line in lines:
+                # Update specific app metadata
+                if 'app_publisher =' in line:
+                    f.write(f'app_publisher = "{NEW_PUBLISHER}"\n')
+                elif 'app_description =' in line:
+                    f.write(f'app_description = "{NEW_DESCRIPTION}"\n')
+                elif 'app_email =' in line:
+                    f.write(f'app_email = "{NEW_EMAIL}"\n')
+                elif 'source_link =' in line:
+                    f.write(f'source_link = "https://github.com/XGCERP/xgcerp"\n')
+                else:
+                    # Fallback global replace for the rest of the file
+                    f.write(line.replace(OLD_BRAND, NEW_BRAND))
+        print(f"✅ Metadata updated in hooks.py")
+    except Exception as e:
+        print(f"❌ Error updating hooks.py: {e}")
+
+def run_rebrand():
+    # Resolve root directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.abspath(os.path.join(script_dir, ".."))
+    
+    # 1. Update hooks.py metadata
+    hooks_path = os.path.join(root_dir, "erpnext", "hooks.py")
+    update_hooks_metadata(hooks_path)
+
+    # 2. Global UI and Metadata Replace
+    print(f"🚀 Starting Rebrand: {OLD_BRAND} -> {NEW_BRAND}")
+    updated = 0
     for dirpath, dirnames, filenames in os.walk(root_dir):
-        # Filter out ignored directories
         dirnames[:] = [d for d in dirnames if d not in IGNORE_DIRS]
-        
         for filename in filenames:
             if filename.endswith(TARGET_EXTS):
                 filepath = os.path.join(dirpath, filename)
-                if replace_branding(filepath):
-                    updated_count += 1
-                    
-    print(f"
-✅ Smart Rename Complete! {updated_count} files updated.")
+                try:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    if OLD_BRAND in content or 'xgccorp.com' in content:
+                        new_content = content.replace(OLD_BRAND, NEW_BRAND)
+                        new_content = new_content.replace('xgccorp.com', 'xgccorp.com')
+                        with open(filepath, 'w', encoding='utf-8') as f:
+                            f.write(new_content)
+                        updated += 1
+                except: pass
 
-def replace_branding(filepath):
-    try:
-        with open(filepath, 'r', encoding='utf-8') as file:
-            content = file.read()
-        
-        if OLD_BRAND in content:
-            # Perform the case-sensitive replace
-            new_content = content.replace(OLD_BRAND, NEW_BRAND)
-            
-            with open(filepath, 'w', encoding='utf-8') as file:
-                file.write(new_content)
-            print(f"Rebranded metadata in: {filepath}")
-            return True
-            
-    except Exception as e:
-        # Silently skip files that cannot be read (e.g., binary files masquerading as text)
-        pass
-    return False
+    # 3. Overwrite physical logos
+    source_logo = os.path.join(root_dir, SOURCE_LOGO_NAME)
+    if os.path.exists(source_logo):
+        # Target standard XGCERP asset paths
+        paths = [
+            os.path.join(root_dir, "erpnext", "public", "images", "erpnext-logo.svg"),
+            os.path.join(root_dir, "erpnext", "public", "images", "erpnext-favicon.svg"),
+            os.path.join(root_dir, "erpnext", "public", "images", "v16", "erpnext.svg")
+        ]
+        for target in paths:
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            shutil.copyfile(source_logo, target)
+        print(f"🖼️  Overwrote core logos with {SOURCE_LOGO_NAME}")
+    else:
+        print(f"⚠️  Logo source not found at {source_logo}")
+
+    print(f"✨ Rebrand complete. {updated} files modified.")
 
 if __name__ == '__main__':
-    print(f"Starting Smart UI and Metadata Rename: {OLD_BRAND} -> {NEW_BRAND}...")
-    process_directory('.')
+    run_rebrand()

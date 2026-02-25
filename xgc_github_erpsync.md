@@ -79,7 +79,7 @@ git merge v16.7.0
 ```
 
 **3. Run your Proprietary Scripts**
-*(Since the newly merged files from Frappe will say "ERPNext" and lack your copyright, you must run your scripts again).*
+*(Since the newly merged files from Frappe will say "XGCERP" and lack your copyright, you must run your scripts again).*
 
 ```bash
 python3 smart_rename.py
@@ -190,3 +190,5 @@ Now, whenever Frappe drops a release (like the `v16.7.0` release you just saw), 
 ```
 
 The script will handle the Git fetches, merges, Python renaming, Bash copyright injections, commit generation, and pushing the new `v16.7.0-xgc` tag directly to your proprietary GitHub repo.
+
+check `https://github.com/frappe/erpnext/releases` for latest releases

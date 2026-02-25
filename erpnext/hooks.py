@@ -1,13 +1,13 @@
 # Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 app_name = "erpnext"
 app_title = "XGCERP"
-app_publisher = "Frappe Technologies Pvt. Ltd."
-app_description = """ERP made simple"""
+app_publisher = "XGC CORP."
+app_description = "Operating System for Carbon Sovereignty"
 app_icon = "fa fa-th"
 app_color = "#e74c3c"
-app_email = "hello@frappe.io"
+app_email = "db@xgccorp.com"
 app_license = "GNU General Public License (v3)"
-source_link = "https://github.com/frappe/erpnext"
+source_link = "https://github.com/XGCERP/xgcerp"
 app_logo_url = "/assets/erpnext/images/erpnext-logo.svg"
 app_home = "/desk"
 

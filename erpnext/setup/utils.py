@@ -31,7 +31,7 @@ def before_tests():
 				"fy_end_date": f"{current_year}-12-31",
 				"language": "english",
 				"company_tagline": "Testing",
-				"email": "test@erpnext.com",
+				"email": "test@xgccorp.com",
 				"password": "test",
 				"chart_of_accounts": "Standard",
 			}

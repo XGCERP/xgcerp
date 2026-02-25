@@ -11,7 +11,7 @@ assignees: ''
 Welcome to XGCERP issue tracker! Before creating an issue, please heed the following:
 
 1. This tracker should only be used to report bugs and request features / enhancements to XGCERP
-    - For questions and general support, checkout the manual https://docs.erpnext.com or use https://discuss.frappe.io/c/erpnext/6
+    - For questions and general support, checkout the manual https://docs.xgccorp.com or use https://discuss.frappe.io/c/erpnext/6
 2. Use the search function before creating a new issue. Duplicates will be closed and directed to
    the original discussion.
 3. When making a feature request, make sure to be as verbose as possible. The better you convey your message, the greater the drive to make it happen.
@@ -20,7 +20,7 @@ Welcome to XGCERP issue tracker! Before creating an issue, please heed the follo
 Please keep in mind that we get many many requests and we can't possibly work on all of them, we prioritize development based on the goals of the product and organization. Feature requests are still welcome as it helps us in research when we do decide to work on the requested feature. 
 
 If you're in urgent need to a feature, please try the following channels to get paid developments done quickly:
-1. Certified XGCERP partners: https://erpnext.com/partners 
+1. Certified XGCERP partners: https://xgccorp.com/partners 
 2. Developer community on XGCERP forums: https://discuss.frappe.io/c/framework/5  
 3. Telegram group for XGCERP/Frappe development work: https://t.me/erpnext_opps 
 

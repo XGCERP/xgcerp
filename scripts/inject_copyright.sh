@@ -1,26 +1,34 @@
 #!/bin/bash
+# Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved.
 
-# Define copyright strings based on XGC Corp details
-COPYRIGHT_PY="# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved."
-COPYRIGHT_JS="/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */"
+COPYRIGHT_PY="# Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved."
+COPYRIGHT_JS="/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */"
 
-echo "Injecting copyrights into XGCERP..."
+# Move to repo root (assuming script is in /scripts)
+cd "$(dirname "$0")/.." || exit
 
-# Inject into Python files
-find . -type f -name "*.py" ! -path "*/\.*" | while read -r file; do
-  # Check if copyright already exists to prevent duplication
+echo "🛡️  Injecting proprietary copyrights..."
+
+# Target Python files
+find . -type f -name "*.py" ! -path "*/.*" | while read -r file; do
   if ! grep -q "XGC CORP" "$file"; then
-    # Prepend the copyright and rewrite the file
-    echo -e "$COPYRIGHT_PY\n$(cat "$file")" > "$file"
-    echo "Injected PY: $file"
+    # If first line is a shebang, insert after it. Otherwise, prepend.
+    if head -n 1 "$file" | grep -q "^#!"; then
+        sed -i '' "2i\\
+$COPYRIGHT_PY\\
+" "$file"
+    else
+        sed -i '' "1i\\
+$COPYRIGHT_PY\\
+" "$file"
+    fi
   fi
 done
 
-# Inject into JavaScript files
-find . -type f -name "*.js" ! -path "*/\.*" | while read -r file; do
+# Target JS files
+find . -type f -name "*.js" ! -path "*/.*" | while read -r file; do
   if ! grep -q "XGC CORP" "$file"; then
     echo -e "$COPYRIGHT_JS\n$(cat "$file")" > "$file"
-    echo "Injected JS: $file"
   fi
 done
 

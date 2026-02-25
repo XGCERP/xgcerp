@@ -1,48 +1,54 @@
 #!/bin/bash
+# Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved.
 
-# Ensure a tag version was provided
 if [ -z "$1" ]; then
-  echo "❌ Error: Please provide the upstream tag to sync."
-  echo "Usage: ./sync_upstream.sh v16.7.0"
+  echo "❌ Error: Please provide the upstream tag (e.g., v16.7.0)"
   exit 1
 fi
 
 UPSTREAM_TAG=$1
 XGC_TAG="${UPSTREAM_TAG}-xgc"
+SCRIPT_DIR="$(dirname "$0")"
 
-echo "🔄 Starting XGCERP Sync Protocol for $UPSTREAM_TAG..."
+echo "🔄 Syncing XGCERP with $UPSTREAM_TAG..."
 
-# 1. Fetch upstream tags
-echo "📥 Fetching upstream tags..."
+# 1. Fetch
 git fetch upstream --tags
 
-# 2. Merge the specific tag
-echo "🔀 Merging $UPSTREAM_TAG..."
-git merge $UPSTREAM_TAG -m "Merge upstream tag $UPSTREAM_TAG"
+# 2. Merge upstream tag
+# We use --no-ff and a message to create a distinct merge commit we can later amend
+git merge "$UPSTREAM_TAG" --no-ff -m "chore: merge upstream $UPSTREAM_TAG and apply XGC branding"
 
-# Check for merge conflicts
 if [ $? -ne 0 ]; then
-  echo "⚠️ Merge conflicts detected! Please resolve them manually, then run the branding scripts and commit."
+  echo "⚠️  Conflicts detected. Fix them, then run scripts/smart_rename.py and scripts/inject_copyright.sh manually."
   exit 1
 fi
 
-# 3. Apply Branding and Copyrights
-echo "✨ Applying XGCERP Core Masking and Copyrights..."
-python3 smart_rename.py
-./inject_copyright.sh
+# 3. Apply Rebrand & Copyrights
+echo "✨ Applying XGCERP Hard Rebrand and Assets..."
+python3 "$SCRIPT_DIR/smart_rename.py"
+bash "$SCRIPT_DIR/inject_copyright.sh"
 
-# 4. Commit the changes
-echo "💾 Committing proprietary layer..."
+# 4. Amend the Merge Commit
+# This combines the rebranding changes into the merge commit itself
+echo "💾 Amending commit with proprietary layer..."
 git add .
-git commit -m "chore: apply XGCERP branding and copyrights for $UPSTREAM_TAG"
+git commit --amend --no-edit
 
-# 5. Tag the release
-echo "🏷️ Tagging release as $XGC_TAG..."
-git tag $XGC_TAG
+# 5. Tag or Re-tag the release
+echo "🏷️  Tagging release as $XGC_TAG..."
+git tag -f "$XGC_TAG"
 
-# 6. Push to origin
-echo "🚀 Pushing branch and tags to XGCERP origin..."
-git push origin version-16
-git push origin $XGC_TAG
+# 6. Push to origin (Force required because we amended the history)
+echo "🚀 Force-pushing branch and tags to XGCERP origin..."
+git push origin version-16 --force
+git push origin "$XGC_TAG" --force
 
-echo "✅ Sync for $XGC_TAG complete! Ready for deployment."
+# 7. Refresh Bench (If on server)
+if command -v bench &> /dev/null; then
+    echo "🏗️  Refreshing local bench environment..."
+    bench clear-cache
+    bench migrate
+fi
+
+echo "✅ XGCERP is now fully branded and synced to $XGC_TAG"
