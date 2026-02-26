@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.ui.form.ControlData = class ControlData extends frappe.ui.form.ControlData {
 	make_input() {
 		super.make_input();

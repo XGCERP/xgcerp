@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and contributors
 # For license information, please see license.txt
 
@@ -514,11 +513,7 @@ class POSInvoice(SalesInvoice):
 								or serial_no like %s
 							)
 					""",
-						(self.return_against, sr, sr + "
-%", "%
-" + sr, "%
-" + sr + "
-%"),
+						(self.return_against, sr, sr + "\n%", "%\n" + sr, "%\n" + sr + "\n%"),
 					)
 
 					if not serial_no_exists:

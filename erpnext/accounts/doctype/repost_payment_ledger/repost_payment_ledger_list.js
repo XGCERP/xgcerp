@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Repost Payment Ledger"] = {
 	add_fields: ["repost_status"],
 	get_indicator: function (doc) {

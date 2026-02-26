@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 from frappe import _
 from frappe.contacts.doctype.address.address import (

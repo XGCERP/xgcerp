@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // For license information, please see license.txt
 

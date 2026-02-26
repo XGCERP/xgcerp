@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 class VisualPlantFloor {
 	constructor({ wrapper, skip_filters = false, plant_floor = null }, page = null) {
 		this.wrapper = wrapper;

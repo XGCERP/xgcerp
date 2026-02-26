@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 class BOMConfigurator {
 	constructor({ wrapper, page, frm, bom_configurator }) {
 		this.$wrapper = $(wrapper);

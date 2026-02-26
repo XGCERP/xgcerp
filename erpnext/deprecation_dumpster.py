@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 """
 Welcome to the Deprecation Dumpster: Where Old Code Goes to Party! 🎉🗑️
 
@@ -112,12 +111,10 @@ def deprecation_warning(marked: str, graduation: str, msg: str):
 	warnings.warn(
 		colorize(
 			f"This codepath was marked (DATE: {marked}) deprecated"
-			f" for removal (from {graduation} onwards); note:
- ",
+			f" for removal (from {graduation} onwards); note:\n ",
 			Color.RED,
 		)
-		+ colorize(f"{msg}
-", Color.YELLOW),
+		+ colorize(f"{msg}\n", Color.YELLOW),
 		category=__get_deprecation_class(graduation),
 		stacklevel=2,
 	)

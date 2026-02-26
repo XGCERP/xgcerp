@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.ui.form.on("Contact", {
 	refresh(frm) {
 		frm.set_query("link_doctype", "links", function () {

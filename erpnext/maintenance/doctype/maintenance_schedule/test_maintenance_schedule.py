@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 import unittest
@@ -67,16 +66,14 @@ class TestMaintenanceSchedule(IntegrationTestCase):
 		self.assertEqual(i.end_date, expected_end_date)
 
 		items = ms.get_pending_data(data_type="items")
-		items = items.split("
-")
+		items = items.split("\n")
 		items.pop(0)
 		expected_items = ["_Test Item"]
 		self.assertTrue(items, expected_items)
 
 		# "dates" contains all generated schedule dates
 		dates = ms.get_pending_data(data_type="date", item_name=i.item_name)
-		dates = dates.split("
-")
+		dates = dates.split("\n")
 		dates.pop(0)
 		expected_dates.append(formatdate(add_days(i.start_date, 7), "dd-MM-yyyy"))
 		expected_dates.append(formatdate(add_days(i.start_date, 14), "dd-MM-yyyy"))

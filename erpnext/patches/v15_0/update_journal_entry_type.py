@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 
@@ -10,8 +9,7 @@ def execute():
 		as_dict=True,
 	)
 	if custom_je_type:
-		custom_je_type.value += "
-Asset Disposal"
+		custom_je_type.value += "\nAsset Disposal"
 		frappe.db.set_value("Property Setter", custom_je_type.name, "value", custom_je_type.value)
 
 	scrapped_journal_entries = frappe.get_all(

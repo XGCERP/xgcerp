@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 erpnext.SerialBatchPackageSelector = class SerialNoBatchBundleUpdate {
 	constructor(frm, item, callback) {
 		this.frm = frm;

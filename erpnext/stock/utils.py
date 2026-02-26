@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -146,8 +145,7 @@ def get_stock_balance(
 
 			serial_nos = ""
 			if serial_no_details:
-				serial_nos = "
-".join(d.serial_no for d in serial_no_details)
+				serial_nos = "\n".join(d.serial_no for d in serial_no_details)
 
 			return (
 				(last_entry.qty_after_transaction, last_entry.valuation_rate, serial_nos)
@@ -388,9 +386,7 @@ def _get_fifo_lifo_rate(previous_stock_queue, qty, method):
 def get_valid_serial_nos(sr_nos, qty=0, item_code=""):
 	"""split serial nos, validate and return list of valid serial nos"""
 	# TODO: remove duplicates in client side
-	serial_nos = cstr(sr_nos).strip().replace(",", "
-").split("
-")
+	serial_nos = cstr(sr_nos).strip().replace(",", "\n").split("\n")
 
 	valid_serial_nos = []
 	for val in serial_nos:

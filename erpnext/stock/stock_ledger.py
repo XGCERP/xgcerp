@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -802,7 +801,7 @@ class update_entries_after:
 		if previous_sle and previous_sle.get("qty_after_transaction") < 0 and sle.get("actual_qty") > 0:
 			frappe.msgprint(
 				_(
-					"The stock for the item {0} in the {1} warehouse was negative on the {2}. You should create a positive entry {3} before the date {4} and time {5} to post the correct valuation rate. For more details, please read the <a href='https://docs.xgccorp.com/docs/user/manual/en/stock-adjustment-cogs-with-negative-stock'>documentation<a>."
+					"The stock for the item {0} in the {1} warehouse was negative on the {2}. You should create a positive entry {3} before the date {4} and time {5} to post the correct valuation rate. For more details, please read the <a href='https://docs.erpnext.com/docs/user/manual/en/stock-adjustment-cogs-with-negative-stock'>documentation<a>."
 				).format(
 					bold(sle.item_code),
 					bold(sle.warehouse),
@@ -1489,11 +1488,7 @@ class update_entries_after:
 				order by posting_date desc
 				limit 1
 			""",
-				(sle.company, serial_no, serial_no + "
-%", "%
-" + serial_no, "%
-" + serial_no + "
-%"),
+				(sle.company, serial_no, serial_no + "\n%", "%\n" + serial_no, "%\n" + serial_no + "\n%"),
 			)
 
 			incoming_values += flt(incoming_rate[0][0]) if incoming_rate else 0
@@ -1710,9 +1705,7 @@ class update_entries_after:
 				msg_list.append(msg)
 
 		if msg_list:
-			message = "
-
-".join(msg_list)
+			message = "\n\n".join(msg_list)
 			if self.verbose:
 				frappe.throw(message, NegativeStockError, title=_("Insufficient Stock"))
 			else:
@@ -1849,13 +1842,9 @@ def get_stock_ledger_entries(
 		"""
 		).format(
 			frappe.db.escape(serial_no),
-			frappe.db.escape(f"{serial_no}
-%"),
-			frappe.db.escape(f"%
-{serial_no}"),
-			frappe.db.escape(f"%
-{serial_no}
-%"),
+			frappe.db.escape(f"{serial_no}\n%"),
+			frappe.db.escape(f"%\n{serial_no}"),
+			frappe.db.escape(f"%\n{serial_no}\n%"),
 		)
 
 	if not previous_sle.get("posting_date"):

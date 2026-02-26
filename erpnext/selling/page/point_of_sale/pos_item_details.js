@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 erpnext.PointOfSale.ItemDetails = class {
 	constructor({ wrapper, events, settings }) {
 		this.wrapper = wrapper;

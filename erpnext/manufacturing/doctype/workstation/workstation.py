@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -454,10 +453,8 @@ def check_workstation_for_holiday(workstation, from_datetime, to_datetime):
 				_("Workstation is closed on the following dates as per Holiday List: {0}").format(
 					holiday_list
 				)
-				+ "
-"
-				+ "
-".join(applicable_holidays),
+				+ "\n"
+				+ "\n".join(applicable_holidays),
 				WorkstationHolidayError,
 			)
 

@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 erpnext.landed_cost_taxes_and_charges = {
 	setup_triggers: function (doctype) {
 		frappe.ui.form.on(doctype, {

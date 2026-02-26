@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 from frappe.desk.reportview import build_match_conditions
 from frappe.utils import flt, nowdate

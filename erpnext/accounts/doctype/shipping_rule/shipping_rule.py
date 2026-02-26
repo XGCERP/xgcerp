@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -206,5 +205,4 @@ class ShippingRule(Document):
 					+ f" {d2.from_value}-{d2.to_value} = {fmt_money(d2.shipping_amount, currency=company_currency)}"
 				)
 
-			msgprint("
-".join(messages), raise_exception=OverlappingConditionError)
+			msgprint("\n".join(messages), raise_exception=OverlappingConditionError)

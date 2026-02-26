@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -1169,8 +1168,7 @@ def transfer_asset(args):
 	args = json.loads(args)
 
 	if args.get("serial_no"):
-		args["quantity"] = len(args.get("serial_no").split("
-"))
+		args["quantity"] = len(args.get("serial_no").split("\n"))
 
 	movement_entry = frappe.new_doc("Asset Movement")
 	movement_entry.update(args)

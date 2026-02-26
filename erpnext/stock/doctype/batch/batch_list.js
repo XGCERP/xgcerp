@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Batch"] = {
 	add_fields: ["item", "expiry_date", "batch_qty", "disabled"],
 	get_indicator: (doc) => {

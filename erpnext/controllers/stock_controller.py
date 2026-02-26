@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -2115,8 +2114,7 @@ def make_quality_inspections(doctype, docname, items, inspection_type):
 				"item_code": item.get("item_code"),
 				"description": item.get("description"),
 				"sample_size": flt(item.get("sample_size")),
-				"item_serial_no": item.get("serial_no").split("
-")[0] if item.get("serial_no") else None,
+				"item_serial_no": item.get("serial_no").split("\n")[0] if item.get("serial_no") else None,
 				"batch_no": item.get("batch_no"),
 				"child_row_reference": item.get("child_row_reference"),
 			}

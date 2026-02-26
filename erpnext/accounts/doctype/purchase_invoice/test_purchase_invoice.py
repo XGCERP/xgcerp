@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -2447,8 +2446,7 @@ class TestPurchaseInvoice(IntegrationTestCase, StockTestMixin):
 				"warehouse": pi.items[0].warehouse,
 				"rejected_warehouse": rej_warehouse,
 				"use_serial_batch_fields": 1,
-				"serial_no": "
-".join(serial_nos[:2]),
+				"serial_no": "\n".join(serial_nos[:2]),
 				"rejected_serial_no": serial_nos[2],
 			},
 		)
@@ -2465,8 +2463,7 @@ class TestPurchaseInvoice(IntegrationTestCase, StockTestMixin):
 			if row.item_code == batch_item:
 				self.assertEqual(row.batch_no, batch_no)
 			else:
-				self.assertEqual(row.serial_no, "
-".join(serial_nos[:2]))
+				self.assertEqual(row.serial_no, "\n".join(serial_nos[:2]))
 				self.assertEqual(row.rejected_serial_no, serial_nos[2])
 
 	def test_make_pr_and_pi_from_po(self):

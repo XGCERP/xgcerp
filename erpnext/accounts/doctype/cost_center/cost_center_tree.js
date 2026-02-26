@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.treeview_settings["Cost Center"] = {
 	breadcrumb: "Accounts",
 	get_tree_root: false,

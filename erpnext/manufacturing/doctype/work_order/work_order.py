@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -2540,8 +2539,7 @@ def get_serial_nos_for_job_card(row, wo_doc):
 		used_serial_nos.extend(get_serial_nos(d.serial_no))
 
 	serial_nos = sorted(list(set(serial_nos) - set(used_serial_nos)))
-	row.serial_no = "
-".join(serial_nos[0 : cint(row.job_card_qty)])
+	row.serial_no = "\n".join(serial_nos[0 : cint(row.job_card_qty)])
 
 
 def get_serial_nos_for_work_order(work_order, production_item):

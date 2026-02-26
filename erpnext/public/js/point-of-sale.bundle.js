@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 import "../../selling/page/point_of_sale/pos_item_selector.js";
 import "../../selling/page/point_of_sale/pos_item_cart.js";
 import "../../selling/page/point_of_sale/pos_item_details.js";

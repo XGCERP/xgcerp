@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -84,10 +83,8 @@ class SalesPartner(WebsiteGenerator):
 			addresses.append(
 				{
 					"email": address_doc.email_id,
-					"partner_address": filter_strip_join(address_rows, "
-<br>"),
-					"phone": filter_strip_join(cstr(address_doc.phone).split(","), "
-<br>"),
+					"partner_address": filter_strip_join(address_rows, "\n<br>"),
+					"phone": filter_strip_join(cstr(address_doc.phone).split(","), "\n<br>"),
 				}
 			)
 

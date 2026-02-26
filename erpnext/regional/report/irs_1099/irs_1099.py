@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -176,17 +175,13 @@ def get_street_address_html(party_type, party):
 		doc = frappe.get_doc("Address", supplier_address)
 
 		if doc.address_line2:
-			street_address = doc.address_line1 + "<br>
-" + doc.address_line2 + "<br>
-"
+			street_address = doc.address_line1 + "<br>\n" + doc.address_line2 + "<br>\n"
 		else:
-			street_address = doc.address_line1 + "<br>
-"
+			street_address = doc.address_line1 + "<br>\n"
 
 		city_state = doc.city + ", " if doc.city else ""
 		city_state = city_state + doc.state + " " if doc.state else city_state
 		city_state = city_state + doc.pincode if doc.pincode else city_state
-		city_state += "<br>
-"
+		city_state += "<br>\n"
 
 	return street_address, city_state

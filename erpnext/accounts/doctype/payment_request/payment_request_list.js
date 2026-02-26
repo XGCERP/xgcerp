@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 const INDICATORS = {
 	"Partially Paid": "orange",
 	Cancelled: "red",

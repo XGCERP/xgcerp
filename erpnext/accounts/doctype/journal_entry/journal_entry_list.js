@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Journal Entry"] = {
 	add_fields: ["voucher_type", "posting_date", "total_debit", "company", "user_remark"],
 	get_indicator: function (doc) {

@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -2400,8 +2399,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 		pr = make_purchase_receipt(
 			item_code=item_code,
 			qty=5,
-			serial_no="
-".join(serial_nos),
+			serial_no="\n".join(serial_nos),
 			use_serial_batch_fields=1,
 			rate=100,
 		)
@@ -2419,8 +2417,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 
 		sr = create_stock_reconciliation(
 			item_code=item_code,
-			serial_no="
-".join(serial_nos),
+			serial_no="\n".join(serial_nos),
 			qty=4,
 			warehouse=pr.items[0].warehouse,
 			use_serial_batch_fields=1,
@@ -2452,8 +2449,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 		dn = create_delivery_note(
 			item_code=item_code,
 			qty=4,
-			serial_no="
-".join(new_serial_nos),
+			serial_no="\n".join(new_serial_nos),
 			use_serial_batch_fields=1,
 		)
 
@@ -2733,8 +2729,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 				"warehouse": pr.items[0].warehouse,
 				"rejected_warehouse": rej_warehouse,
 				"use_serial_batch_fields": 1,
-				"serial_no": "
-".join(serial_nos[:2]),
+				"serial_no": "\n".join(serial_nos[:2]),
 				"rejected_serial_no": serial_nos[2],
 			},
 		)
@@ -2751,8 +2746,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 			if row.item_code == batch_item:
 				self.assertEqual(row.batch_no, batch_no)
 			else:
-				self.assertEqual(row.serial_no, "
-".join(serial_nos[:2]))
+				self.assertEqual(row.serial_no, "\n".join(serial_nos[:2]))
 				self.assertEqual(row.rejected_serial_no, serial_nos[2])
 
 	def test_internal_transfer_with_serial_batch_items_and_their_valuation(self):
@@ -2833,8 +2827,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 				"stock_uom": serial_item_doc.stock_uom,
 				"warehouse": "Stores - TCP1",
 				"target_warehouse": "Work In Progress - TCP1",
-				"serial_no": "
-".join(
+				"serial_no": "\n".join(
 					get_serial_nos_from_bundle(inward_entry.items[1].serial_and_batch_bundle)
 				),
 				"use_serial_batch_fields": 1,
@@ -2973,8 +2966,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 				"stock_uom": serial_item_doc.stock_uom,
 				"warehouse": "Stores - TCP1",
 				"target_warehouse": "Work In Progress - TCP1",
-				"serial_no": "
-".join(
+				"serial_no": "\n".join(
 					get_serial_nos_from_bundle(inward_entry.items[1].serial_and_batch_bundle)
 				),
 				"use_serial_batch_fields": 0,
@@ -3630,8 +3622,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 				"stock_uom": serial_item_doc.stock_uom,
 				"warehouse": "Stores - TCP1",
 				"target_warehouse": "Work In Progress - TCP1",
-				"serial_no": "
-".join(
+				"serial_no": "\n".join(
 					get_serial_nos_from_bundle(inward_entry.items[1].serial_and_batch_bundle)
 				),
 				"use_serial_batch_fields": 0,
@@ -3748,8 +3739,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 				"stock_uom": serial_item_doc.stock_uom,
 				"warehouse": "Stores - TCP1",
 				"target_warehouse": "Work In Progress - TCP1",
-				"serial_no": "
-".join(
+				"serial_no": "\n".join(
 					get_serial_nos_from_bundle(inward_entry.items[1].serial_and_batch_bundle)
 				),
 				"use_serial_batch_fields": 1,
@@ -4032,8 +4022,7 @@ class TestPurchaseReceipt(IntegrationTestCase):
 				"warehouse": pr.items[0].warehouse,
 				"use_serial_batch_fields": 1,
 				"rejected_warehouse": rej_warehouse,
-				"serial_no": "
-".join(serial_nos[:2]),
+				"serial_no": "\n".join(serial_nos[:2]),
 				"rejected_serial_no": serial_nos[2],
 			},
 		)

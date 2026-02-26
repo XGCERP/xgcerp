@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Opportunity"] = {
 	add_fields: ["customer_name", "opportunity_type", "opportunity_from", "status"],
 	get_indicator: function (doc) {

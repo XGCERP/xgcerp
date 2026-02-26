@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.ui.form.on("Chart of Accounts Importer", {
 	onload: function (frm) {
 		frm.set_value("company", "");

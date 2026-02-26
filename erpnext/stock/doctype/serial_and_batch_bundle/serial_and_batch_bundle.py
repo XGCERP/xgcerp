@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -3222,14 +3221,10 @@ def get_stock_ledgers_for_serial_nos(kwargs):
 
 		bundle_match = serial_batch_entry.serial_no.isin(serial_nos)
 
-		padded_serial_no = Concat_ws("", "
-", stock_ledger_entry.serial_no, "
-")
+		padded_serial_no = Concat_ws("", "\n", stock_ledger_entry.serial_no, "\n")
 		direct_match = None
 		for sn in serial_nos:
-			cond = Locate(f"
-{sn}
-", padded_serial_no) > 0
+			cond = Locate(f"\n{sn}\n", padded_serial_no) > 0
 			direct_match = cond if direct_match is None else (direct_match | cond)
 
 		query = query.where(bundle_match | direct_match)
@@ -3351,9 +3346,7 @@ def parse_serial_nos(serial_no):
 	if isinstance(serial_no, list):
 		return serial_no
 
-	return [s.strip() for s in cstr(serial_no).strip().replace(",", "
-").split("
-") if s.strip()]
+	return [s.strip() for s in cstr(serial_no).strip().replace(",", "\n").split("\n") if s.strip()]
 
 
 @frappe.request_cache

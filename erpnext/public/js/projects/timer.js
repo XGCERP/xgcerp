@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.provide("erpnext.timesheet");
 
 erpnext.timesheet.timer = function (frm, row, timestamp = 0) {

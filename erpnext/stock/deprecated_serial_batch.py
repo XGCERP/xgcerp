@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import datetime
 import json
 from collections import defaultdict
@@ -63,13 +62,9 @@ class DeprecatedSerialNoValuation:
 				.where(
 					(
 						(table.serial_no == serial_no)
-						| (table.serial_no.like(serial_no + "
-%"))
-						| (table.serial_no.like("%
-" + serial_no))
-						| (table.serial_no.like("%
-" + serial_no + "
-%"))
+						| (table.serial_no.like(serial_no + "\n%"))
+						| (table.serial_no.like("%\n" + serial_no))
+						| (table.serial_no.like("%\n" + serial_no + "\n%"))
 					)
 					& (table.company == self.sle.company)
 					& (table.warehouse == self.sle.warehouse)

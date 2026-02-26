@@ -1,5 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved.
-
 import frappe
 from frappe.utils import date_diff, getdate, today
 

@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2020, Frappe Technologies and Contributors
 # See license.txt
 
@@ -193,23 +192,18 @@ class TestBankStatementImport(unittest.TestCase):
 	def test_preprocess_mt940_content_whitespace_variants(self):
 		"""Test handling of whitespace and different line endings"""
 		# Test with trailing spaces
-		mt940_content = ":28C:167619/1   
-"
-		expected_content = ":28C:67619/1   
-"
+		mt940_content = ":28C:167619/1   \n"
+		expected_content = ":28C:67619/1   \n"
 		result = preprocess_mt940_content(mt940_content)
 		self.assertEqual(result, expected_content)
 
 		# Test with Windows line endings (CRLF)
-		mt940_content = ":28C:167619/1
-"
-		expected_content = ":28C:67619/1
-"
+		mt940_content = ":28C:167619/1\r\n"
+		expected_content = ":28C:67619/1\r\n"
 		result = preprocess_mt940_content(mt940_content)
 		self.assertEqual(result, expected_content)
 
 		# Test with leading spaces (should not match as it's not line start)
-		mt940_content = "   :28C:167619/1
-"
+		mt940_content = "   :28C:167619/1\n"
 		result = preprocess_mt940_content(mt940_content)
 		self.assertEqual(result, mt940_content)  # Should remain unchanged

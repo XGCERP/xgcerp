@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -189,7 +188,7 @@ def add_standard_navbar_items():
 		{
 			"item_label": _("Documentation"),
 			"item_type": "Route",
-			"route": "https://docs.xgccorp.com/",
+			"route": "https://docs.erpnext.com/",
 			"is_standard": 1,
 		},
 		{

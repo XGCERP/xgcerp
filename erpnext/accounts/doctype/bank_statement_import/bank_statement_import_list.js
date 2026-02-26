@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 let imports_in_progress = [];
 
 frappe.listview_settings["Bank Statement Import"] = {

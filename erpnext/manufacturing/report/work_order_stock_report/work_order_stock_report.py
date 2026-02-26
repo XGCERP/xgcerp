@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2017, Velometro Mobility Inc and contributors
 # For license information, please see license.txt
 

@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -2008,8 +2007,7 @@ class AccountsController(TransactionBase):
 				{"sales_order": None, "sales_order_item": None},
 			)
 
-			frappe.msgprint(_("Purchase Orders {0} are un-linked").format("
-".join(linked_po)))
+			frappe.msgprint(_("Purchase Orders {0} are un-linked").format("\n".join(linked_po)))
 
 	def get_tax_map(self):
 		tax_map = {}

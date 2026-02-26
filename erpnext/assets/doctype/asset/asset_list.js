@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Asset"] = {
 	add_fields: ["status", "docstatus"],
 	has_indicator_for_draft: 1,

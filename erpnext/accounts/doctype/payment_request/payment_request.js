@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 cur_frm.add_fetch("payment_gateway_account", "payment_account", "payment_account");
 cur_frm.add_fetch("payment_gateway_account", "payment_gateway", "payment_gateway");
 cur_frm.add_fetch("payment_gateway_account", "message", "message");

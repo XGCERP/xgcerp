@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 from typing import Any
 
 import frappe
@@ -35,8 +34,7 @@ class TestStockBalance(IntegrationTestCase):
 
 	def assertPartialDictEq(self, expected: dict[str, Any], actual: dict[str, Any]):
 		for k, v in expected.items():
-			self.assertEqual(v, actual[k], msg=f"{expected=}
-{actual=}")
+			self.assertEqual(v, actual[k], msg=f"{expected=}\n{actual=}")
 
 	def generate_stock_ledger(self, item_code: str, movements):
 		for movement in map(_dict, movements):
@@ -152,8 +150,7 @@ class TestStockBalance(IntegrationTestCase):
 
 		self.assertTrue(
 			any(r.item_code == self.item.name and r.warehouse == "Stores - _TC" for r in rows),
-			msg=f"Expected child warehouse balances 
-{rows}",
+			msg=f"Expected child warehouse balances \n{rows}",
 		)
 
 	def test_show_item_attr(self):

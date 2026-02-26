@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Email Campaign"] = {
 	get_indicator: function (doc) {
 		var colors = {

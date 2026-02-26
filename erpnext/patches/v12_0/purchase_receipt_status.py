@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 """ This patch fixes old purchase receipts (PR) where even after submitting
 	the PR, the `status` remains "Draft". `per_billed` field was copied over from previous
 	doc (PO), hence it is recalculated for setting new correct status of PR.

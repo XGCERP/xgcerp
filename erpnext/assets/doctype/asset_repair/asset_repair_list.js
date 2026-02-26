@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Asset Repair"] = {
 	add_fields: ["repair_status"],
 	get_indicator: function (doc) {

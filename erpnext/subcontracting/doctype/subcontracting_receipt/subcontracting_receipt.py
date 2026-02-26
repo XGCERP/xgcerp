@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -859,10 +858,8 @@ class SubcontractingReceipt(SubcontractingController):
 		if warehouse_with_no_account:
 			frappe.msgprint(
 				_("No accounting entries for the following warehouses")
-				+ ": 
-"
-				+ "
-".join(warehouse_with_no_account)
+				+ ": \n"
+				+ "\n".join(warehouse_with_no_account)
 			)
 
 	def make_item_gl_entries_for_lcv(self, gl_entries, inventory_account_map):

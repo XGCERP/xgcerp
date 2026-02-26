@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -31,7 +30,7 @@ def before_tests():
 				"fy_end_date": f"{current_year}-12-31",
 				"language": "english",
 				"company_tagline": "Testing",
-				"email": "test@xgccorp.com",
+				"email": "test@erpnext.com",
 				"password": "test",
 				"chart_of_accounts": "Standard",
 			}

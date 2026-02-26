@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Putaway Rule"] = {
 	add_fields: ["disable"],
 	get_indicator: (doc) => {

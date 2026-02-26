@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 erpnext.ItemSelector = class ItemSelector {
 	constructor(opts) {
 		$.extend(this, opts);

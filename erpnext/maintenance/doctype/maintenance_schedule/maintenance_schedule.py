@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -411,16 +410,14 @@ class MaintenanceSchedule(TransactionBase):
 			dates = ""
 			for schedule in self.schedules:
 				if schedule.item_name == item_name and schedule.completion_status == "Pending":
-					dates = dates + "
-" + formatdate(schedule.scheduled_date, "dd-MM-yyyy")
+					dates = dates + "\n" + formatdate(schedule.scheduled_date, "dd-MM-yyyy")
 			return dates
 		elif data_type == "items":
 			items = ""
 			for item in self.items:
 				for schedule in self.schedules:
 					if item.item_name == schedule.item_name and schedule.completion_status == "Pending":
-						items = items + "
-" + item.item_name
+						items = items + "\n" + item.item_name
 						break
 			return items
 		elif data_type == "id":

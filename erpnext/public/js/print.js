@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 const doctype_list = [
 	"Sales Order",
 	"Sales Invoice",

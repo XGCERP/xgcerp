@@ -1,8 +1,7 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
-# XGCERP - web based ERP (http://xgccorp.com)
+# XGCERP - web based ERP (http://erpnext.com)
 # For license information, please see license.txt
 
 import json

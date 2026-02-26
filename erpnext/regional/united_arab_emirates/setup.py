@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -83,8 +82,7 @@ def make_custom_fields():
 			fieldtype="Select",
 			insert_after="recoverable_standard_rated_expenses",
 			print_hide=1,
-			options="Y
-N",
+			options="Y\nN",
 			default="N",
 		),
 		dict(
@@ -120,14 +118,7 @@ N",
 			label="VAT Emirate",
 			insert_after="permit_no",
 			fieldtype="Select",
-			options="
-Abu Dhabi
-Ajman
-Dubai
-Fujairah
-Ras Al Khaimah
-Sharjah
-Umm Al Quwain",
+			options="\nAbu Dhabi\nAjman\nDubai\nFujairah\nRas Al Khaimah\nSharjah\nUmm Al Quwain",
 			fetch_from="company_address.emirate",
 		),
 		dict(
@@ -231,14 +222,7 @@ Umm Al Quwain",
 				label="Emirate",
 				fieldtype="Select",
 				insert_after="state",
-				options="
-Abu Dhabi
-Ajman
-Dubai
-Fujairah
-Ras Al Khaimah
-Sharjah
-Umm Al Quwain",
+				options="\nAbu Dhabi\nAjman\nDubai\nFujairah\nRas Al Khaimah\nSharjah\nUmm Al Quwain",
 			)
 		],
 		"Purchase Invoice": purchase_invoice_fields + invoice_fields,

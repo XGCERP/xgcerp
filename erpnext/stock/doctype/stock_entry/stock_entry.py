@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -1416,8 +1415,7 @@ class StockEntry(StockController, SubcontractingInwardController):
 
 					if row.use_serial_batch_fields:
 						if serial_nos_list and not row.serial_no:
-							row.serial_no = "
-".join(serial_nos_list)
+							row.serial_no = "\n".join(serial_nos_list)
 						if batch_nos_list and not row.batch_no:
 							row.batch_no = next(iter(batch_nos_list.keys()))
 
@@ -2481,8 +2479,7 @@ class StockEntry(StockController, SubcontractingInwardController):
 							new_row.qty = qty
 							new_row.idx = d.idx + 1
 							if new_row.batch_no and details.get("batchwise_sn"):
-								new_row.serial_no = "
-".join(
+								new_row.serial_no = "\n".join(
 									details.get("batchwise_sn")[new_row.batch_no][: cint(new_row.qty)]
 								)
 
@@ -2494,8 +2491,7 @@ class StockEntry(StockController, SubcontractingInwardController):
 							d.batch_no = batch_no
 							batches[batch_no] -= d.qty
 							if d.batch_no and details.get("batchwise_sn"):
-								d.serial_no = "
-".join(
+								d.serial_no = "\n".join(
 									details.get("batchwise_sn")[d.batch_no][: cint(d.qty)]
 								)
 						elif not d.batch_no:
@@ -2505,14 +2501,12 @@ class StockEntry(StockController, SubcontractingInwardController):
 							batches[batch_no] = 0
 
 							if d.batch_no and details.get("batchwise_sn"):
-								d.serial_no = "
-".join(
+								d.serial_no = "\n".join(
 									details.get("batchwise_sn")[d.batch_no][: cint(d.qty)]
 								)
 
 				if details.get("serial_no"):
-					d.serial_no = "
-".join(details.get("serial_no")[: cint(d.qty)])
+					d.serial_no = "\n".join(details.get("serial_no")[: cint(d.qty)])
 
 				d.use_serial_batch_fields = 1
 
@@ -2552,8 +2546,7 @@ class StockEntry(StockController, SubcontractingInwardController):
 			if d.batch_no:
 				details.batch_no[d.batch_no] += d.qty
 				if d.serial_no:
-					details.batchwise_sn[d.batch_no].extend(d.serial_no.split("
-"))
+					details.batchwise_sn[d.batch_no].extend(d.serial_no.split("\n"))
 			elif d.serial_no:
 				details.serial_no.append(d.serial_no)
 
@@ -3025,8 +3018,7 @@ class StockEntry(StockController, SubcontractingInwardController):
 			"expense_account": item.expense_account,
 			"cost_center": item.buying_cost_center,
 			"original_item": item.original_item,
-			"serial_no": "
-".join(row.serial_nos)
+			"serial_no": "\n".join(row.serial_nos)
 			if row.serial_nos and not row.batches_to_be_consume
 			else "",
 			"use_serial_batch_fields": use_serial_batch_fields,
@@ -3046,8 +3038,7 @@ class StockEntry(StockController, SubcontractingInwardController):
 
 				if row.serial_nos:
 					serial_nos = row.serial_nos[0 : cint(batch_qty)]
-					ste_item_details["serial_no"] = "
-".join(serial_nos)
+					ste_item_details["serial_no"] = "\n".join(serial_nos)
 
 					row.serial_nos = [sn for sn in row.serial_nos if sn not in serial_nos]
 

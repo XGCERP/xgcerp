@@ -1,5 +1,4 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
-# XGCERP - web based ERP (http://xgccorp.com)
+# XGCERP - web based ERP (http://erpnext.com)
 # Copyright (C) 2012 Frappe Technologies Pvt Ltd
 #
 # This program is free software: you can redistribute it and/or modify

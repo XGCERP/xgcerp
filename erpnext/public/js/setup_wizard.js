@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.provide("erpnext.setup");
 
 frappe.pages["setup-wizard"].on_page_load = function (wrapper) {

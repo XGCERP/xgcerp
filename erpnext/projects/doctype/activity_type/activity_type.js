@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.ui.form.on("Activity Type", {
 	onload: function (frm) {
 		frm.set_currency_labels(

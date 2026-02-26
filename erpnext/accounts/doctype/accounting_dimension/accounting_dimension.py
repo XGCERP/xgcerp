@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -160,8 +159,7 @@ def add_dimension_to_budget_doctype(df, doc):
 
 	if property_setter:
 		property_setter_doc = frappe.get_doc("Property Setter", "Budget-budget_against-options")
-		property_setter_doc.value = property_setter_doc.value + "
-" + doc.document_type
+		property_setter_doc.value = property_setter_doc.value + "\n" + doc.document_type
 		property_setter_doc.save()
 
 		frappe.clear_cache(doctype="Budget")
@@ -174,10 +172,7 @@ def add_dimension_to_budget_doctype(df, doc):
 				"field_name": "budget_against",
 				"property": "options",
 				"property_type": "Text",
-				"value": "
-Cost Center
-Project
-" + doc.document_type,
+				"value": "\nCost Center\nProject\n" + doc.document_type,
 			}
 		).insert(ignore_permissions=True)
 
@@ -202,17 +197,12 @@ def delete_accounting_dimension(doc):
 	)
 
 	budget_against_property = frappe.get_doc("Property Setter", "Budget-budget_against-options")
-	value_list = budget_against_property.value.split("
-")[3:]
+	value_list = budget_against_property.value.split("\n")[3:]
 
 	if doc.document_type in value_list:
 		value_list.remove(doc.document_type)
 
-	budget_against_property.value = "
-Cost Center
-Project
-" + "
-".join(value_list)
+	budget_against_property.value = "\nCost Center\nProject\n" + "\n".join(value_list)
 	budget_against_property.save()
 
 	for doctype in doclist:

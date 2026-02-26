@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 from frappe.tests import IntegrationTestCase
 
 from erpnext.utilities.activation import get_level

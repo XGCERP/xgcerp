@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 """ smoak tests to check basic functionality calls on known form loads."""
 
 import frappe
@@ -53,9 +52,7 @@ class TestFormLoads(IntegrationTestCase):
 
 		if len(messages_after) > len(messages_before):
 			new_messages = messages_after[len(messages_before) :]
-			self.fail("Print view showing error/warnings: 
-" + "
-".join(str(msg) for msg in new_messages))
+			self.fail("Print view showing error/warnings: \n" + "\n".join(str(msg) for msg in new_messages))
 
 		# html should exist
 		self.assertTrue(bool(ret["html"]))

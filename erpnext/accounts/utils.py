@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -1062,8 +1061,7 @@ def remove_ref_doc_link_from_jv(
 
 		update_query.run()
 
-		frappe.msgprint(_("Journal Entries {0} are un-linked").format("
-".join(linked_jv)))
+		frappe.msgprint(_("Journal Entries {0} are un-linked").format("\n".join(linked_jv)))
 
 
 def convert_to_list(result):
@@ -1150,8 +1148,7 @@ def remove_ref_doc_link_from_pe(
 			.where(pay.name == pe)
 			.run()
 		)
-	frappe.msgprint(_("Payment Entries {0} are un-linked").format("
-".join(linked_pe)))
+	frappe.msgprint(_("Payment Entries {0} are un-linked").format("\n".join(linked_pe)))
 
 
 @frappe.whitelist()

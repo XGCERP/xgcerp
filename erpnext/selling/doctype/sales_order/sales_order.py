@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -672,8 +671,7 @@ class SalesOrder(SellingController):
 					)
 
 		if exc_list:
-			frappe.throw("
-".join(exc_list))
+			frappe.throw("\n".join(exc_list))
 
 	def update_delivery_status(self):
 		"""Update delivery status from Purchase Order for drop shipping"""

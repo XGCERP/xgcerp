@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -960,8 +959,7 @@ class StockReconciliation(StockController):
 
 				data.total_amount += d.actual_qty * d.valuation_rate
 				data.valuation_rate = (data.total_amount) / data.actual_qty
-				data.serial_no += "
-" + d.serial_no
+				data.serial_no += "\n" + d.serial_no
 
 				data.incoming_rate = (data.total_amount) / data.actual_qty
 

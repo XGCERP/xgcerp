@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
@@ -239,8 +238,7 @@ def get_payment_terms_from_file(file_content):
 	terms = []
 	# Get mode of payment dict from setup
 	mop_options = frappe.get_meta("Mode of Payment").fields[4].options
-	mop_str = re.sub("
-", ",", mop_options)
+	mop_str = re.sub("\n", ",", mop_options)
 	mop_dict = dict(item.split("-") for item in mop_str.split(","))
 	# read file for payment information
 	for line in file_content.find_all("DettaglioPagamento"):

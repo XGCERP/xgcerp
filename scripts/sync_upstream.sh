@@ -24,10 +24,9 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# 3. Apply Rebrand & Copyrights
+# 3. Apply Rebrand (copyright injection removed — it was corrupting \n in .py string literals)
 echo "✨ Applying XGCERP Hard Rebrand and Assets..."
 python3 "$SCRIPT_DIR/smart_rename.py"
-bash "$SCRIPT_DIR/inject_copyright.sh"
 
 # 4. Amend the Merge Commit
 # This combines the rebranding changes into the merge commit itself

@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Timesheet"] = {
 	add_fields: ["status", "total_hours", "start_date", "end_date"],
 	get_indicator: function (doc) {

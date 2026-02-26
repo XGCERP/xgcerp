@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
@@ -17,12 +16,9 @@ def execute():
 		(
 			" %",  # leading whitespace
 			"% ",  # trailing whitespace
-			"%
- %",  # leading whitespace on newline
-			"% 
-%",  # trailing whitespace on newline
-			"
-",  # just new line
+			"%\n %",  # leading whitespace on newline
+			"% \n%",  # trailing whitespace on newline
+			"\n",  # just new line
 		),
 		as_dict=True,
 	)
@@ -37,8 +33,7 @@ def execute():
 	# patch SLEs
 	for sle in broken_sles:
 		serial_no_list = get_serial_nos(sle.serial_no)
-		correct_sr_no = "
-".join(serial_no_list)
+		correct_sr_no = "\n".join(serial_no_list)
 
 		if correct_sr_no == sle.serial_no:
 			continue

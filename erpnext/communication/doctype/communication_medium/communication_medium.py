@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -16,7 +15,7 @@ class CommunicationMedium(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		from xgccorp.communication.doctype.communication_medium_timeslot.communication_medium_timeslot import (
+		from erpnext.communication.doctype.communication_medium_timeslot.communication_medium_timeslot import (
 			CommunicationMediumTimeslot,
 		)
 

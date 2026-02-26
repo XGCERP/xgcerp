@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 import datetime
@@ -625,9 +624,7 @@ def create_custom_doctype():
 						"label": "Status",
 						"fieldname": "status",
 						"fieldtype": "Select",
-						"options": "Open
-Replied
-Closed",
+						"options": "Open\nReplied\nClosed",
 					},
 				],
 				"permissions": [{"role": "System Manager", "read": 1, "write": 1}],

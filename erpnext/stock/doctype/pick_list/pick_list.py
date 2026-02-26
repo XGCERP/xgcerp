@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2019, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -665,8 +664,7 @@ class PickList(TransactionBase):
 
 		for item_data in items_data:
 			key = (item_data.warehouse, item_data.batch_no) if item_data.batch_no else item_data.warehouse
-			serial_no = [x for x in item_data.serial_no.split("
-") if x] if item_data.serial_no else None
+			serial_no = [x for x in item_data.serial_no.split("\n") if x] if item_data.serial_no else None
 
 			if item_data.serial_and_batch_bundle:
 				if not serial_no:
@@ -709,8 +707,7 @@ class PickList(TransactionBase):
 		for row in self.locations:
 			if flt(row.picked_qty) > 0:
 				key = (row.warehouse, row.batch_no) if row.batch_no else row.warehouse
-				serial_no = [x for x in row.serial_no.split("
-") if x] if row.serial_no else None
+				serial_no = [x for x in row.serial_no.split("\n") if x] if row.serial_no else None
 				if row.item_code not in picked_items:
 					picked_items[row.item_code] = {}
 
@@ -897,8 +894,7 @@ def get_items_with_location_and_quantity(item_doc, item_location_map, docstatus)
 
 		serial_nos = None
 		if item_location.serial_nos:
-			serial_nos = "
-".join(item_location.serial_nos[0 : cint(stock_qty)])
+			serial_nos = "\n".join(item_location.serial_nos[0 : cint(stock_qty)])
 
 		locations.append(
 			frappe._dict(

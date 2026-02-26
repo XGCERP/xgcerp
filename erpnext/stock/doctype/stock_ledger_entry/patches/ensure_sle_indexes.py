@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 from erpnext.stock.doctype.stock_ledger_entry.stock_ledger_entry import (
 	on_doctype_update as create_sle_indexes,
 )

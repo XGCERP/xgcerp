@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import click
 import frappe
 from frappe.utils import flt
@@ -30,8 +29,7 @@ def execute():
 				update_modified=False,
 			)
 			click.secho(
-				f' Opportunity `{opportunity.name}` has no currency set. Setting it to company currency as default: `{opportunity.currency}`"
-',
+				f' Opportunity `{opportunity.name}` has no currency set. Setting it to company currency as default: `{opportunity.currency}`"\n',
 				fg="yellow",
 			)
 

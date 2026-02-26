@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.provide("frappe.treeview_settings");
 
 frappe.treeview_settings["Task"] = {

@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 from abc import ABC, abstractmethod, abstractproperty
 from collections.abc import Callable
 from typing import NewType

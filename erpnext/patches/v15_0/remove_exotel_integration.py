@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import click
 import frappe
 from frappe import _
@@ -24,8 +23,7 @@ def execute():
 
 def notify_existing_users():
 	click.secho(
-		"Exotel integration is moved to a separate app and will be removed from XGCERP in version-15.
-"
+		"Exotel integration is moved to a separate app and will be removed from XGCERP in version-15.\n"
 		"Please install the app to continue using the integration: https://github.com/frappe/exotel_integration",
 		fg="yellow",
 	)

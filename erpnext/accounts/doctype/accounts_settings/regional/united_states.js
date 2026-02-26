@@ -1,4 +1,3 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.ui.form.on("Accounts Settings", {
 	refresh: function (frm) {
 		frm.set_df_property("credit_controller", "label", "Credit Manager");

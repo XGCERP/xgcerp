@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 app_name = "erpnext"
 app_title = "XGCERP"
 app_publisher = "XGC CORP."

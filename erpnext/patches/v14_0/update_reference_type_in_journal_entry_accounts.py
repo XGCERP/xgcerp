@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 import frappe
 
 
@@ -18,8 +17,6 @@ def execute():
 	if prop_setter:
 		property_setter_doc = frappe.get_doc("Property Setter", prop_setter[0].get("name"))
 
-		if new_reference_type not in property_setter_doc.value.split("
-"):
-			property_setter_doc.value += "
-" + new_reference_type
+		if new_reference_type not in property_setter_doc.value.split("\n"):
+			property_setter_doc.value += "\n" + new_reference_type
 			property_setter_doc.save()

@@ -1,4 +1,3 @@
-# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved.
 # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
@@ -2125,8 +2124,7 @@ class TestAccountsController(IntegrationTestCase):
 			{
 				"reference_type": adv.doctype,
 				"reference_name": adv.name,
-				"remarks": "Amount INR 1 received from _Test MC Customer USD
-Transaction reference no Test001 dated 2024-12-19",
+				"remarks": "Amount INR 1 received from _Test MC Customer USD\nTransaction reference no Test001 dated 2024-12-19",
 				"advance_amount": 1.0,
 				"allocated_amount": 1.0,
 				"exchange_gain_loss": 3.0,
@@ -2177,8 +2175,7 @@ Transaction reference no Test001 dated 2024-12-19",
 			{
 				"reference_type": adv.doctype,
 				"reference_name": adv.name,
-				"remarks": "Amount INR 1 paid to _Test MC Supplier USD
-Transaction reference no Test001 dated 2024-12-20",
+				"remarks": "Amount INR 1 paid to _Test MC Supplier USD\nTransaction reference no Test001 dated 2024-12-20",
 				"advance_amount": 1.0,
 				"allocated_amount": 1.0,
 				"exchange_gain_loss": 5.0,
