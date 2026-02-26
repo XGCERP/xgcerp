@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.listview_settings["Common Code"] = {
 	onload: function (listview) {
 		listview.page.add_inner_button(__("Import Genericode File"), function () {

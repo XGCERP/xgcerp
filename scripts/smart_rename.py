@@ -66,7 +66,15 @@ def update_hooks_metadata(hooks_path):
 def smart_replace(content, filename):
     """
     Smart replacement that preserves erpnext_integrations in all contexts
+    and protects escape sequences in JS/JSON files.
     """
+    # CRITICAL: Protect backslash-n escape sequences in JS files
+    # Previous rebranding tools corrupted \\n inside string literals into actual newlines.
+    # Python's str.replace won't cause this, but we add protection as a safeguard.
+    NEWLINE_MARKER = "___PRESERVE_BACKSLASH_N___"
+    if filename.endswith(('.js', '.json')):
+        content = content.replace('\\n', NEWLINE_MARKER)
+
     # CRITICAL: Protect erpnext_integrations before doing any replacements
     # Use a unique marker that won't appear in normal code
     MARKER = "___PRESERVE_ERPNEXT_INTEGRATIONS___"
@@ -121,6 +129,10 @@ def smart_replace(content, filename):
     
     # Restore all protected erpnext_integrations references
     protected = protected.replace(MARKER, PRESERVE_PYTHON_MODULE)
+    
+    # Restore protected backslash-n escape sequences
+    if filename.endswith(('.js', '.json')):
+        protected = protected.replace(NEWLINE_MARKER, '\\n')
     
     return protected
 

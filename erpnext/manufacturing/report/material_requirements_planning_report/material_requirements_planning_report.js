@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -76,10 +76,7 @@ frappe.query_reports["Material Requirements Planning Report"] = {
 			label: __("Type of Material"),
 			fieldtype: "Select",
 			default: "All",
-			options: "
-Finished Goods
-Raw Materials
-All",
+			options: "\nFinished Goods\nRaw Materials\nAll",
 		},
 		{
 			fieldname: "add_safety_stock",
@@ -96,8 +93,7 @@ All",
 			fieldname: "bucket_view",
 			label: __("View Data Based on"),
 			fieldtype: "Select",
-			options: "Delivery Date
-Release Date",
+			options: "Delivery Date\nRelease Date",
 			default: "Delivery Date",
 			depends_on: "eval:doc.show_in_bucket_view == 1",
 		},
@@ -106,9 +102,7 @@ Release Date",
 			label: __("Bucket Size"),
 			fieldtype: "Select",
 			default: "Monthly",
-			options: "Daily
-Weekly
-Monthly",
+			options: "Daily\nWeekly\nMonthly",
 			depends_on: "eval:doc.show_in_bucket_view == 1",
 		},
 	],

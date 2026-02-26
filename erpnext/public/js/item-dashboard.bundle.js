@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 import "../../stock/dashboard/item_dashboard.html";
 import "../../stock/dashboard/item_dashboard_list.html";
 import "../../stock/dashboard/item_dashboard.js";

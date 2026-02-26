@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.treeview_settings["Location"] = {
 	ignore_fields: ["parent_location"],
 	get_tree_nodes: "erpnext.assets.doctype.location.location.get_children",

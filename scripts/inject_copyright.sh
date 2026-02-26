@@ -10,25 +10,26 @@ cd "$(dirname "$0")/.." || exit
 echo "🛡️  Injecting proprietary copyrights..."
 
 # Target Python files
-find . -type f -name "*.py" ! -path "*/.*" | while read -r file; do
+find . -type f -name "*.py" ! -path "*/.*" ! -path "*/node_modules/*" ! -path "*/__pycache__/*" | while read -r file; do
   if ! grep -q "XGC CORP" "$file"; then
-    # If first line is a shebang, insert after it. Otherwise, prepend.
+    # Use a temp file to safely prepend (works on both macOS and Linux)
     if head -n 1 "$file" | grep -q "^#!"; then
-        sed -i '' "2i\\
-$COPYRIGHT_PY\\
-" "$file"
+      # If first line is a shebang, insert after it
+      { head -n 1 "$file"; printf '%s\n' "$COPYRIGHT_PY"; tail -n +2 "$file"; } > "$file.tmp"
     else
-        sed -i '' "1i\\
-$COPYRIGHT_PY\\
-" "$file"
+      { printf '%s\n' "$COPYRIGHT_PY"; cat "$file"; } > "$file.tmp"
     fi
+    mv "$file.tmp" "$file"
   fi
 done
 
 # Target JS files
-find . -type f -name "*.js" ! -path "*/.*" | while read -r file; do
+# CRITICAL: Do NOT use echo -e, it interprets \n in file content and corrupts JS strings.
+# Use printf + cat with a temp file instead.
+find . -type f -name "*.js" ! -path "*/.*" ! -path "*/node_modules/*" | while read -r file; do
   if ! grep -q "XGC CORP" "$file"; then
-    echo -e "$COPYRIGHT_JS\n$(cat "$file")" > "$file"
+    { printf '%s\n' "$COPYRIGHT_JS"; cat "$file"; } > "$file.tmp"
+    mv "$file.tmp" "$file"
   fi
 done
 

@@ -1,8 +1,8 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
-frappe.provide("xgccorp.company");
+frappe.provide("erpnext.company");
 
 frappe.ui.form.on("Company", {
 	onload: function (frm) {
@@ -100,7 +100,7 @@ frappe.ui.form.on("Company", {
 	},
 
 	refresh: function (frm) {
-		xgccorp.company.setup_queries(frm);
+		erpnext.company.setup_queries(frm);
 
 		frm.toggle_display("address_html", !frm.is_new());
 
@@ -180,7 +180,7 @@ frappe.ui.form.on("Company", {
 			frm.set_value("reporting_currency", "");
 		}
 
-		xgccorp.company.set_chart_of_accounts_options(frm.doc);
+		erpnext.company.set_chart_of_accounts_options(frm.doc);
 	},
 
 	make_default_tax_template: function (frm) {
@@ -195,7 +195,7 @@ frappe.ui.form.on("Company", {
 	},
 
 	country: function (frm) {
-		xgccorp.company.set_chart_of_accounts_options(frm.doc);
+		erpnext.company.set_chart_of_accounts_options(frm.doc);
 	},
 
 	delete_company_transactions: function (frm) {
@@ -246,7 +246,7 @@ frappe.ui.form.on("Company", {
 	},
 });
 
-xgccorp.company.set_chart_of_accounts_options = function (doc) {
+erpnext.company.set_chart_of_accounts_options = function (doc) {
 	var selected_value = doc.chart_of_accounts;
 	if (doc.country) {
 		return frappe.call({
@@ -257,8 +257,7 @@ xgccorp.company.set_chart_of_accounts_options = function (doc) {
 			},
 			callback: function (r) {
 				if (!r.exc) {
-					set_field_options("chart_of_accounts", [""].concat(r.message).join("
-"));
+					set_field_options("chart_of_accounts", [""].concat(r.message).join("\n"));
 					if (r.message.includes(selected_value))
 						cur_frm.set_value("chart_of_accounts", selected_value);
 				}
@@ -267,7 +266,7 @@ xgccorp.company.set_chart_of_accounts_options = function (doc) {
 	}
 };
 
-xgccorp.company.setup_queries = function (frm) {
+erpnext.company.setup_queries = function (frm) {
 	$.each(
 		[
 			["default_bank_account", { account_type: "Bank" }],
@@ -310,7 +309,7 @@ xgccorp.company.setup_queries = function (frm) {
 			["service_expense_account", { root_type: "Expense" }],
 		],
 		function (i, v) {
-			xgccorp.company.set_custom_query(frm, v);
+			erpnext.company.set_custom_query(frm, v);
 		}
 	);
 
@@ -328,13 +327,13 @@ xgccorp.company.setup_queries = function (frm) {
 				],
 			],
 			function (i, v) {
-				xgccorp.company.set_custom_query(frm, v);
+				erpnext.company.set_custom_query(frm, v);
 			}
 		);
 	}
 };
 
-xgccorp.company.set_custom_query = function (frm, v) {
+erpnext.company.set_custom_query = function (frm, v) {
 	var filters = {
 		company: frm.doc.name,
 		is_group: 0,

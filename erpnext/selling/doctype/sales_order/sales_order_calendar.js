@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -22,20 +22,13 @@ frappe.views.calendar["Sales Order"] = {
 		{
 			fieldtype: "Select",
 			fieldname: "delivery_status",
-			options: "Not Delivered
-Fully Delivered
-Partly Delivered
-Closed
-Not Applicable",
+			options: "Not Delivered\nFully Delivered\nPartly Delivered\nClosed\nNot Applicable",
 			label: __("Delivery Status"),
 		},
 		{
 			fieldtype: "Select",
 			fieldname: "billing_status",
-			options: "Not Billed
-Fully Billed
-Partly Billed
-Closed",
+			options: "Not Billed\nFully Billed\nPartly Billed\nClosed",
 			label: __("Billing Status"),
 		},
 	],

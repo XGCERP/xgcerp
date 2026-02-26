@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.treeview_settings["Warehouse"] = {
 	get_tree_nodes: "erpnext.stock.doctype.warehouse.warehouse.get_children",
 	add_tree_node: "erpnext.stock.doctype.warehouse.warehouse.add_node",

@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 erpnext.PointOfSale.Controller = class {
 	constructor(wrapper) {
 		this.wrapper = $(wrapper).find(".layout-main-section");
@@ -415,8 +415,7 @@ erpnext.PointOfSale.Controller = class {
 						const new_row = this.frm.add_child("items", { ...item_to_clone });
 						// update new serialno and batch
 						new_row.batch_no = batch;
-						new_row.serial_no = batch_serial_map[batch].join(`
-`);
+						new_row.serial_no = batch_serial_map[batch].join(`\n`);
 						new_row.qty = batch_serial_map[batch].length;
 						this.frm.doc.items.forEach((row) => {
 							if (item.item_code === row.item_code) {
@@ -681,8 +680,7 @@ erpnext.PointOfSale.Controller = class {
 							item_row.doctype,
 							item_row.name,
 							"serial_no",
-							item_row.serial_no + `
-${item.serial_no}`
+							item_row.serial_no + `\n${item.serial_no}`
 						);
 					}
 					this.update_cart_html(item_row);
@@ -711,8 +709,7 @@ ${item.serial_no}`
 
 				new_item["use_serial_batch_fields"] = 1;
 				new_item["warehouse"] = this.settings.warehouse;
-				if (field === "serial_no") new_item["qty"] = value.split(`
-`).length || 0;
+				if (field === "serial_no") new_item["qty"] = value.split(`\n`).length || 0;
 
 				item_row = this.frm.add_child("items", new_item);
 

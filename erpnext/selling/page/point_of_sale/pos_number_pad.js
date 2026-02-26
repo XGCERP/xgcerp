@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 erpnext.PointOfSale.NumberPad = class {
 	constructor({ wrapper, events, cols, keys, css_classes, fieldnames_map }) {
 		this.wrapper = wrapper;

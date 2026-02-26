@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -8,8 +8,7 @@ frappe.query_reports["Sales Pipeline Analytics"] = {
 			fieldname: "pipeline_by",
 			label: __("Pipeline By"),
 			fieldtype: "Select",
-			options: "Owner
-Sales Stage",
+			options: "Owner\nSales Stage",
 			default: "Owner",
 		},
 		{
@@ -26,8 +25,7 @@ Sales Stage",
 			fieldname: "range",
 			label: __("Range"),
 			fieldtype: "Select",
-			options: "Monthly
-Quarterly",
+			options: "Monthly\nQuarterly",
 			default: "Monthly",
 		},
 		{
@@ -40,17 +38,13 @@ Quarterly",
 			fieldname: "status",
 			label: __("Status"),
 			fieldtype: "Select",
-			options: "Open
-Quotation
-Converted
-Replied",
+			options: "Open\nQuotation\nConverted\nReplied",
 		},
 		{
 			fieldname: "based_on",
 			label: __("Based On"),
 			fieldtype: "Select",
-			options: "Number
-Amount",
+			options: "Number\nAmount",
 			default: "Number",
 		},
 		{

@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 frappe.ui.form.on("Project", {
@@ -162,8 +162,7 @@ frappe.ui.form.on("Project", {
 					fieldtype: "Select",
 					label: "Status",
 					reqd: 1,
-					options: "Completed
-Cancelled",
+					options: "Completed\nCancelled",
 				},
 			],
 			primary_action: function () {

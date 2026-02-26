@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 class VisualPlantFloor {
 	constructor({ wrapper, skip_filters = false, plant_floor = null }, page = null) {
 		this.wrapper = wrapper;
@@ -107,13 +107,7 @@ class VisualPlantFloor {
 		this.workstation_status = frappe.ui.form.make_control({
 			df: {
 				fieldtype: "Select",
-				options: "
-Production
-Off
-Idle
-Problem
-Maintenance
-Setup",
+				options: "\nProduction\nOff\nIdle\nProblem\nMaintenance\nSetup",
 				fieldname: "workstation_status",
 				label: __("Status"),
 				onchange: () => {

@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 frappe.treeview_settings["Quality Procedure"] = {
 	ignore_fields: ["parent_quality_procedure"],
 	get_tree_nodes: "erpnext.quality_management.doctype.quality_procedure.quality_procedure.get_children",

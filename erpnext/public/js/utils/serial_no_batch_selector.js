@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 erpnext.SerialBatchPackageSelector = class SerialNoBatchBundleUpdate {
 	constructor(frm, item, callback) {
 		this.frm = frm;
@@ -47,8 +47,7 @@ erpnext.SerialBatchPackageSelector = class SerialNoBatchBundleUpdate {
 		if (qty > 0) {
 			this.dialog.set_value("qty", qty).then(() => {
 				if (this.item.serial_no && !this.item.serial_and_batch_bundle) {
-					let serial_nos = this.item.serial_no.split("
-");
+					let serial_nos = this.item.serial_no.split("\n");
 					if (serial_nos.length > 1) {
 						serial_nos.forEach((serial_no) => {
 							this.dialog.fields_dict.entries.df.data.push({
@@ -299,8 +298,7 @@ erpnext.SerialBatchPackageSelector = class SerialNoBatchBundleUpdate {
 		const serial_nos = erpnext.stock.utils.get_serial_range(serial_no_range, "::");
 
 		if (serial_nos) {
-			this.dialog.set_value("upload_serial_nos", serial_nos.join("
-"));
+			this.dialog.set_value("upload_serial_nos", serial_nos.join("\n"));
 		}
 	}
 

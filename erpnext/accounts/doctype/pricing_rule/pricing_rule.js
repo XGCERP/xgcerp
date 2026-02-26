@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -170,8 +170,7 @@ frappe.ui.form.on("Pricing Rule", {
 			$.merge(options, ["Supplier", "Supplier Group"]);
 		}
 
-		set_field_options("applicable_for", options.join("
-"));
+		set_field_options("applicable_for", options.join("\n"));
 
 		if (!options.includes(applicable_for)) applicable_for = null;
 		frm.set_value("applicable_for", applicable_for);

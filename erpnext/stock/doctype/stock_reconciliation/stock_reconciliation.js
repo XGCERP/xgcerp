@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
@@ -327,8 +327,7 @@ frappe.ui.form.on("Stock Reconciliation Item", {
 				serial_and_batch_bundle: "",
 			});
 
-			const serial_nos = child.serial_no.trim().split("
-");
+			const serial_nos = child.serial_no.trim().split("\n");
 			frappe.model.set_value(cdt, cdn, "qty", serial_nos.length);
 		}
 	},

@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors // License: GNU General Public License v3. See license.txt
 
 frappe.provide("erpnext.stock");
@@ -214,8 +214,7 @@ frappe.ui.form.on("Stock Entry", {
 				child_row_reference: row.doc.name,
 				item_code: row.doc.item_code,
 				description: row.doc.description,
-				item_serial_no: row.doc.serial_no ? row.doc.serial_no.split("
-")[0] : null,
+				item_serial_no: row.doc.serial_no ? row.doc.serial_no.split("\n")[0] : null,
 				batch_no: row.doc.batch_no,
 			};
 		};
@@ -371,8 +370,7 @@ frappe.ui.form.on("Stock Entry", {
 							{
 								fieldtype: "Select",
 								label: __("Purpose"),
-								options: allowed_request_types.join("
-"),
+								options: allowed_request_types.join("\n"),
 								fieldname: "material_request_type",
 								default: "Material Transfer",
 								mandatory: 1,
@@ -1236,13 +1234,11 @@ erpnext.stock.StockEntry = class StockEntry extends erpnext.stock.StockControlle
 
 		if (item?.serial_no) {
 			// Replace all occurences of comma with line feed
-			item.serial_no = item.serial_no.replace(/,/g, "
-");
+			item.serial_no = item.serial_no.replace(/,/g, "\n");
 			item.conversion_factor = item.conversion_factor || 1;
 
 			let valid_serial_nos = [];
-			let serialnos = item.serial_no.split("
-");
+			let serialnos = item.serial_no.split("\n");
 			for (var i = 0; i < serialnos.length; i++) {
 				if (serialnos[i] != "") {
 					valid_serial_nos.push(serialnos[i]);

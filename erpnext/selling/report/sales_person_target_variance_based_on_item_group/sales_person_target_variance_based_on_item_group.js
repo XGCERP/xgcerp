@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2016, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -22,9 +22,7 @@ frappe.query_reports["Sales Person Target Variance Based On Item Group"] = {
 			fieldname: "doctype",
 			label: __("Document Type"),
 			fieldtype: "Select",
-			options: "Sales Order
-Delivery Note
-Sales Invoice",
+			options: "Sales Order\nDelivery Note\nSales Invoice",
 			default: "Sales Order",
 		},
 		{
@@ -43,8 +41,7 @@ Sales Invoice",
 			fieldname: "target_on",
 			label: __("Target On"),
 			fieldtype: "Select",
-			options: "Quantity
-Amount",
+			options: "Quantity\nAmount",
 			default: "Quantity",
 		},
 	],

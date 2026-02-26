@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
 // Copyright (c) 2017, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
@@ -181,7 +181,7 @@ frappe.ui.form.on("Production Plan", {
 			<tr><td style="padding-left:25px">
 				<div>
 				<h3 style="text-decoration: underline;">
-					<a href = "https://xgccorp.com/docs/user/manual/en/stock/projected-quantity">
+					<a href = "https://erpnext.com/docs/user/manual/en/stock/projected-quantity">
 						${__("Projected Quantity Formula")}
 					</a>
 				</h3>
@@ -706,8 +706,7 @@ frappe.tour["Production Plan"] = [
 		fieldname: "get_items_from",
 		title: "Get Items From",
 		description: __(
-			"Select whether to get items from a Sales Order or a Material Request. For now select <b>Sales Order</b>.
- A Production Plan can also be created manually where you can select the Items to manufacture."
+			"Select whether to get items from a Sales Order or a Material Request. For now select <b>Sales Order</b>.\n A Production Plan can also be created manually where you can select the Items to manufacture."
 		),
 	},
 	{
