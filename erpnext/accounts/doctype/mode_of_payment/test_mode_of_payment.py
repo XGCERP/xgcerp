@@ -3,10 +3,11 @@
 import unittest
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestModeofPayment(IntegrationTestCase):
+class TestModeofPayment(XGCERPTestSuite):
 	pass
 
 

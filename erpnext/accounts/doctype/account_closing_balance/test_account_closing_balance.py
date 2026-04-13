@@ -2,8 +2,9 @@
 # See license.txt
 
 # import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestAccountClosingBalance(IntegrationTestCase):
+class TestAccountClosingBalance(XGCERPTestSuite):
 	pass

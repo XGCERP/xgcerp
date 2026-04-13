@@ -2,8 +2,10 @@
 # See license.txt
 
 # import frappe
-from frappe.tests import IntegrationTestCase
 
 
-class TestRepostAccountingLedgerSettings(IntegrationTestCase):
+from erpnext.tests.utils import XGCERPTestSuite
+
+
+class TestRepostAccountingLedgerSettings(XGCERPTestSuite):
 	pass

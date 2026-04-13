@@ -3,13 +3,14 @@
 import unittest
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 from ..quality_goal.test_quality_goal import get_quality_goal
 from .quality_review import review
 
 
-class TestQualityReview(IntegrationTestCase):
+class TestQualityReview(XGCERPTestSuite):
 	def test_review_creation(self):
 		quality_goal = get_quality_goal()
 		review()

@@ -3,11 +3,12 @@
 import unittest
 
 import frappe
-from frappe.tests import IntegrationTestCase
 from frappe.utils import random_string
 
+from erpnext.tests.utils import XGCERPTestSuite
 
-class TestVehicle(IntegrationTestCase):
+
+class TestVehicle(XGCERPTestSuite):
 	def test_make_vehicle(self):
 		vehicle = frappe.get_doc(
 			{

@@ -3,12 +3,12 @@
 import unittest
 
 import frappe
-from frappe.tests import IntegrationTestCase
 
 from erpnext.projects.doctype.task.test_task import create_task
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestProjectTemplate(IntegrationTestCase):
+class TestProjectTemplate(XGCERPTestSuite):
 	pass
 
 

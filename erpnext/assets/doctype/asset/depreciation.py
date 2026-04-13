@@ -61,7 +61,9 @@ def book_depreciation_entries(date):
 				accounting_dimensions,
 			)
 
-			frappe.db.commit()
+			if not frappe.in_test:
+				frappe.db.commit()
+
 		except Exception as e:
 			frappe.db.rollback()
 			failed_assets.append(asset_name)
@@ -71,7 +73,8 @@ def book_depreciation_entries(date):
 	if failed_assets:
 		set_depr_entry_posting_status_for_failed_assets(failed_assets)
 		notify_depr_entry_posting_error(failed_assets, error_logs)
-	frappe.db.commit()
+	if not frappe.in_test:
+		frappe.db.commit()
 
 
 def get_depreciable_assets_data(date):
@@ -786,10 +789,14 @@ def get_disposal_account_and_cost_center(company):
 
 
 @frappe.whitelist()
-def get_value_after_depreciation_on_disposal_date(asset, disposal_date, finance_book=None):
+def get_value_after_depreciation_on_disposal_date(
+	asset: str,
+	disposal_date: str,
+	finance_book: str | None = None,
+) -> float:
 	asset_doc = frappe.get_doc("Asset", asset)
 
-	if asset_doc.is_composite_component:
+	if asset_doc.asset_type == "Composite Component":
 		validate_disposal_date(asset_doc.purchase_date, getdate(disposal_date), "purchase")
 		return flt(asset_doc.value_after_depreciation)
 

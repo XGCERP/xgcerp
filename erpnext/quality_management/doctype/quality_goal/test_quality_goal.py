@@ -3,10 +3,11 @@
 import unittest
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestQualityGoal(IntegrationTestCase):
+class TestQualityGoal(XGCERPTestSuite):
 	def test_quality_goal(self):
 		# no code, just a basic sanity check
 		goal = get_quality_goal()

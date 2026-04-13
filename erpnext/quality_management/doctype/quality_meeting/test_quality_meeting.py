@@ -2,9 +2,9 @@
 # See license.txt
 import unittest
 
-from frappe.tests import IntegrationTestCase
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestQualityMeeting(IntegrationTestCase):
+class TestQualityMeeting(XGCERPTestSuite):
 	# nothing to test
 	pass

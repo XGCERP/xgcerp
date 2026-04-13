@@ -3,10 +3,11 @@
 
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestStockSettings(IntegrationTestCase):
+class TestStockSettings(XGCERPTestSuite):
 	def setUp(self):
 		super().setUp()
 		frappe.db.set_single_value("Stock Settings", "clean_description_html", 0)

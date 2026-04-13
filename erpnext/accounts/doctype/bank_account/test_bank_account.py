@@ -2,10 +2,8 @@
 # See license.txt
 import unittest
 
-import frappe
-from frappe import ValidationError
-from frappe.tests import IntegrationTestCase
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestBankAccount(IntegrationTestCase):
+class TestBankAccount(XGCERPTestSuite):
 	pass

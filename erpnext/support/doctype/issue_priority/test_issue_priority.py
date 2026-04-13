@@ -3,10 +3,11 @@
 import unittest
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestIssuePriority(IntegrationTestCase):
+class TestIssuePriority(XGCERPTestSuite):
 	def test_priorities(self):
 		make_priorities()
 		priorities = frappe.get_list("Issue Priority")

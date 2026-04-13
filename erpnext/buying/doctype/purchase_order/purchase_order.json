@@ -9,7 +9,6 @@
  "engine": "InnoDB",
  "field_order": [
   "supplier_section",
-  "title",
   "naming_series",
   "supplier",
   "supplier_name",
@@ -17,6 +16,7 @@
   "order_confirmation_date",
   "column_break_7",
   "transaction_date",
+  "transaction_time",
   "schedule_date",
   "column_break1",
   "company",
@@ -172,17 +172,6 @@
    "options": "fa fa-user"
   },
   {
-   "allow_on_submit": 1,
-   "default": "{supplier_name}",
-   "fieldname": "title",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Title",
-   "no_copy": 1,
-   "print_hide": 1,
-   "reqd": 1
-  },
-  {
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Series",
@@ -251,6 +240,7 @@
    "allow_on_submit": 1,
    "fieldname": "schedule_date",
    "fieldtype": "Date",
+   "in_list_view": 1,
    "label": "Required By"
   },
   {
@@ -1311,6 +1301,14 @@
   {
    "fieldname": "section_break_tnkm",
    "fieldtype": "Section Break"
+  },
+  {
+   "default": "Now",
+   "depends_on": "is_internal_supplier",
+   "fieldname": "transaction_time",
+   "fieldtype": "Time",
+   "label": "Time",
+   "mandatory_depends_on": "is_internal_supplier"
   }
  ],
  "grid_page_length": 50,
@@ -1318,7 +1316,7 @@
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-23 14:22:33.323946",
+ "modified": "2026-03-25 11:46:18.748951",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",

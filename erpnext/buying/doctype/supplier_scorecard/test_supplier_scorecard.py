@@ -3,10 +3,11 @@
 
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestSupplierScorecard(IntegrationTestCase):
+class TestSupplierScorecard(XGCERPTestSuite):
 	def test_create_scorecard(self):
 		doc = make_supplier_scorecard().insert()
 		self.assertEqual(doc.name, valid_scorecard[0].get("supplier"))

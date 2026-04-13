@@ -2,8 +2,8 @@
 # See license.txt
 import unittest
 
-from frappe.tests import IntegrationTestCase
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestBankGuarantee(IntegrationTestCase):
+class TestBankGuarantee(XGCERPTestSuite):
 	pass

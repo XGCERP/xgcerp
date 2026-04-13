@@ -2,8 +2,10 @@
 # See license.txt
 
 # import frappe
-from frappe.tests import IntegrationTestCase
 
 
-class TestIncoterm(IntegrationTestCase):
+from erpnext.tests.utils import XGCERPTestSuite
+
+
+class TestIncoterm(XGCERPTestSuite):
 	pass

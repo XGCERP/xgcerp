@@ -2,9 +2,8 @@
 # See license.txt
 import unittest
 
-import frappe
-from frappe.tests import IntegrationTestCase
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestWarrantyClaim(IntegrationTestCase):
+class TestWarrantyClaim(XGCERPTestSuite):
 	pass

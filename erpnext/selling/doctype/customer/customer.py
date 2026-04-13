@@ -118,12 +118,37 @@ class Customer(TransactionBase):
 	def get_customer_name(self):
 		self.customer_name = self.customer_name.strip()
 		if frappe.db.get_value("Customer", self.customer_name) and not frappe.flags.in_import:
-			count = frappe.db.sql(
-				"""select ifnull(MAX(CAST(SUBSTRING_INDEX(name, ' ', -1) AS UNSIGNED)), 0) from tabCustomer
-				 where name like %s""",
-				f"%{self.customer_name} - %",
-				as_list=1,
-			)[0][0]
+			name_prefix = f"{self.customer_name} - %"
+
+			if frappe.db.db_type == "postgres":
+				# Postgres: extract trailing digits (e.g. "Customer - 3") and cast to int.
+				# NOTE: PostgreSQL is strict about types; MySQL's UNSIGNED cast does not exist.
+				count = frappe.db.sql(
+					"""
+					SELECT COALESCE(
+						MAX(CAST(SUBSTRING(name FROM '\\d+$') AS INTEGER)),
+						0
+					)
+					FROM tabCustomer
+					WHERE name LIKE %(name_prefix)s
+					""",
+					{"name_prefix": name_prefix},
+					as_list=1,
+				)[0][0]
+			else:
+				# MariaDB/MySQL: keep existing behavior.
+				count = frappe.db.sql(
+					"""
+					SELECT COALESCE(
+						MAX(CAST(SUBSTRING_INDEX(name, ' ', -1) AS UNSIGNED)),
+						0
+					)
+					FROM tabCustomer
+					WHERE name LIKE %(name_prefix)s
+					""",
+					{"name_prefix": name_prefix},
+					as_list=1,
+				)[0][0]
 			count = cint(count) + 1
 
 			new_customer_name = f"{self.customer_name} - {cstr(count)}"
@@ -148,6 +173,7 @@ class Customer(TransactionBase):
 	def validate(self):
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name
+		self.validate_customer_group()
 		validate_party_accounts(self)
 		self.validate_credit_limit_on_change()
 		self.set_loyalty_program()
@@ -329,6 +355,17 @@ class Customer(TransactionBase):
 					"A Customer Group exists with same name please change the Customer name or rename the Customer Group"
 				),
 				frappe.NameError,
+			)
+
+	def validate_customer_group(self):
+		if not self.customer_group:
+			return
+
+		is_group = frappe.db.get_value("Customer Group", self.customer_group, "is_group")
+		if is_group:
+			frappe.throw(
+				_("Cannot select a Group type Customer Group. Please select a non-group Customer Group."),
+				title=_("Invalid Customer Group"),
 			)
 
 	def validate_credit_limit_on_change(self):

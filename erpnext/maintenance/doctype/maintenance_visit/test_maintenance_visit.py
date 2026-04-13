@@ -3,11 +3,12 @@
 import unittest
 
 import frappe
-from frappe.tests import IntegrationTestCase
 from frappe.utils.data import today
 
+from erpnext.tests.utils import XGCERPTestSuite
 
-class TestMaintenanceVisit(IntegrationTestCase):
+
+class TestMaintenanceVisit(XGCERPTestSuite):
 	pass
 
 

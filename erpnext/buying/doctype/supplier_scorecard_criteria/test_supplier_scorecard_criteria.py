@@ -3,10 +3,11 @@
 
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestSupplierScorecardCriteria(IntegrationTestCase):
+class TestSupplierScorecardCriteria(XGCERPTestSuite):
 	def test_variables_exist(self):
 		delete_test_scorecards()
 		for d in test_good_criteria:

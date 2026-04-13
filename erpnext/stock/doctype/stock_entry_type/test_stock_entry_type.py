@@ -3,10 +3,11 @@
 import unittest
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestStockEntryType(IntegrationTestCase):
+class TestStockEntryType(XGCERPTestSuite):
 	def test_stock_entry_type_non_standard(self):
 		stock_entry_type = "Test Manufacturing"
 

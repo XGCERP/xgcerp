@@ -3,10 +3,11 @@
 import unittest
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
-class TestSellingSettings(IntegrationTestCase):
+class TestSellingSettings(XGCERPTestSuite):
 	def test_defaults_populated(self):
 		# Setup default values are not populated on migrate, this test checks
 		# if setup was completed correctly

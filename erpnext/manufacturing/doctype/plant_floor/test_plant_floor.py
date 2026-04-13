@@ -2,8 +2,10 @@
 # See license.txt
 
 # import frappe
-from frappe.tests import IntegrationTestCase
 
 
-class TestPlantFloor(IntegrationTestCase):
+from erpnext.tests.utils import XGCERPTestSuite
+
+
+class TestPlantFloor(XGCERPTestSuite):
 	pass

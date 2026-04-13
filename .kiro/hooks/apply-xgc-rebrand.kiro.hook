@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Apply XGC Rebrand",
+  "description": "Manually triggered hook that runs scripts/smart_rename.py to apply the ERPNext → XGCERP rebrand across all files. Use this after resolving merge conflicts or when you need to re-apply branding without a full sync.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "python3 scripts/smart_rename.py"
+  }
+}

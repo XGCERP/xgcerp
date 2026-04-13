@@ -2,14 +2,15 @@ import unittest
 from uuid import uuid4 as _uuid4
 
 import frappe
-from frappe.tests import IntegrationTestCase
+
+from erpnext.tests.utils import XGCERPTestSuite
 
 
 def uuid4():
 	return str(_uuid4())
 
 
-class TestTaxes(IntegrationTestCase):
+class TestTaxes(XGCERPTestSuite):
 	def setUp(self):
 		self.company = frappe.get_doc(
 			{
@@ -67,7 +68,7 @@ class TestTaxes(IntegrationTestCase):
 			{
 				"doctype": "Customer",
 				"customer_name": uuid4(),
-				"customer_group": "All Customer Groups",
+				"customer_group": "Individual",
 			}
 		).insert()
 		self.supplier = frappe.get_doc(
@@ -125,12 +126,3 @@ class TestTaxes(IntegrationTestCase):
 			doc.insert()
 			self.assertEqual(doc.taxes[0].tax_amount, 600)
 			self.created_docs.append(doc)
-
-	def tearDown(self):
-		for doc in self.created_docs:
-			doc.delete()
-		self.item.delete()
-		self.item_group.delete()
-		self.item_tax_template.delete()
-		self.account.delete()
-		self.company.delete()
