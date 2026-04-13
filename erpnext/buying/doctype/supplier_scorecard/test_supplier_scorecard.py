@@ -4,10 +4,10 @@
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSupplierScorecard(XGCERPTestSuite):
+class TestSupplierScorecard(AXERPTestSuite):
 	def test_create_scorecard(self):
 		doc = make_supplier_scorecard().insert()
 		self.assertEqual(doc.name, valid_scorecard[0].get("supplier"))

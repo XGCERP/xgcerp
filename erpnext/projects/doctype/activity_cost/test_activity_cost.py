@@ -5,10 +5,10 @@ import unittest
 import frappe
 
 from erpnext.projects.doctype.activity_cost.activity_cost import DuplicationError
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestActivityCost(XGCERPTestSuite):
+class TestActivityCost(AXERPTestSuite):
 	def test_duplication(self):
 		employee = frappe.db.get_all("Employee", filters={"first_name": "_Test Employee"})[0].name
 		activity_type = frappe.db.get_all(

@@ -11,10 +11,10 @@ from erpnext.manufacturing.doctype.bom_update_tool.bom_update_tool import (
 	enqueue_replace_bom,
 	enqueue_update_cost,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestBOMUpdateLog(XGCERPTestSuite):
+class TestBOMUpdateLog(AXERPTestSuite):
 	"Test BOM Update Tool Operations via BOM Update Log."
 
 	def setUp(self):

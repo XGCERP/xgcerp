@@ -3,8 +3,8 @@
 # import frappe
 import unittest
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestProductionPlanMaterialRequestWarehouse(XGCERPTestSuite):
+class TestProductionPlanMaterialRequestWarehouse(AXERPTestSuite):
 	pass

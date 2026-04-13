@@ -3,8 +3,8 @@
 # import frappe
 import unittest
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestCompetitor(XGCERPTestSuite):
+class TestCompetitor(AXERPTestSuite):
 	pass

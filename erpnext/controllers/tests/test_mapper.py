@@ -6,10 +6,10 @@ import frappe.utils
 from frappe.model import mapper
 from frappe.utils import add_months, nowdate
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestMapper(XGCERPTestSuite):
+class TestMapper(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Sales Order")
 

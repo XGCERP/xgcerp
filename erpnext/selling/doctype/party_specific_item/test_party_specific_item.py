@@ -4,7 +4,7 @@
 import frappe
 
 from erpnext.controllers.queries import item_query
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
 def create_party_specific_item(**args):
@@ -16,7 +16,7 @@ def create_party_specific_item(**args):
 	psi.insert()
 
 
-class TestPartySpecificItem(XGCERPTestSuite):
+class TestPartySpecificItem(AXERPTestSuite):
 	def test_item_query_for_customer(self):
 		customer = "_Test Customer With Template"
 		item = "_Test Item"

@@ -37,7 +37,7 @@ from erpnext.stock.doctype.stock_reconciliation.test_stock_reconciliation import
 )
 from erpnext.stock.serial_batch_bundle import SerialBatchCreation
 from erpnext.stock.stock_ledger import NegativeStockError, get_previous_sle
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
 def get_sle(**args):
@@ -56,7 +56,7 @@ def get_sle(**args):
 	)
 
 
-class TestStockEntry(XGCERPTestSuite):
+class TestStockEntry(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Stock Entry")
 		frappe.local.flags.dont_execute_stock_reposts = False
@@ -867,7 +867,7 @@ class TestStockEntry(XGCERPTestSuite):
 		fg_cost = next(filter(lambda x: x.item_code == "_Test FG Item 2", stock_entry.get("items"))).amount
 		self.assertEqual(fg_cost, flt(rm_cost + bom_operation_cost + work_order.additional_operating_cost, 2))
 
-	@XGCERPTestSuite.change_settings("Manufacturing Settings", {"material_consumption": 1})
+	@AXERPTestSuite.change_settings("Manufacturing Settings", {"material_consumption": 1})
 	def test_work_order_manufacture_with_material_consumption(self):
 		from erpnext.manufacturing.doctype.work_order.work_order import (
 			make_stock_entry as _make_stock_entry,
@@ -1294,7 +1294,7 @@ class TestStockEntry(XGCERPTestSuite):
 		self.assertEqual(se.items[0].expense_account, "_Test Account Cost for Goods Sold - _TC")
 		self.assertEqual(se.items[1].expense_account, "_Test Account Cost for Goods Sold - _TC")
 
-	@XGCERPTestSuite.change_settings("Stock Settings", {"allow_negative_stock": 0})
+	@AXERPTestSuite.change_settings("Stock Settings", {"allow_negative_stock": 0})
 	def test_future_negative_sle(self):
 		# Initialize item, batch, warehouse, opening qty
 		item_code = "_Test Future Neg Item"
@@ -1337,7 +1337,7 @@ class TestStockEntry(XGCERPTestSuite):
 
 		self.assertRaises(NegativeStockError, create_stock_entries, sequence_of_entries)
 
-	@XGCERPTestSuite.change_settings("Stock Settings", {"allow_negative_stock": 0})
+	@AXERPTestSuite.change_settings("Stock Settings", {"allow_negative_stock": 0})
 	def test_future_negative_sle_batch(self):
 		from erpnext.stock.doctype.batch.test_batch import TestBatch
 
@@ -1465,7 +1465,7 @@ class TestStockEntry(XGCERPTestSuite):
 		self.assertEqual(se.items[0].item_name, item.item_name)
 		self.assertEqual(se.items[0].stock_uom, item.stock_uom)
 
-	@XGCERPTestSuite.change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
+	@AXERPTestSuite.change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
 	def test_reposting_for_depedent_warehouse(self):
 		from erpnext.stock.doctype.repost_item_valuation.repost_item_valuation import repost_sl_entries
 		from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
@@ -2328,7 +2328,7 @@ class TestStockEntry(XGCERPTestSuite):
 		se.save()
 		se.submit()
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Stock Settings", {"sample_retention_warehouse": "_Test Warehouse 1 - _TC"}
 	)
 	def test_sample_retention_stock_entry(self):
@@ -2368,7 +2368,7 @@ class TestStockEntry(XGCERPTestSuite):
 		self.assertEqual(target_sabb.entries[0].batch_no, batch)
 		self.assertEqual([entry.serial_no for entry in target_sabb.entries], serial_nos[:2])
 
-	@XGCERPTestSuite.change_settings("Manufacturing Settings", {"material_consumption": 0})
+	@AXERPTestSuite.change_settings("Manufacturing Settings", {"material_consumption": 0})
 	def test_raw_material_missing_validation(self):
 		stock_entry = make_stock_entry(
 			item_code="_Test Item",
@@ -2386,7 +2386,7 @@ class TestStockEntry(XGCERPTestSuite):
 			stock_entry.save,
 		)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Manufacturing Settings",
 		{
 			"material_consumption": 1,

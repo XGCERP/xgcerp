@@ -9,13 +9,13 @@ from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
 from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 
-# On XGCERPTestSuite, the doctype test records and all
+# On AXERPTestSuite, the doctype test records and all
 # link-field test record depdendencies are recursively loaded
 # Use these module variables to add/remove to/from that list
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestAdvancePaymentLedgerEntry(XGCERPTestSuite, AccountsTestMixin):
+class TestAdvancePaymentLedgerEntry(AXERPTestSuite, AccountsTestMixin):
 	"""
 	Integration tests for AdvancePaymentLedgerEntry.
 	Use this class for testing interactions between multiple components.

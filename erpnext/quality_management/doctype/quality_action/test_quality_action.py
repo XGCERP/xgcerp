@@ -2,9 +2,9 @@
 # See license.txt
 import unittest
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestQualityAction(XGCERPTestSuite):
+class TestQualityAction(AXERPTestSuite):
 	# quality action has no code
 	pass

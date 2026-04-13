@@ -12,10 +12,10 @@ from frappe.utils.nestedset import (
 	rebuild_tree,
 )
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestItemGroup(XGCERPTestSuite):
+class TestItemGroup(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Item Group")
 

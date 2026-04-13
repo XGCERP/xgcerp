@@ -10,10 +10,10 @@ from frappe.utils import add_days, today
 
 from erpnext.buying.doctype.supplier_quotation.supplier_quotation import make_purchase_order
 from erpnext.controllers.accounts_controller import InvalidQtyError, update_child_qty_rate
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestPurchaseOrder(XGCERPTestSuite):
+class TestPurchaseOrder(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Supplier Quotation")
 
@@ -170,7 +170,7 @@ class TestPurchaseOrder(XGCERPTestSuite):
 
 		po.insert()
 
-	@XGCERPTestSuite.change_settings("Buying Settings", {"allow_zero_qty_in_supplier_quotation": 1})
+	@AXERPTestSuite.change_settings("Buying Settings", {"allow_zero_qty_in_supplier_quotation": 1})
 	def test_map_purchase_order_from_zero_qty_supplier_quotation(self):
 		sq = frappe.copy_doc(self.globalTestRecords["Supplier Quotation"][0])
 		sq.items[0].qty = 0

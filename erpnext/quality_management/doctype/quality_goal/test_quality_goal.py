@@ -4,10 +4,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestQualityGoal(XGCERPTestSuite):
+class TestQualityGoal(AXERPTestSuite):
 	def test_quality_goal(self):
 		# no code, just a basic sanity check
 		goal = get_quality_goal()

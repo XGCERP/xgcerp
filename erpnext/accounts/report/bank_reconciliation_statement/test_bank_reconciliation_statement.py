@@ -6,10 +6,10 @@ import frappe
 from erpnext.accounts.report.bank_reconciliation_statement.bank_reconciliation_statement import (
 	execute,
 )
-from erpnext.tests.utils import XGCERPTestSuite, if_lending_app_installed
+from erpnext.tests.utils import AXERPTestSuite, if_lending_app_installed
 
 
-class TestBankReconciliationStatement(XGCERPTestSuite):
+class TestBankReconciliationStatement(AXERPTestSuite):
 	@if_lending_app_installed
 	def test_loan_entries_in_bank_reco_statement(self):
 		from lending.loan_management.doctype.loan.test_loan import create_loan_accounts

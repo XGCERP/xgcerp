@@ -3,8 +3,8 @@
 
 # import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestAccountClosingBalance(XGCERPTestSuite):
+class TestAccountClosingBalance(AXERPTestSuite):
 	pass

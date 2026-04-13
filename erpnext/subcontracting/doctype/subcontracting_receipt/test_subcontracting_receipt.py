@@ -40,10 +40,10 @@ from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order im
 from erpnext.subcontracting.doctype.subcontracting_receipt.subcontracting_receipt import (
 	BOMQuantityError,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSubcontractingReceipt(XGCERPTestSuite):
+class TestSubcontractingReceipt(AXERPTestSuite):
 	def setUp(self):
 		make_subcontracted_items()
 		make_raw_materials()
@@ -497,7 +497,7 @@ class TestSubcontractingReceipt(XGCERPTestSuite):
 			self.assertEqual(expected_values[gle.account][0], gle.debit)
 			self.assertEqual(expected_values[gle.account][1], gle.credit)
 
-	@XGCERPTestSuite.change_settings("Stock Settings", {"use_serial_batch_fields": 0})
+	@AXERPTestSuite.change_settings("Stock Settings", {"use_serial_batch_fields": 0})
 	def test_subcontracting_receipt_with_zero_service_cost(self):
 		warehouse = "Stores - TCP1"
 		service_items = [
@@ -618,7 +618,7 @@ class TestSubcontractingReceipt(XGCERPTestSuite):
 		for item in scr.supplied_items:
 			self.assertFalse(item.available_qty_for_consumption)
 
-	@XGCERPTestSuite.change_settings("Buying Settings", {"allow_multiple_items": True})
+	@AXERPTestSuite.change_settings("Buying Settings", {"allow_multiple_items": True})
 	def test_supplied_items_consumed_qty_for_similar_finished_goods(self):
 		"""
 		Test that supplied raw material consumption is calculated correctly
@@ -1444,7 +1444,7 @@ class TestSubcontractingReceipt(XGCERPTestSuite):
 		sr.reload()
 		self.assertEqual(sr.items[0].rejected_qty, 2)  # Should remain the same
 
-	@XGCERPTestSuite.change_settings("Buying Settings", {"auto_create_purchase_receipt": 1})
+	@AXERPTestSuite.change_settings("Buying Settings", {"auto_create_purchase_receipt": 1})
 	def test_auto_create_purchase_receipt(self):
 		from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
 
@@ -1508,7 +1508,7 @@ class TestSubcontractingReceipt(XGCERPTestSuite):
 
 		self.assertEqual(pr_details[0]["total_taxes_and_charges"], 60)
 
-	@XGCERPTestSuite.change_settings("Buying Settings", {"auto_create_purchase_receipt": 1})
+	@AXERPTestSuite.change_settings("Buying Settings", {"auto_create_purchase_receipt": 1})
 	def test_auto_create_purchase_receipt_with_no_reference_of_po_item(self):
 		from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
 
@@ -2006,8 +2006,8 @@ class TestSubcontractingReceipt(XGCERPTestSuite):
 
 		self.assertRaises(BOMQuantityError, scr.submit)
 
-	@XGCERPTestSuite.change_settings("Buying Settings", {"over_transfer_allowance": 20})
-	@XGCERPTestSuite.change_settings("Stock Settings", {"over_delivery_receipt_allowance": 20})
+	@AXERPTestSuite.change_settings("Buying Settings", {"over_transfer_allowance": 20})
+	@AXERPTestSuite.change_settings("Stock Settings", {"over_delivery_receipt_allowance": 20})
 	def test_over_receipt(self):
 		from erpnext.controllers.subcontracting_controller import make_rm_stock_entry
 

@@ -19,10 +19,10 @@ from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import make_pu
 from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle import (
 	make_serial_batch_bundle,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestAssetCapitalization(XGCERPTestSuite):
+class TestAssetCapitalization(AXERPTestSuite):
 	def setUp(self):
 		set_depreciation_settings_in_company()
 		create_asset_capitalization_data()

@@ -11,10 +11,10 @@ from frappe.utils import add_days, add_months, today
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.buying.doctype.purchase_order.purchase_order import make_purchase_invoice
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestTaxWithholdingCategory(XGCERPTestSuite):
+class TestTaxWithholdingCategory(AXERPTestSuite):
 	def setUp(self):
 		# create relevant supplier, etc
 		create_records()
@@ -1029,7 +1029,7 @@ class TestTaxWithholdingCategory(XGCERPTestSuite):
 
 		self.cleanup_invoices(invoices)
 
-	@XGCERPTestSuite.change_settings("Buying Settings", {"allow_multiple_items": 1})
+	@AXERPTestSuite.change_settings("Buying Settings", {"allow_multiple_items": 1})
 	def test_tds_calculation_on_net_total_partial_tds(self):
 		self.setup_party_with_category("Supplier", "Test TDS Supplier4", "Cumulative Threshold TDS")
 		invoices = []
@@ -2043,7 +2043,7 @@ class TestTaxWithholdingCategory(XGCERPTestSuite):
 		self.assertEqual(pi2.taxes, [])
 		self.assertEqual(payment.taxes[0].tax_amount, 6000)
 
-	@XGCERPTestSuite.change_settings("Accounts Settings", {"delete_linked_ledger_entries": 1})
+	@AXERPTestSuite.change_settings("Accounts Settings", {"delete_linked_ledger_entries": 1})
 	def test_tds_payment_entry_cancellation(self):
 		"""
 		Test payment entry cancellation clears withholding references from matched entries
@@ -2221,7 +2221,7 @@ class TestTaxWithholdingCategory(XGCERPTestSuite):
 		self.validate_tax_withholding_entries("Purchase Invoice", pi1.name, expected_entries)
 		self.cleanup_invoices(invoices)
 
-	@XGCERPTestSuite.change_settings("Accounts Settings", {"delete_linked_ledger_entries": 1})
+	@AXERPTestSuite.change_settings("Accounts Settings", {"delete_linked_ledger_entries": 1})
 	def test_tds_purchase_invoice_cancellation(self):
 		"""
 		Test that after cancellation, new documents get automatically adjusted against remaining entries

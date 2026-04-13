@@ -7,7 +7,7 @@ from frappe.utils import today
 from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 from erpnext.stock.report.stock_balance.stock_balance import execute
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
 def stock_balance(filters):
@@ -15,7 +15,7 @@ def stock_balance(filters):
 	return [_dict(row) for row in execute(filters)[1]]
 
 
-class TestStockBalance(XGCERPTestSuite):
+class TestStockBalance(AXERPTestSuite):
 	# ----------- utils
 
 	def setUp(self):
@@ -103,7 +103,7 @@ class TestStockBalance(XGCERPTestSuite):
 		)
 		self.assertInvariants(rows)
 
-	@XGCERPTestSuite.change_settings("System Settings", {"float_precision": 3, "currency_precision": 3})
+	@AXERPTestSuite.change_settings("System Settings", {"float_precision": 3, "currency_precision": 3})
 	def test_opening_balance(self):
 		self.generate_stock_ledger(
 			self.item.name,

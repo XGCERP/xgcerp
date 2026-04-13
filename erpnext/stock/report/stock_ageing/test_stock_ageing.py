@@ -4,10 +4,10 @@
 import frappe
 
 from erpnext.stock.report.stock_ageing.stock_ageing import FIFOSlots, format_report_data
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestStockAgeing(XGCERPTestSuite):
+class TestStockAgeing(AXERPTestSuite):
 	def setUp(self) -> None:
 		self.filters = frappe._dict(company="_Test Company", to_date="2021-12-10", ranges=["30", "60", "90"])
 

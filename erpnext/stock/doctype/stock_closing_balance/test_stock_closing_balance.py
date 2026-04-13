@@ -2,14 +2,14 @@
 # See license.txt
 
 # import frappe
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
-# On XGCERPTestSuite, the doctype test records and all
+# On AXERPTestSuite, the doctype test records and all
 # link-field test record depdendencies are recursively loaded
 # Use these module variables to add/remove to/from that list
 
 
-class TestStockClosingBalance(XGCERPTestSuite):
+class TestStockClosingBalance(AXERPTestSuite):
 	"""
 	Integration tests for StockClosingBalance.
 	Use this class for testing interactions between multiple components.

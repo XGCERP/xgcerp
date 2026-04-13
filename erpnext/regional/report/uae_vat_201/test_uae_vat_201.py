@@ -15,10 +15,10 @@ from erpnext.regional.report.uae_vat_201.uae_vat_201 import (
 	get_zero_rated_total,
 )
 from erpnext.stock.doctype.warehouse.test_warehouse import get_warehouse_account
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestUaeVat201(XGCERPTestSuite):
+class TestUaeVat201(AXERPTestSuite):
 	def setUp(self):
 		set_vat_accounts()
 
@@ -56,7 +56,7 @@ class TestUaeVat201(XGCERPTestSuite):
 		self.assertEqual(get_standard_rated_expenses_total(filters), 250)
 		self.assertEqual(get_standard_rated_expenses_tax(filters), 1)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings", {"allow_multi_currency_invoices_against_single_party_account": True}
 	)
 	def test_uae_vat_201_report_with_foreign_transaction(self):

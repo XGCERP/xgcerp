@@ -22,10 +22,10 @@ from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
 from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order import (
 	make_subcontracting_receipt,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSubcontractingController(XGCERPTestSuite):
+class TestSubcontractingController(AXERPTestSuite):
 	def setUp(self):
 		make_subcontracted_items()
 		make_raw_materials()
@@ -75,7 +75,7 @@ class TestSubcontractingController(XGCERPTestSuite):
 		sco.create_raw_materials_supplied_or_received()
 		self.assertIsNotNone(sco.supplied_items)
 
-	@XGCERPTestSuite.change_settings("Buying Settings", {"allow_multiple_items": 1})
+	@AXERPTestSuite.change_settings("Buying Settings", {"allow_multiple_items": 1})
 	def test_sco_with_bom(self):
 		"""
 		- Set backflush based on BOM.

@@ -15,10 +15,10 @@ from erpnext.accounts.utils import (
 from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import make_purchase_receipt
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestUtils(XGCERPTestSuite):
+class TestUtils(AXERPTestSuite):
 	def test_get_party_shipping_address(self):
 		address = get_party_shipping_address("Customer", "_Test Customer 1")
 		self.assertEqual(address, "_Test Billing Address 2 Title-Billing")

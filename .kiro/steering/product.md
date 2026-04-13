@@ -1,6 +1,6 @@
 # Product Overview
 
-XGCERP (XGCERP) is a full-featured, open-source ERP system built on the Frappe Framework. It covers accounting, order management, manufacturing, asset management, CRM, projects, stock/inventory, buying, selling, support, and quality management.
+AXERP (AXERP) is a full-featured, open-source ERP system built on the Frappe Framework. It covers accounting, order management, manufacturing, asset management, CRM, projects, stock/inventory, buying, selling, support, and quality management.
 
 The application is a Frappe "app" — it extends the Frappe web framework and relies on Frappe for ORM, authentication, REST API, background jobs, and the web UI shell.
 

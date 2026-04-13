@@ -4,13 +4,13 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 from ..quality_goal.test_quality_goal import get_quality_goal
 from .quality_review import review
 
 
-class TestQualityReview(XGCERPTestSuite):
+class TestQualityReview(AXERPTestSuite):
 	def test_review_creation(self):
 		quality_goal = get_quality_goal()
 		review()

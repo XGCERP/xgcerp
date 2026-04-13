@@ -10,10 +10,10 @@ from erpnext.stock.doctype.delivery_trip.delivery_trip import (
 	get_contact_and_address,
 	notify_customers,
 )
-from erpnext.tests.utils import XGCERPTestSuite, create_test_contact_and_address
+from erpnext.tests.utils import AXERPTestSuite, create_test_contact_and_address
 
 
-class TestDeliveryTrip(XGCERPTestSuite):
+class TestDeliveryTrip(AXERPTestSuite):
 	def setUp(self):
 		super().setUp()
 		driver = create_driver()

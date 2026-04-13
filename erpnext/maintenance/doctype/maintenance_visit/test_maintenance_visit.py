@@ -5,10 +5,10 @@ import unittest
 import frappe
 from frappe.utils.data import today
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestMaintenanceVisit(XGCERPTestSuite):
+class TestMaintenanceVisit(AXERPTestSuite):
 	pass
 
 

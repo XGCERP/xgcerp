@@ -1,10 +1,10 @@
 # Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and Contributors
 # See license.txt
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class IntegrationTestTaxWithholdingGroup(XGCERPTestSuite):
+class IntegrationTestTaxWithholdingGroup(AXERPTestSuite):
 	"""
 	Integration tests for TaxWithholdingGroup.
 	Use this class for testing interactions between multiple components.

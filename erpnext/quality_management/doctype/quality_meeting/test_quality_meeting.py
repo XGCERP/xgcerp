@@ -2,9 +2,9 @@
 # See license.txt
 import unittest
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestQualityMeeting(XGCERPTestSuite):
+class TestQualityMeeting(AXERPTestSuite):
 	# nothing to test
 	pass

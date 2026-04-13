@@ -30,10 +30,10 @@ from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
 from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order import (
 	make_subcontracting_receipt,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSubcontractingOrder(XGCERPTestSuite):
+class TestSubcontractingOrder(AXERPTestSuite):
 	def setUp(self):
 		make_subcontracted_items()
 		make_raw_materials()
@@ -460,7 +460,7 @@ class TestSubcontractingOrder(XGCERPTestSuite):
 
 		set_backflush_based_on("BOM")
 
-	@XGCERPTestSuite.change_settings("Buying Settings", {"allow_multiple_items": True})
+	@AXERPTestSuite.change_settings("Buying Settings", {"allow_multiple_items": True})
 	def test_supplied_qty(self):
 		item_code = "_Test Subcontracted FG Item 5"
 		make_item("Sub Contracted Raw Material 4", {"is_stock_item": 1, "is_sub_contracted_item": 1})
@@ -679,7 +679,7 @@ class TestSubcontractingOrder(XGCERPTestSuite):
 
 		self.assertEqual(requested_qty, new_requested_qty)
 
-	@XGCERPTestSuite.change_settings("System Settings", {"float_precision": 3})
+	@AXERPTestSuite.change_settings("System Settings", {"float_precision": 3})
 	def test_subcontracting_order_rm_required_items_for_precision(self):
 		item_code = "Subcontracted Item SA9"
 		raw_materials = ["Subcontracted SRM Item 9"]

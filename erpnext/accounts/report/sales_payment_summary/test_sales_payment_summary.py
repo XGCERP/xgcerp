@@ -10,10 +10,10 @@ from erpnext.accounts.report.sales_payment_summary.sales_payment_summary import 
 	get_mode_of_payment_details,
 	get_mode_of_payments,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSalesPaymentSummary(XGCERPTestSuite):
+class TestSalesPaymentSummary(AXERPTestSuite):
 	def test_get_mode_of_payments(self):
 		filters = get_filters()
 

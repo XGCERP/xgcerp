@@ -5,10 +5,10 @@ import frappe
 from frappe.utils import today
 
 from erpnext.accounts.report.trial_balance.trial_balance import execute
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestTrialBalance(XGCERPTestSuite):
+class TestTrialBalance(AXERPTestSuite):
 	def setUp(self):
 		from erpnext.accounts.doctype.account.test_account import create_account
 		from erpnext.accounts.doctype.cost_center.test_cost_center import create_cost_center

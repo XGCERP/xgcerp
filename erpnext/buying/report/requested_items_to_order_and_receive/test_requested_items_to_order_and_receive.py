@@ -10,10 +10,10 @@ from erpnext.buying.report.requested_items_to_order_and_receive.requested_items_
 )
 from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.material_request.material_request import make_purchase_order
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestRequestedItemsToOrderAndReceive(XGCERPTestSuite):
+class TestRequestedItemsToOrderAndReceive(AXERPTestSuite):
 	def setUp(self) -> None:
 		create_item("Test MR Report Item")
 		self.load_test_records("Material Request")

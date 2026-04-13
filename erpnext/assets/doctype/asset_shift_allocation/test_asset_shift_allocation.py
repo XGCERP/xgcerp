@@ -8,10 +8,10 @@ from erpnext.assets.doctype.asset.test_asset import create_asset
 from erpnext.assets.doctype.asset_depreciation_schedule.asset_depreciation_schedule import (
 	get_depr_schedule,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestAssetShiftAllocation(XGCERPTestSuite):
+class TestAssetShiftAllocation(AXERPTestSuite):
 	def setUp(self):
 		create_asset_shift_factors()
 

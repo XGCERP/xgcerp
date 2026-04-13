@@ -5,10 +5,10 @@ import unittest
 import frappe
 
 from erpnext.projects.doctype.task.test_task import create_task
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestProjectTemplate(XGCERPTestSuite):
+class TestProjectTemplate(AXERPTestSuite):
 	pass
 
 

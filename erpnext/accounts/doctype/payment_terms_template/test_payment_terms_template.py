@@ -4,10 +4,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestPaymentTermsTemplate(XGCERPTestSuite):
+class TestPaymentTermsTemplate(AXERPTestSuite):
 	def test_create_template(self):
 		template = frappe.get_doc(
 			{

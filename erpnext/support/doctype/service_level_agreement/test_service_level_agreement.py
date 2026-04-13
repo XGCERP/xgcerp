@@ -10,10 +10,10 @@ from erpnext.support.doctype.issue_priority.test_issue_priority import make_prio
 from erpnext.support.doctype.service_level_agreement.service_level_agreement import (
 	get_service_level_agreement_fields,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestServiceLevelAgreement(XGCERPTestSuite):
+class TestServiceLevelAgreement(AXERPTestSuite):
 	def test_service_level_agreement(self):
 		# Default Service Level Agreement
 		create_default_service_level_agreement = create_service_level_agreement(

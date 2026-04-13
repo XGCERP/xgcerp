@@ -1,12 +1,12 @@
 Since you have already downloaded your repository and are inside the `xgcerp` directory (as shown by `➜ xgcerp git:(main)`), you **do not need to use the `git clone` command again**. The error occurred because Git refuses to clone into a folder that already exists and has files in it.
 
-Instead, we need to tell your existing repository to connect to the original XGCERP repository, pull down `version-16`, and push it up to your XGCERP GitHub.
+Instead, we need to tell your existing repository to connect to the original AXERP repository, pull down `version-16`, and push it up to your AXERP GitHub.
 
 Since you are already inside the `xgcerp` folder, run these commands in order:
 
-### 1. Add Frappe/XGCERP as your "Upstream" source
+### 1. Add Frappe/AXERP as your "Upstream" source
 
-This links your local repository to the original XGCERP code so you can pull their updates.
+This links your local repository to the original AXERP code so you can pull their updates.
 
 ```bash
 git remote add upstream https://github.com/frappe/erpnext.git
@@ -15,7 +15,7 @@ git remote add upstream https://github.com/frappe/erpnext.git
 
 ### 2. Fetch all the data from the Upstream repository
 
-This downloads all the branches and history from XGCERP, including `version-16`, without overwriting anything you currently have.
+This downloads all the branches and history from AXERP, including `version-16`, without overwriting anything you currently have.
 
 ```bash
 git fetch upstream
@@ -24,7 +24,7 @@ git fetch upstream
 
 ### 3. Create and switch to the `version-16` branch
 
-This creates a local `version-16` branch based entirely on the official XGCERP `version-16` branch.
+This creates a local `version-16` branch based entirely on the official AXERP `version-16` branch.
 
 ```bash
 git checkout -b version-16 upstream/version-16
@@ -33,7 +33,7 @@ git checkout -b version-16 upstream/version-16
 
 *(Your prompt should now change from `git:(main)` to `git:(version-16)`)*
 
-### 4. Push this new branch to your XGCERP repository
+### 4. Push this new branch to your AXERP repository
 
 Now that you have the `version-16` code locally, this pushes it to your proprietary GitHub repository and sets it to track future changes.
 
@@ -44,8 +44,8 @@ git push -u origin version-16
 
 ### Summary of your new setup:
 
-* **`origin`** = `https://github.com/XGCERP/xgcerp.git` (Your proprietary repo)
-* **`upstream`** = `https://github.com/frappe/erpnext.git` (The official XGCERP repo)
+* **`origin`** = `https://github.com/AXERP/xgcerp.git` (Your proprietary repo)
+* **`upstream`** = `https://github.com/frappe/erpnext.git` (The official AXERP repo)
 
 
 
@@ -79,7 +79,7 @@ git merge v16.7.0
 ```
 
 **3. Run your Proprietary Scripts**
-*(Since the newly merged files from Frappe will say "XGCERP" and lack your copyright, you must run your scripts again).*
+*(Since the newly merged files from Frappe will say "AXERP" and lack your copyright, you must run your scripts again).*
 
 ```bash
 python3 smart_rename.py
@@ -91,11 +91,11 @@ python3 smart_rename.py
 
 ```bash
 git add .
-git commit -m "chore: sync with upstream v16.7.0, apply XGCERP metadata and copyrights"
+git commit -m "chore: sync with upstream v16.7.0, apply AXERP metadata and copyrights"
 
 ```
 
-**5. Create your XGCERP-specific Release Tag**
+**5. Create your AXERP-specific Release Tag**
 *(This creates a tag on your newly branded commit. This is the tag you will eventually use to deploy to your production servers).*
 
 ```bash
@@ -134,7 +134,7 @@ fi
 UPSTREAM_TAG=$1
 XGC_TAG="${UPSTREAM_TAG}-xgc"
 
-echo "🔄 Starting XGCERP Sync Protocol for $UPSTREAM_TAG..."
+echo "🔄 Starting AXERP Sync Protocol for $UPSTREAM_TAG..."
 
 # 1. Fetch upstream tags
 echo "📥 Fetching upstream tags..."
@@ -151,21 +151,21 @@ if [ $? -ne 0 ]; then
 fi
 
 # 3. Apply Branding and Copyrights
-echo "✨ Applying XGCERP Core Masking and Copyrights..."
+echo "✨ Applying AXERP Core Masking and Copyrights..."
 python3 smart_rename.py
 ./inject_copyright.sh
 
 # 4. Commit the changes
 echo "💾 Committing proprietary layer..."
 git add .
-git commit -m "chore: apply XGCERP branding and copyrights for $UPSTREAM_TAG"
+git commit -m "chore: apply AXERP branding and copyrights for $UPSTREAM_TAG"
 
 # 5. Tag the release
 echo "🏷️ Tagging release as $XGC_TAG..."
 git tag $XGC_TAG
 
 # 6. Push to origin
-echo "🚀 Pushing branch and tags to XGCERP origin..."
+echo "🚀 Pushing branch and tags to AXERP origin..."
 git push origin version-16
 git push origin $XGC_TAG
 

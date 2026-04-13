@@ -2,10 +2,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite, ReportFilters, ReportName, execute_script_report
+from erpnext.tests.utils import AXERPTestSuite, ReportFilters, ReportName, execute_script_report
 
 
-class TestManufacturingReports(XGCERPTestSuite):
+class TestManufacturingReports(AXERPTestSuite):
 	def setUp(self):
 		self.setup_default_filters()
 

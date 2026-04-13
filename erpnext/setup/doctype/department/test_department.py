@@ -4,10 +4,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestDepartment(XGCERPTestSuite):
+class TestDepartment(AXERPTestSuite):
 	def test_remove_department_data(self):
 		doc = create_department("Test Department", company="_Test Company")
 		frappe.delete_doc("Department", doc.name)

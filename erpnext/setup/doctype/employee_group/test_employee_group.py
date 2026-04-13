@@ -5,10 +5,10 @@ import unittest
 import frappe
 
 from erpnext.setup.doctype.employee.test_employee import make_employee
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestEmployeeGroup(XGCERPTestSuite):
+class TestEmployeeGroup(AXERPTestSuite):
 	pass
 
 

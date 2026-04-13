@@ -1,29 +1,29 @@
 from erpnext import encode_company_abbr
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestInit(XGCERPTestSuite):
+class TestInit(AXERPTestSuite):
 	def test_encode_company_abbr(self):
 		abbr = "NFECT"
 
 		names = [
 			"Warehouse Name",
-			"XGCERP Foundation India",
+			"AXERP Foundation India",
 			f"Gold - Member - {abbr}",
 			f" - {abbr}",
-			"XGCERP - Foundation - India",
-			f"XGCERP Foundation India - {abbr}",
+			"AXERP - Foundation - India",
+			f"AXERP Foundation India - {abbr}",
 			f"No-Space-{abbr}",
 			"- Warehouse",
 		]
 
 		expected_names = [
 			f"Warehouse Name - {abbr}",
-			f"XGCERP Foundation India - {abbr}",
+			f"AXERP Foundation India - {abbr}",
 			f"Gold - Member - {abbr}",
 			f" - {abbr}",
-			f"XGCERP - Foundation - India - {abbr}",
-			f"XGCERP Foundation India - {abbr}",
+			f"AXERP - Foundation - India - {abbr}",
+			f"AXERP Foundation India - {abbr}",
 			f"No-Space-{abbr} - {abbr}",
 			f"- Warehouse - {abbr}",
 		]

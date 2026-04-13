@@ -5,12 +5,12 @@ from frappe.utils import add_months, today
 
 from erpnext import get_company_currency
 from erpnext.stock.doctype.item.test_item import make_item
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 from .blanket_order import make_order
 
 
-class TestBlanketOrder(XGCERPTestSuite):
+class TestBlanketOrder(AXERPTestSuite):
 	def setUp(self):
 		frappe.flags.args = frappe._dict()
 

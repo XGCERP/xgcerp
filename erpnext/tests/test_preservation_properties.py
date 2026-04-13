@@ -26,7 +26,7 @@ class TestPreservationProperties(unittest.TestCase):
 	Property 2: Preservation - Other Modules and Rebranding Continue to Work
 	
 	These tests verify that:
-	- All modules except "XGCERP Integrations" continue to work correctly
+	- All modules except "AXERP Integrations" continue to work correctly
 	- The smart_rename.py script continues to rebrand other content correctly
 	- Existing imports and functionality remain intact
 	"""
@@ -143,7 +143,7 @@ class TestPreservationProperties(unittest.TestCase):
 	@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 	def test_04_property_other_modules_have_correct_structure(self, module_name):
 		"""
-		Property: For all modules except "XGCERP Integrations", the module structure is correct.
+		Property: For all modules except "AXERP Integrations", the module structure is correct.
 		
 		This property-based test generates test cases for multiple modules and verifies
 		that they all have the expected folder structure.
@@ -173,7 +173,7 @@ class TestPreservationProperties(unittest.TestCase):
 			alphabet=st.characters(whitelist_categories=("Lu", "Ll", "Nd", "Zs")),
 			min_size=10,
 			max_size=100
-		).filter(lambda x: "XGCERP Integrations" not in x)
+		).filter(lambda x: "AXERP Integrations" not in x)
 	)
 	@settings(
 		max_examples=50,
@@ -181,8 +181,8 @@ class TestPreservationProperties(unittest.TestCase):
 	)
 	def test_05_property_smart_rename_renames_erpnext_to_xgcerp(self, content):
 		"""
-		Property: For all content that does NOT contain "XGCERP Integrations",
-		the smart_rename logic should rename "XGCERP" to "XGCERP".
+		Property: For all content that does NOT contain "AXERP Integrations",
+		the smart_rename logic should rename "AXERP" to "AXERP".
 		
 		This verifies that the rebranding functionality continues to work correctly
 		for all content except the integrations module.
@@ -190,58 +190,58 @@ class TestPreservationProperties(unittest.TestCase):
 		Expected on UNFIXED code: PASS (rebranding works for other content)
 		Expected on FIXED code: PASS (rebranding still works for other content)
 		"""
-		# Add "XGCERP" to the content to test rebranding
-		test_content = f"XGCERP {content}"
+		# Add "AXERP" to the content to test rebranding
+		test_content = f"AXERP {content}"
 		
 		# Simulate the rebranding logic (global replace)
-		rebranded = test_content.replace("XGCERP", "XGCERP")
+		rebranded = test_content.replace("AXERP", "AXERP")
 		
-		# Verify that "XGCERP" was replaced with "XGCERP"
-		if "XGCERP" in test_content:
+		# Verify that "AXERP" was replaced with "AXERP"
+		if "AXERP" in test_content:
 			self.assertIn(
-				"XGCERP",
+				"AXERP",
 				rebranded,
-				"Content with 'XGCERP' should be rebranded to 'XGCERP'"
+				"Content with 'AXERP' should be rebranded to 'AXERP'"
 			)
 			self.assertNotIn(
-				"XGCERP",
+				"AXERP",
 				rebranded,
-				"After rebranding, 'XGCERP' should not remain"
+				"After rebranding, 'AXERP' should not remain"
 			)
 
 	@given(
 		module_name=st.sampled_from([
-			"XGCERP Assets",
-			"XGCERP CRM",
-			"XGCERP Accounts",
-			"XGCERP Manufacturing"
+			"AXERP Assets",
+			"AXERP CRM",
+			"AXERP Accounts",
+			"AXERP Manufacturing"
 		])
 	)
 	@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 	def test_06_property_other_erpnext_modules_are_rebranded(self, module_name):
 		"""
-		Property: For all "XGCERP X" module names (except "XGCERP Integrations"),
-		the smart_rename logic should rename them to "XGCERP X".
+		Property: For all "AXERP X" module names (except "AXERP Integrations"),
+		the smart_rename logic should rename them to "AXERP X".
 		
-		This verifies that other modules with "XGCERP" in their name are correctly
-		rebranded, while only "XGCERP Integrations" is excluded.
+		This verifies that other modules with "AXERP" in their name are correctly
+		rebranded, while only "AXERP Integrations" is excluded.
 		
-		Expected on UNFIXED code: PASS (other XGCERP modules are rebranded)
-		Expected on FIXED code: PASS (other XGCERP modules still rebranded)
+		Expected on UNFIXED code: PASS (other AXERP modules are rebranded)
+		Expected on FIXED code: PASS (other AXERP modules still rebranded)
 		"""
 		# Simulate the rebranding logic
-		rebranded = module_name.replace("XGCERP", "XGCERP")
+		rebranded = module_name.replace("AXERP", "AXERP")
 		
 		# Verify rebranding occurred
 		self.assertIn(
-			"XGCERP",
+			"AXERP",
 			rebranded,
-			f"Module '{module_name}' should be rebranded to use 'XGCERP'"
+			f"Module '{module_name}' should be rebranded to use 'AXERP'"
 		)
 		self.assertNotIn(
-			"XGCERP",
+			"AXERP",
 			rebranded,
-			f"After rebranding, '{module_name}' should not contain 'XGCERP'"
+			f"After rebranding, '{module_name}' should not contain 'AXERP'"
 		)
 
 	def test_07_json_module_fields_for_other_modules_exist(self):
@@ -303,7 +303,7 @@ class TestPreservationProperties(unittest.TestCase):
 		# Verify the module field is present
 		self.assertIn("module", json_content)
 		
-		# Verify the module field is not "XGCERP Integrations" or "XGCERP Integrations"
+		# Verify the module field is not "AXERP Integrations" or "AXERP Integrations"
 		self.assertNotIn("Integrations", json_content["module"])
 		
 		# Verify the module name is a valid string
@@ -346,8 +346,8 @@ class TestPreservationProperties(unittest.TestCase):
 	)
 	def test_10_property_rebranding_works_for_non_integrations_content(self, prefix, suffix):
 		"""
-		Property: For all content containing "XGCERP" but NOT "XGCERP Integrations",
-		the rebranding should replace "XGCERP" with "XGCERP".
+		Property: For all content containing "AXERP" but NOT "AXERP Integrations",
+		the rebranding should replace "AXERP" with "AXERP".
 		
 		This is a comprehensive property test that verifies the rebranding logic
 		works correctly for all non-integrations content.
@@ -355,11 +355,11 @@ class TestPreservationProperties(unittest.TestCase):
 		Expected on UNFIXED code: PASS (rebranding works)
 		Expected on FIXED code: PASS (rebranding still works)
 		"""
-		# Construct test content with "XGCERP" in the middle
-		test_content = f"{prefix} XGCERP {suffix}"
+		# Construct test content with "AXERP" in the middle
+		test_content = f"{prefix} AXERP {suffix}"
 		
-		# Skip if this accidentally creates "XGCERP Integrations"
-		if "XGCERP Integrations" in test_content:
+		# Skip if this accidentally creates "AXERP Integrations"
+		if "AXERP Integrations" in test_content:
 			return
 		
 		# Create a temporary file with the test content
@@ -372,21 +372,21 @@ class TestPreservationProperties(unittest.TestCase):
 			with open(temp_path, 'r') as f:
 				content = f.read()
 			
-			rebranded = content.replace("XGCERP", "XGCERP")
+			rebranded = content.replace("AXERP", "AXERP")
 			
 			# Verify rebranding occurred
 			self.assertIn(
-				"XGCERP",
+				"AXERP",
 				rebranded,
-				"Content should be rebranded to use 'XGCERP'"
+				"Content should be rebranded to use 'AXERP'"
 			)
 			
-			# Verify "XGCERP" was replaced (except in "XGCERP Integrations")
-			if "XGCERP Integrations" not in content:
+			# Verify "AXERP" was replaced (except in "AXERP Integrations")
+			if "AXERP Integrations" not in content:
 				self.assertNotIn(
-					"XGCERP",
+					"AXERP",
 					rebranded,
-					"After rebranding, 'XGCERP' should not remain (except in 'XGCERP Integrations')"
+					"After rebranding, 'AXERP' should not remain (except in 'AXERP Integrations')"
 				)
 		finally:
 			# Clean up temporary file

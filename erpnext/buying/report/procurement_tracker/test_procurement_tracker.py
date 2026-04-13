@@ -2,8 +2,8 @@
 # For license information, please see license.txt
 
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestProcurementTracker(XGCERPTestSuite):
+class TestProcurementTracker(AXERPTestSuite):
 	pass

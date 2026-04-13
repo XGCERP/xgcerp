@@ -7,14 +7,14 @@ from frappe.core.doctype.user_permission.user_permission import add_user_permiss
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 
 from erpnext.controllers import queries
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
 def add_default_params(func, doctype):
 	return partial(func, doctype=doctype, txt="", searchfield="name", start=0, page_len=20, filters=None)
 
 
-class TestQueries(XGCERPTestSuite):
+class TestQueries(AXERPTestSuite):
 	def assert_nested_in(self, item, container):
 		self.assertIn(item, [vals for tuples in container for vals in tuples])
 
@@ -109,7 +109,7 @@ class TestQueries(XGCERPTestSuite):
 			}
 		)
 
-		with XGCERPTestSuite.set_user(self, user.name):
+		with AXERPTestSuite.set_user(self, user.name):
 			params = {
 				"doctype": "Employee",
 				"txt": "",

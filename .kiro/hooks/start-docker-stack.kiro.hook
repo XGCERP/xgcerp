@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Start Docker Stack",
+  "description": "Starts the full AXERP Docker Compose stack (backend, frontend, DB, Redis, workers). Access at http://localhost:8080 after ~60s. Login: Administrator / admin.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "docker compose -f docker/docker-compose.yml up -d",
+    "timeout": 120
+  }
+}

@@ -2,10 +2,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestUtils(XGCERPTestSuite):
+class TestUtils(AXERPTestSuite):
 	def test_reset_default_field_value(self):
 		doc = frappe.get_doc(
 			{

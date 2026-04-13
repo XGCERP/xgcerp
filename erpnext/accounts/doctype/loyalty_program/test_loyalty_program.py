@@ -10,10 +10,10 @@ from erpnext.accounts.doctype.loyalty_program.loyalty_program import (
 	get_loyalty_program_details_with_points,
 )
 from erpnext.accounts.party import get_dashboard_info
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestLoyaltyProgram(XGCERPTestSuite):
+class TestLoyaltyProgram(AXERPTestSuite):
 	def test_loyalty_points_earned_single_tier(self):
 		frappe.db.set_value("Customer", "Test Loyalty Customer", "loyalty_program", "Test Single Loyalty")
 		# create a new sales invoice

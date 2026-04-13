@@ -5,10 +5,10 @@ import frappe
 from frappe.utils import add_days, getdate, nowdate
 
 from erpnext.projects.doctype.task.task import CircularReferenceError, ParentIsGroupError
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestTask(XGCERPTestSuite):
+class TestTask(AXERPTestSuite):
 	def test_task_total_costing_and_billing_amount(self):
 		from erpnext.projects.doctype.project.test_project import make_project
 		from erpnext.projects.doctype.timesheet.test_timesheet import make_timesheet

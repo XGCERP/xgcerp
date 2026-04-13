@@ -8,10 +8,10 @@ from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.report.item_shortage_report.item_shortage_report import (
 	execute as item_shortage_report,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestItemShortageReport(XGCERPTestSuite):
+class TestItemShortageReport(AXERPTestSuite):
 	def test_item_shortage_report(self):
 		item = make_item().name
 		so = make_sales_order(item_code=item)

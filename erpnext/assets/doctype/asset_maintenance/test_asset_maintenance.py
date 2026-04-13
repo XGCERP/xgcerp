@@ -7,10 +7,10 @@ from frappe.utils import add_days, get_last_day, nowdate
 
 from erpnext.assets.doctype.asset_maintenance.asset_maintenance import calculate_next_due_date
 from erpnext.stock.doctype.purchase_receipt.test_purchase_receipt import make_purchase_receipt
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestAssetMaintenance(XGCERPTestSuite):
+class TestAssetMaintenance(AXERPTestSuite):
 	def setUp(self):
 		set_depreciation_settings_in_company()
 		self.pr = make_purchase_receipt(

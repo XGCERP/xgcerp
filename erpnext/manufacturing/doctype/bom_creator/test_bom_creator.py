@@ -10,10 +10,10 @@ from erpnext.manufacturing.doctype.bom_creator.bom_creator import (
 	add_sub_assembly,
 )
 from erpnext.stock.doctype.item.test_item import make_item
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestBOMCreator(XGCERPTestSuite):
+class TestBOMCreator(AXERPTestSuite):
 	def setUp(self) -> None:
 		create_items()
 

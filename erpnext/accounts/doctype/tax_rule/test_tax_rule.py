@@ -7,10 +7,10 @@ import frappe
 from erpnext.accounts.doctype.tax_rule.tax_rule import ConflictingTaxRule, get_tax_template
 from erpnext.crm.doctype.opportunity.opportunity import make_quotation
 from erpnext.crm.doctype.opportunity.test_opportunity import make_opportunity
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestTaxRule(XGCERPTestSuite):
+class TestTaxRule(AXERPTestSuite):
 	def setUp(self):
 		frappe.db.set_single_value("Shopping Cart Settings", "enabled", 0)
 

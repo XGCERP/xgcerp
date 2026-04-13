@@ -9,10 +9,10 @@ from frappe.utils import add_days, add_months, flt, getdate, nowdate
 
 from erpnext.controllers.accounts_controller import InvalidQtyError, update_child_qty_rate
 from erpnext.selling.doctype.quotation.quotation import make_sales_order
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestQuotation(XGCERPTestSuite):
+class TestQuotation(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Quotation")
 
@@ -183,7 +183,7 @@ class TestQuotation(XGCERPTestSuite):
 
 		self.assertTrue(quotation.payment_schedule)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings",
 		{"automatically_fetch_payment_terms": 1},
 	)
@@ -327,7 +327,7 @@ class TestQuotation(XGCERPTestSuite):
 		sales_order.delivery_date = nowdate()
 		sales_order.insert()
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings",
 		{
 			"add_taxes_from_item_tax_template": 0,
@@ -877,7 +877,7 @@ class TestQuotation(XGCERPTestSuite):
 		quotation.items[0].conversion_factor = 2.23
 		self.assertRaises(frappe.ValidationError, quotation.save)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings",
 		{"add_taxes_from_item_tax_template": 1, "add_taxes_from_taxes_and_charges_template": 0},
 	)
@@ -945,7 +945,7 @@ class TestQuotation(XGCERPTestSuite):
 		self.assertEqual(quotation.rounding_adjustment, 0)
 		self.assertEqual(quotation.rounded_total, 0)
 
-	@XGCERPTestSuite.change_settings("Selling Settings", {"allow_zero_qty_in_quotation": 1})
+	@AXERPTestSuite.change_settings("Selling Settings", {"allow_zero_qty_in_quotation": 1})
 	def test_so_from_zero_qty_quotation(self):
 		from erpnext.selling.doctype.quotation.quotation import make_sales_order
 		from erpnext.stock.doctype.item.test_item import make_item
@@ -978,7 +978,7 @@ class TestQuotation(XGCERPTestSuite):
 		quotation.reload()
 		self.assertEqual(quotation.status, "Ordered")
 
-	@XGCERPTestSuite.change_settings("Selling Settings", {"allow_multiple_items": 1})
+	@AXERPTestSuite.change_settings("Selling Settings", {"allow_multiple_items": 1})
 	def test_duplicate_items_in_quotation(self):
 		from erpnext.selling.doctype.quotation.quotation import make_sales_order
 		from erpnext.stock.doctype.item.test_item import make_item
@@ -1025,7 +1025,7 @@ class TestQuotation(XGCERPTestSuite):
 		quotation.reload()
 		self.assertEqual(quotation.status, "Ordered")
 
-	@XGCERPTestSuite.change_settings("Accounts Settings", {"allow_pegged_currencies_exchange_rates": True})
+	@AXERPTestSuite.change_settings("Accounts Settings", {"allow_pegged_currencies_exchange_rates": True})
 	def test_make_quotation_qar_to_inr(self):
 		quotation = make_quotation(
 			currency="QAR",
@@ -1078,7 +1078,7 @@ class TestQuotation(XGCERPTestSuite):
 		quotation.reload()
 		self.assertEqual(quotation.status, "Open")
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings",
 		{"automatically_fetch_payment_terms": 1},
 	)

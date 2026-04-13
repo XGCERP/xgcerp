@@ -10,10 +10,10 @@ from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import (
 	create_sales_invoice,
 )
 from erpnext.stock.doctype.item.test_item import create_item
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestProcessDeferredAccounting(XGCERPTestSuite):
+class TestProcessDeferredAccounting(AXERPTestSuite):
 	def test_creation_of_ledger_entry_on_submit(self):
 		"""test creation of gl entries on submission of document"""
 		change_acc_settings(acc_frozen_till_date="2023-05-31", book_deferred_entries_based_on="Months")

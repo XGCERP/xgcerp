@@ -5,10 +5,10 @@
 import frappe
 
 from erpnext.stock.doctype.item_attribute.item_attribute import ItemAttributeIncrementError
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestItemAttribute(XGCERPTestSuite):
+class TestItemAttribute(AXERPTestSuite):
 	def setUp(self):
 		super().setUp()
 		if frappe.db.exists("Item Attribute", "_Test_Length"):

@@ -5,13 +5,13 @@ import frappe
 from frappe.utils import nowdate
 
 from erpnext.accounts.doctype.bank_transaction.test_bank_transaction import create_bank_account
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 IBAN_1 = "DE02000000003716541159"
 IBAN_2 = "DE02500105170137075030"
 
 
-class TestAutoMatchParty(XGCERPTestSuite):
+class TestAutoMatchParty(AXERPTestSuite):
 	def setUp(self):
 		create_bank_account()
 		frappe.db.set_single_value("Accounts Settings", "enable_party_matching", 1)

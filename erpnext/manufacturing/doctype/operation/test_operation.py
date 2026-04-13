@@ -4,10 +4,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestOperation(XGCERPTestSuite):
+class TestOperation(AXERPTestSuite):
 	pass
 
 

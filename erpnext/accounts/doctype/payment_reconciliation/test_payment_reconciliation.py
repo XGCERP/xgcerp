@@ -16,10 +16,10 @@ from erpnext.accounts.party import get_party_account
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
 from erpnext.stock.doctype.item.test_item import create_item
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestPaymentReconciliation(XGCERPTestSuite):
+class TestPaymentReconciliation(AXERPTestSuite):
 	def setUp(self):
 		self.create_company()
 		self.create_item()
@@ -1230,7 +1230,7 @@ class TestPaymentReconciliation(XGCERPTestSuite):
 		payment_vouchers = [x.get("reference_name") for x in pr.get("payments")]
 		self.assertCountEqual(payment_vouchers, [je2.name, pe2.name])
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings",
 		{
 			"allow_multi_currency_invoices_against_single_party_account": 1,

@@ -3,10 +3,10 @@
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class FinancialReportTemplateTestCase(XGCERPTestSuite):
+class FinancialReportTemplateTestCase(AXERPTestSuite):
 	"""Utility class with common setup and helper methods for all test classes"""
 
 	def setUp(self):

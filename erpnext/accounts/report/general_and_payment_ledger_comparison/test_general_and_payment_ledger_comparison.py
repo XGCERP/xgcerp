@@ -7,10 +7,10 @@ from erpnext.accounts.report.general_and_payment_ledger_comparison.general_and_p
 	execute,
 )
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestGeneralAndPaymentLedger(XGCERPTestSuite, AccountsTestMixin):
+class TestGeneralAndPaymentLedger(AXERPTestSuite, AccountsTestMixin):
 	def setUp(self):
 		self.create_company()
 		self.cleanup()

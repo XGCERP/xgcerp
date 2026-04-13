@@ -12,10 +12,10 @@ from erpnext.maintenance.doctype.maintenance_schedule.maintenance_schedule impor
 )
 from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.stock_entry.test_stock_entry import make_serialized_item
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestMaintenanceSchedule(XGCERPTestSuite):
+class TestMaintenanceSchedule(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Stock Entry")
 

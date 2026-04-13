@@ -8,10 +8,10 @@ from frappe.core.doctype.user_permission.test_user_permission import create_user
 from erpnext.accounts.doctype.pos_invoice.test_pos_invoice import create_pos_invoice
 from erpnext.accounts.doctype.pos_profile.test_pos_profile import make_pos_profile
 from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestPOSOpeningEntry(XGCERPTestSuite):
+class TestPOSOpeningEntry(AXERPTestSuite):
 	def setUp(self):
 		frappe.db.set_single_value("POS Settings", "invoice_type", "POS Invoice")
 		make_stock_entry(target="_Test Warehouse - _TC", qty=2, basic_rate=100)

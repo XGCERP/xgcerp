@@ -5,7 +5,7 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 LEAD_EMAIL = "test_appointment_lead@example.com"
 
@@ -27,7 +27,7 @@ def create_test_appointment():
 	return test_appointment
 
 
-class TestAppointment(XGCERPTestSuite):
+class TestAppointment(AXERPTestSuite):
 	def setUp(self):
 		frappe.db.delete("Lead", {"email_id": LEAD_EMAIL})
 		self.test_appointment = create_test_appointment()

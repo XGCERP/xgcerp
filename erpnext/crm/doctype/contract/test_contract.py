@@ -5,10 +5,10 @@ import unittest
 import frappe
 from frappe.utils import add_days, nowdate
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestContract(XGCERPTestSuite):
+class TestContract(AXERPTestSuite):
 	def setUp(self):
 		frappe.db.sql("delete from `tabContract`")
 		self.contract_doc = get_contract()

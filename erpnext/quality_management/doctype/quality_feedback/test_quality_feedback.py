@@ -4,10 +4,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestQualityFeedback(XGCERPTestSuite):
+class TestQualityFeedback(AXERPTestSuite):
 	def test_quality_feedback(self):
 		template = frappe.get_doc(
 			doctype="Quality Feedback Template",

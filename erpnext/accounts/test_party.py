@@ -1,10 +1,10 @@
 import frappe
 
 from erpnext.accounts.party import get_default_price_list
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class PartyTestCase(XGCERPTestSuite):
+class PartyTestCase(AXERPTestSuite):
 	def test_get_default_price_list_should_return_none_for_invalid_group(self):
 		customer = frappe.get_doc(
 			{

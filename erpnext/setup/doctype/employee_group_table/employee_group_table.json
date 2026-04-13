@@ -29,7 +29,7 @@
    "fieldname": "user_id",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "XGCERP User ID",
+   "label": "AXERP User ID",
    "read_only": 1
   }
  ],

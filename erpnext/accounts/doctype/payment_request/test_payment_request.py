@@ -17,7 +17,7 @@ from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sal
 from erpnext.buying.doctype.purchase_order.test_purchase_order import create_purchase_order
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 from erpnext.setup.utils import get_exchange_rate
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 PAYMENT_URL = "https://example.com/payment"
 
@@ -62,7 +62,7 @@ payment_method = [
 ]
 
 
-class TestPaymentRequest(XGCERPTestSuite):
+class TestPaymentRequest(AXERPTestSuite):
 	def setUp(self):
 		for payment_gateway in payment_gateways:
 			if not frappe.db.get_value("Payment Gateway", payment_gateway["gateway"], "name"):
@@ -499,7 +499,7 @@ class TestPaymentRequest(XGCERPTestSuite):
 			return_doc=1,
 		)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings", {"allow_multi_currency_invoices_against_single_party_account": 1}
 	)
 	def test_multiple_payment_if_partially_paid_for_multi_currency(self):
@@ -617,7 +617,7 @@ class TestPaymentRequest(XGCERPTestSuite):
 		self.assertEqual(pr.outstanding_amount, 0)
 		self.assertEqual(pr.grand_total, 20000)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings", {"allow_multi_currency_invoices_against_single_party_account": 1}
 	)
 	def test_single_payment_with_payment_term_for_multi_currency(self):

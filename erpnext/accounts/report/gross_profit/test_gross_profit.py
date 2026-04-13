@@ -9,10 +9,10 @@ from erpnext.stock.doctype.delivery_note.delivery_note import make_sales_invoice
 from erpnext.stock.doctype.delivery_note.test_delivery_note import create_delivery_note
 from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestGrossProfit(XGCERPTestSuite):
+class TestGrossProfit(AXERPTestSuite):
 	def setUp(self):
 		self.create_company()
 		self.create_item()
@@ -388,7 +388,7 @@ class TestGrossProfit(XGCERPTestSuite):
 		report_output = {k: v for k, v in gp_entry[0].items() if k in expected_entry}
 		self.assertEqual(report_output, expected_entry)
 
-	@XGCERPTestSuite.change_settings("Selling Settings", {"allow_multiple_items": True})
+	@AXERPTestSuite.change_settings("Selling Settings", {"allow_multiple_items": True})
 	def test_crnote_against_invoice_with_multiple_instances_of_same_item(self):
 		"""
 		Item Qty for Sales Invoices with multiple instances of same item go in the -ve. Ideally, the credit noteshould cancel out the invoice items.

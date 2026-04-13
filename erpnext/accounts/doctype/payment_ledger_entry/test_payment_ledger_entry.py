@@ -10,10 +10,10 @@ from erpnext.accounts.doctype.payment_entry.test_payment_entry import create_pay
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
 from erpnext.stock.doctype.item.test_item import create_item
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestPaymentLedgerEntry(XGCERPTestSuite):
+class TestPaymentLedgerEntry(AXERPTestSuite):
 	def setUp(self):
 		self.ple = qb.DocType("Payment Ledger Entry")
 		self.create_company()
@@ -442,7 +442,7 @@ class TestPaymentLedgerEntry(XGCERPTestSuite):
 		self.assertEqual(pl_entries_for_crnote[0], expected_values[0])
 		self.assertEqual(pl_entries_for_crnote[1], expected_values[1])
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings",
 		{"unlink_payment_on_cancellation_of_invoice": 1, "delete_linked_ledger_entries": 1},
 	)
@@ -471,7 +471,7 @@ class TestPaymentLedgerEntry(XGCERPTestSuite):
 		si.delete()
 		self.assertRaises(frappe.DoesNotExistError, frappe.get_doc, si.doctype, si.name)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings",
 		{"unlink_payment_on_cancellation_of_invoice": 1, "delete_linked_ledger_entries": 1},
 	)
@@ -504,7 +504,7 @@ class TestPaymentLedgerEntry(XGCERPTestSuite):
 		si.delete()
 		self.assertRaises(frappe.DoesNotExistError, frappe.get_doc, si.doctype, si.name)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings",
 		{
 			"unlink_payment_on_cancellation_of_invoice": 1,

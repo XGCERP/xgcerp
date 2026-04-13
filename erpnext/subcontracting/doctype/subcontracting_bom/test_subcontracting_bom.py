@@ -3,10 +3,10 @@
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSubcontractingBOM(XGCERPTestSuite):
+class TestSubcontractingBOM(AXERPTestSuite):
 	pass
 
 

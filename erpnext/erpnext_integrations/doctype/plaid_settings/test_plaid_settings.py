@@ -13,10 +13,10 @@ from erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings import (
 	get_plaid_configuration,
 	new_bank_transaction,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestPlaidSettings(XGCERPTestSuite):
+class TestPlaidSettings(AXERPTestSuite):
 	def test_plaid_disabled(self):
 		frappe.db.set_single_value("Plaid Settings", "enabled", 0)
 		self.assertTrue(get_plaid_configuration() == "disabled")

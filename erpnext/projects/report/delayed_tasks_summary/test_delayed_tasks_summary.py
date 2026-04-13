@@ -5,10 +5,10 @@ from frappe.utils import add_days, add_months, nowdate
 
 from erpnext.projects.doctype.task.test_task import create_task
 from erpnext.projects.report.delayed_tasks_summary.delayed_tasks_summary import execute
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestDelayedTasksSummary(XGCERPTestSuite):
+class TestDelayedTasksSummary(AXERPTestSuite):
 	@classmethod
 	def setUp(self):
 		task1 = create_task("_Test Task 98", add_days(nowdate(), -10), nowdate())

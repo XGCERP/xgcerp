@@ -9,10 +9,10 @@ from erpnext.accounts.doctype.shipping_rule.shipping_rule import (
 	ManyBlankToValuesError,
 	OverlappingConditionError,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestShippingRule(XGCERPTestSuite):
+class TestShippingRule(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Shipping Rule")
 

@@ -1,13 +1,13 @@
 {
   "enabled": true,
   "name": "Sync Upstream ERPNext",
-  "description": "Manually triggered hook that fetches the latest upstream ERPNext tag, merges it, applies XGC branding via smart_rename.py, and tags the release. Run this when you want to sync to a new upstream version.",
+  "description": "Manually triggered hook that fetches the latest upstream ERPNext tag, merges it, applies Axina Group branding via smart_rename.py, and tags the release. Run this when you want to sync to a new upstream version.",
   "version": "1",
   "when": {
     "type": "userTriggered"
   },
   "then": {
     "type": "askAgent",
-    "prompt": "The user wants to sync from upstream ERPNext. Run `bash scripts/sync_upstream.sh v16.13.3` to merge the latest upstream tag and apply XGC branding. If there are merge conflicts, list them and help the user resolve them. After the sync completes, verify that erpnext/modules.txt still contains \"ERPNext Integrations\" (not \"XGCERP Integrations\") and that scripts/smart_rename.py preserved the erpnext_integrations module correctly. Report the results."
+    "prompt": "The user wants to sync from upstream ERPNext. Run `bash scripts/sync_upstream.sh v16.13.3` to merge the latest upstream tag and apply Axina Group branding. If there are merge conflicts, list them and help the user resolve them. After the sync completes, verify that erpnext/modules.txt still contains \"ERPNext Integrations\" (not \"AXERP Integrations\") and that scripts/smart_rename.py preserved the erpnext_integrations module correctly. Report the results."
   }
 }

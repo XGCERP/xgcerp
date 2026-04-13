@@ -5,10 +5,10 @@ from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_ent
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.accounts.report.accounts_receivable_summary.accounts_receivable_summary import execute
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestAccountsReceivable(XGCERPTestSuite, AccountsTestMixin):
+class TestAccountsReceivable(AXERPTestSuite, AccountsTestMixin):
 	def setUp(self):
 		self.maxDiff = None
 		self.create_company()
@@ -109,7 +109,7 @@ class TestAccountsReceivable(XGCERPTestSuite, AccountsTestMixin):
 		self.assertEqual(len(rpt_output), 1)
 		self.assertDictEqual(rpt_output[0], expected_data)
 
-	@XGCERPTestSuite.change_settings("Selling Settings", {"cust_master_name": "Naming Series"})
+	@AXERPTestSuite.change_settings("Selling Settings", {"cust_master_name": "Naming Series"})
 	def test_02_various_filters_and_output(self):
 		filters = {
 			"company": self.company,

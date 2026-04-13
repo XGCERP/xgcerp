@@ -24,10 +24,10 @@ from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle 
 	get_serial_nos_from_bundle,
 	make_serial_batch_bundle,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestAssetRepair(XGCERPTestSuite):
+class TestAssetRepair(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Stock Entry")
 		set_depreciation_settings_in_company()

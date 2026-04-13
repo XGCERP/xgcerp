@@ -14,10 +14,10 @@ from erpnext.selling.doctype.customer.customer import (
 	get_customer_outstanding,
 	parse_full_name,
 )
-from erpnext.tests.utils import XGCERPTestSuite, create_test_contact_and_address
+from erpnext.tests.utils import AXERPTestSuite, create_test_contact_and_address
 
 
-class TestCustomer(XGCERPTestSuite):
+class TestCustomer(AXERPTestSuite):
 	def test_get_customer_group_details(self):
 		doc = frappe.new_doc("Customer Group")
 		doc.customer_group_name = "_Testing Customer Group"

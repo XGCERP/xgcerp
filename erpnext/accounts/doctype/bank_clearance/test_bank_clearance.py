@@ -14,10 +14,10 @@ from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
-from erpnext.tests.utils import XGCERPTestSuite, if_lending_app_installed, if_lending_app_not_installed
+from erpnext.tests.utils import AXERPTestSuite, if_lending_app_installed, if_lending_app_not_installed
 
 
-class TestBankClearance(XGCERPTestSuite):
+class TestBankClearance(AXERPTestSuite):
 	def setUp(self):
 		frappe.clear_cache()
 		create_warehouse(

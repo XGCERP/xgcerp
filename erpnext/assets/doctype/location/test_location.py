@@ -5,10 +5,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestLocation(XGCERPTestSuite):
+class TestLocation(AXERPTestSuite):
 	def test_location_features(self):
 		locations = ["Basil Farm", "Division 1", "Field 1", "Block 1"]
 		area = 0

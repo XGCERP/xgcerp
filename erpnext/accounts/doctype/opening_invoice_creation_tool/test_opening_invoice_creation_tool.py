@@ -6,10 +6,10 @@ import frappe
 from erpnext.accounts.doctype.opening_invoice_creation_tool.opening_invoice_creation_tool import (
 	get_temporary_opening_account,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestOpeningInvoiceCreationTool(XGCERPTestSuite):
+class TestOpeningInvoiceCreationTool(AXERPTestSuite):
 	def make_invoices(
 		self,
 		invoice_type="Sales",

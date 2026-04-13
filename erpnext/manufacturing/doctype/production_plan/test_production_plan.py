@@ -24,10 +24,10 @@ from erpnext.stock.doctype.stock_reconciliation.test_stock_reconciliation import
 	create_stock_reconciliation,
 )
 from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry import StockReservation
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestProductionPlan(XGCERPTestSuite):
+class TestProductionPlan(AXERPTestSuite):
 	def setUp(self):
 		for item in [
 			"Test Production Item 1",

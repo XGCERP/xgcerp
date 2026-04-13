@@ -5,10 +5,10 @@ import unittest
 import frappe
 
 from erpnext.stock.doctype.repost_item_valuation.repost_item_valuation import get_recipients
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestStockRepostingSettings(XGCERPTestSuite):
+class TestStockRepostingSettings(AXERPTestSuite):
 	def test_notify_reposting_error_to_role(self):
 		role = "Notify Reposting Role"
 

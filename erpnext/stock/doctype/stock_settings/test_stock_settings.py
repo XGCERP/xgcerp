@@ -4,10 +4,10 @@
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestStockSettings(XGCERPTestSuite):
+class TestStockSettings(AXERPTestSuite):
 	def setUp(self):
 		super().setUp()
 		frappe.db.set_single_value("Stock Settings", "clean_description_html", 0)

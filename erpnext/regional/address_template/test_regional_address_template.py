@@ -1,7 +1,7 @@
 import frappe
 
 from erpnext.regional.address_template.setup import get_address_templates, update_address_template
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
 def ensure_country(country):
@@ -13,7 +13,7 @@ def ensure_country(country):
 		return c
 
 
-class TestRegionalAddressTemplate(XGCERPTestSuite):
+class TestRegionalAddressTemplate(AXERPTestSuite):
 	def test_get_address_templates(self):
 		"""Get the countries and paths from the templates directory."""
 		templates = get_address_templates()

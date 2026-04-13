@@ -5,10 +5,10 @@ import unittest
 import frappe
 
 from erpnext.assets.doctype.asset.test_asset import create_asset
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestAssetCategory(XGCERPTestSuite):
+class TestAssetCategory(AXERPTestSuite):
 	def test_mandatory_fields(self):
 		asset_category = frappe.new_doc("Asset Category")
 		asset_category.asset_category_name = "Computers"

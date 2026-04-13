@@ -3,10 +3,10 @@ import unittest
 import frappe
 
 from erpnext.crm.report.sales_pipeline_analytics.sales_pipeline_analytics import execute
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSalesPipelineAnalytics(XGCERPTestSuite):
+class TestSalesPipelineAnalytics(AXERPTestSuite):
 	def setUp(self):
 		create_opportunity()
 

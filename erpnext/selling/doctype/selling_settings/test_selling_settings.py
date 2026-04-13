@@ -4,10 +4,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSellingSettings(XGCERPTestSuite):
+class TestSellingSettings(AXERPTestSuite):
 	def test_defaults_populated(self):
 		# Setup default values are not populated on migrate, this test checks
 		# if setup was completed correctly

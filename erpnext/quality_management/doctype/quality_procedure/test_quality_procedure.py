@@ -3,12 +3,12 @@
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 from .quality_procedure import add_node
 
 
-class TestQualityProcedure(XGCERPTestSuite):
+class TestQualityProcedure(AXERPTestSuite):
 	def test_add_node(self):
 		procedure = create_procedure(
 			{

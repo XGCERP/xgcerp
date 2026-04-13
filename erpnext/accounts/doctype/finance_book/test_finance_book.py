@@ -5,10 +5,10 @@ import unittest
 import frappe
 
 from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestFinanceBook(XGCERPTestSuite):
+class TestFinanceBook(AXERPTestSuite):
 	def test_finance_book(self):
 		finance_book = create_finance_book()
 

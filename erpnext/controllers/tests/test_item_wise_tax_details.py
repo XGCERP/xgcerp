@@ -3,10 +3,10 @@ import json
 import frappe
 from frappe.utils import flt
 
-from erpnext.tests.utils import XGCERPTestSuite, change_settings
+from erpnext.tests.utils import AXERPTestSuite, change_settings
 
 
-class TestTaxesAndTotals(XGCERPTestSuite):
+class TestTaxesAndTotals(AXERPTestSuite):
 	def setUp(self):
 		self.doc = frappe.get_doc(
 			{

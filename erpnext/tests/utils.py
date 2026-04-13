@@ -2963,7 +2963,7 @@ class BootStrapTestData:
 BootStrapTestData()
 
 
-class XGCERPTestSuite(unittest.TestCase):
+class AXERPTestSuite(unittest.TestCase):
 	@classmethod
 	def registerAs(cls, _as):
 		def decorator(cm_func):
@@ -2994,7 +2994,7 @@ class XGCERPTestSuite(unittest.TestCase):
 			frappe.set_user(old_user)
 
 
-@XGCERPTestSuite.registerAs(staticmethod)
+@AXERPTestSuite.registerAs(staticmethod)
 @contextmanager
 def change_settings(doctype, settings_dict=None, /, **settings) -> None:
 	"""Temporarily: change settings in a settings doctype."""

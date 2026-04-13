@@ -26,10 +26,10 @@ from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle 
 	make_serial_batch_bundle,
 )
 from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestPurchaseReceipt(XGCERPTestSuite):
+class TestPurchaseReceipt(AXERPTestSuite):
 	def setUp(self):
 		frappe.local.future_sle = {}
 		self.load_test_records("Purchase Receipt")
@@ -1394,7 +1394,7 @@ class TestPurchaseReceipt(XGCERPTestSuite):
 
 		self.assertEqual(discrepancy_caused_by_exchange_rate_diff, amount)
 
-	@XGCERPTestSuite.change_settings("Accounts Settings", {"automatically_fetch_payment_terms": 1})
+	@AXERPTestSuite.change_settings("Accounts Settings", {"automatically_fetch_payment_terms": 1})
 	def test_payment_terms_are_fetched_when_creating_purchase_invoice(self):
 		from erpnext.accounts.doctype.payment_entry.test_payment_entry import (
 			create_payment_terms_template,
@@ -1425,7 +1425,7 @@ class TestPurchaseReceipt(XGCERPTestSuite):
 		# self.assertEqual(po.payment_terms_template, pi.payment_terms_template)
 		compare_payment_schedules(self, po, pi)
 
-	@XGCERPTestSuite.change_settings("Stock Settings", {"allow_negative_stock": 1})
+	@AXERPTestSuite.change_settings("Stock Settings", {"allow_negative_stock": 1})
 	def test_neg_to_positive(self):
 		from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 
@@ -4549,7 +4549,7 @@ class TestPurchaseReceipt(XGCERPTestSuite):
 
 		frappe.db.set_single_value("Buying Settings", "set_valuation_rate_for_rejected_materials", 0)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Buying Settings",
 		{"bill_for_rejected_quantity_in_purchase_invoice": 1, "set_valuation_rate_for_rejected_materials": 1},
 	)
@@ -4907,7 +4907,7 @@ class TestPurchaseReceipt(XGCERPTestSuite):
 
 		self.assertEqual(sles, [1500.0, 1500.0])
 
-	@XGCERPTestSuite.change_settings("Stock Settings", {"allow_negative_stock": 0})
+	@AXERPTestSuite.change_settings("Stock Settings", {"allow_negative_stock": 0})
 	def test_multiple_transactions_with_same_posting_datetime(self):
 		from erpnext.stock.doctype.delivery_note.test_delivery_note import create_delivery_note
 		from erpnext.stock.stock_ledger import NegativeStockError
@@ -4942,7 +4942,7 @@ class TestPurchaseReceipt(XGCERPTestSuite):
 
 		self.assertRaises(NegativeStockError, pr.cancel)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Buying Settings",
 		{
 			"set_landed_cost_based_on_purchase_invoice_rate": 1,
@@ -4950,7 +4950,7 @@ class TestPurchaseReceipt(XGCERPTestSuite):
 			"allow_multiple_items": 1,
 		},
 	)
-	@XGCERPTestSuite.change_settings("Accounts Settings", {"over_billing_allowance": 100})
+	@AXERPTestSuite.change_settings("Accounts Settings", {"over_billing_allowance": 100})
 	def test_set_lcv_from_pi_created_against_po(self):
 		from erpnext.buying.doctype.purchase_order.purchase_order import (
 			make_purchase_invoice as make_pi_against_po,

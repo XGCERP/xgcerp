@@ -14,10 +14,10 @@ from erpnext.accounts.doctype.sales_invoice.sales_invoice import (
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import (
 	create_sales_invoice_against_cost_center,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestDunning(XGCERPTestSuite):
+class TestDunning(AXERPTestSuite):
 	def test_dunning_without_fees(self):
 		dunning = create_dunning(overdue_days=20)
 

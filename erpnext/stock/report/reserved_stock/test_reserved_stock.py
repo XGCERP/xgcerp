@@ -11,16 +11,16 @@ from erpnext.stock.doctype.stock_reservation_entry.test_stock_reservation_entry 
 	create_material_receipt,
 )
 from erpnext.stock.report.reserved_stock.reserved_stock import get_data as reserved_stock_report
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestReservedStock(XGCERPTestSuite):
+class TestReservedStock(AXERPTestSuite):
 	def setUp(self) -> None:
 		super().setUp()
 		self.stock_qty = 100
 		self.warehouse = "_Test Warehouse - _TC"
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Stock Settings",
 		{
 			"allow_negative_stock": 0,

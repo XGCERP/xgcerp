@@ -5,10 +5,10 @@ import unittest
 import frappe
 
 from erpnext.accounts.doctype.ledger_merge.ledger_merge import start_merge
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestLedgerMerge(XGCERPTestSuite):
+class TestLedgerMerge(AXERPTestSuite):
 	def test_merge_success(self):
 		if not frappe.db.exists("Account", "Indirect Expenses - _TC"):
 			acc = frappe.new_doc("Account")

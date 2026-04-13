@@ -11,10 +11,10 @@ from erpnext.accounts.doctype.account.test_account import create_account
 from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.regional.report.vat_audit_report.vat_audit_report import execute
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestVATAuditReport(XGCERPTestSuite):
+class TestVATAuditReport(AXERPTestSuite):
 	def setUp(self):
 		make_company("_Test Company SA VAT", "_TCSV")
 

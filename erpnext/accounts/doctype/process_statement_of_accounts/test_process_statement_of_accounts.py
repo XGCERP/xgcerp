@@ -11,10 +11,10 @@ from erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of
 )
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestProcessStatementOfAccounts(XGCERPTestSuite, AccountsTestMixin):
+class TestProcessStatementOfAccounts(AXERPTestSuite, AccountsTestMixin):
 	def setUp(self):
 		frappe.db.set_single_value("Selling Settings", "validate_selling_price", 0)
 		letterhead = frappe.get_doc("Letter Head", "Company Letterhead - Grey")

@@ -4,10 +4,10 @@ from frappe import qb
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 from erpnext.accounts.report.payment_ledger.payment_ledger import execute
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestPaymentLedger(XGCERPTestSuite):
+class TestPaymentLedger(AXERPTestSuite):
 	def setUp(self):
 		self.create_company()
 		self.cleanup()

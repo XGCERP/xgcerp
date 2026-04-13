@@ -2,10 +2,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestAccountsSettings(XGCERPTestSuite):
+class TestAccountsSettings(AXERPTestSuite):
 	def test_stale_days(self):
 		cur_settings = frappe.get_doc("Accounts Settings", "Accounts Settings")
 		cur_settings.allow_stale = 0

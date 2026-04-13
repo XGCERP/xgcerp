@@ -2,19 +2,19 @@
 
 ## Overview
 
-Rebrand the ERP application from XGC/XGCERP identity to Axina Group/AXERP identity across 10 files, rename one Python class, and delete one stale logo file. All changes are string replacements in existing files — no new modules, no database changes. Protected identifiers (`app_name="erpnext"`, `erpnext_integrations`, `/assets/erpnext/`) must remain unchanged.
+Rebrand the ERP application from XGC/AXERP identity to Axina Group/AXERP identity across 10 files, rename one Python class, and delete one stale logo file. All changes are string replacements in existing files — no new modules, no database changes. Protected identifiers (`app_name="erpnext"`, `erpnext_integrations`, `/assets/erpnext/`) must remain unchanged.
 
 ## Tasks
 
 - [x] 1. Update core app metadata and Python class
   - [x] 1.1 Update `erpnext/hooks.py` brand strings
-    - Replace `app_title = "XGCERP"` → `"AXERP"`
+    - Replace `app_title = "AXERP"` → `"AXERP"`
     - Replace `app_publisher = "XGC CORP."` → `"Axina Group Inc."`
     - Replace `app_email = "db@xgccorp.com"` → `"db@axinagroup.com"`
-    - Replace `source_link = "https://github.com/XGCERP/xgcerp"` → `"https://github.com/AXERP/axerp"`
-    - Replace `XGCERPAddress` → `AXERPAddress` in `extend_doctype_class`
-    - Replace `XGCERP` → `AXERP` in `default_mail_footer` link text
-    - Replace `# XGCERP doctypes for Global Search` → `# AXERP doctypes for Global Search`
+    - Replace `source_link = "https://github.com/AXERP/xgcerp"` → `"https://github.com/AXERP/axerp"`
+    - Replace `AXERPAddress` → `AXERPAddress` in `extend_doctype_class`
+    - Replace `AXERP` → `AXERP` in `default_mail_footer` link text
+    - Replace `# AXERP doctypes for Global Search` → `# AXERP doctypes for Global Search`
     - Replace `app_color = "#e74c3c"` → `app_color = "#f9720a"` (Axina Group orange accent)
     - Verify `app_name = "erpnext"` is unchanged
     - Verify all `/assets/erpnext/` paths are unchanged
@@ -22,35 +22,35 @@ Rebrand the ERP application from XGC/XGCERP identity to Axina Group/AXERP identi
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 11.1, 11.2, 11.3_
 
   - [x] 1.2 Rename class in `erpnext/accounts/custom/address.py`
-    - Rename class `XGCERPAddress` → `AXERPAddress`
+    - Rename class `AXERPAddress` → `AXERPAddress`
     - _Requirements: 1.7_
 
 - [x] 2. Update documentation files
   - [x] 2.1 Update `README.md`
-    - Replace all `XGCERP` → `AXERP` (headings, badge labels, descriptive text)
-    - Replace logo alt text `XGCERP Logo` → `AXERP Logo`
+    - Replace all `AXERP` → `AXERP` (headings, badge labels, descriptive text)
+    - Replace logo alt text `AXERP Logo` → `AXERP Logo`
     - Replace `xgccorp.com` → `axinagroup.com` in screenshot image URLs
     - Replace `docs.xgccorp.com` → `docs.axinagroup.com`
     - Replace `xgccorp.com/security` → `axinagroup.com/security`
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
   - [x] 2.2 Update `TRADEMARK_POLICY.md`
-    - Replace all `XGCERP` → `AXERP`
+    - Replace all `AXERP` → `AXERP`
     - Add `Axina Group Inc.` where XGC-related company attribution is stated
     - _Requirements: 3.1, 3.2_
 
   - [x] 2.3 Update `SECURITY.md`
-    - Replace all `XGCERP` → `AXERP`
+    - Replace all `AXERP` → `AXERP`
     - Replace `xgccorp.com/security/report` → `axinagroup.com/security/report`
     - Replace `xgccorp.com/security` → `axinagroup.com/security`
     - _Requirements: 4.1, 4.2, 4.3_
 
   - [x] 2.4 Update `.github/CONTRIBUTING.md`
-    - Replace all `XGCERP` → `AXERP`
+    - Replace all `AXERP` → `AXERP`
     - _Requirements: 5.1_
 
   - [x] 2.5 Update `.github/ISSUE_TEMPLATE/feature_request.md`
-    - Replace all `XGCERP` → `AXERP`
+    - Replace all `AXERP` → `AXERP`
     - Replace `docs.xgccorp.com` → `docs.axinagroup.com`
     - Replace `xgccorp.com/partners` → `axinagroup.com/partners`
     - _Requirements: 6.1, 6.2, 6.3_
@@ -69,7 +69,7 @@ Rebrand the ERP application from XGC/XGCERP identity to Axina Group/AXERP identi
 
   - [x] 4.3 Update `scripts/smart_rename.py`
     - Replace copyright header `XGC CORP.` → `Axina Group Inc.`
-    - Set `OLD_BRAND = "XGCERP"`
+    - Set `OLD_BRAND = "AXERP"`
     - Set `NEW_BRAND = "AXERP"`
     - Set `NEW_PUBLISHER = "Axina Group Inc."`
     - Set `NEW_EMAIL = "db@axinagroup.com"`
@@ -86,7 +86,7 @@ Rebrand the ERP application from XGC/XGCERP identity to Axina Group/AXERP identi
 
 - [x] 6. Final checkpoint - Verify all changes and protected identifiers
   - Ensure all tests pass, ask the user if questions arise.
-  - Grep affected files for residual `XGCERP`, `xgccorp.com`, `XGC CORP.` strings to confirm none remain
+  - Grep affected files for residual `AXERP`, `xgccorp.com`, `XGC CORP.` strings to confirm none remain
   - Verify protected identifiers: `app_name = "erpnext"`, `erpnext_integrations`, `/assets/erpnext/` paths are intact in `hooks.py`
   - _Requirements: 11.1, 11.2, 11.3, 11.4_
 

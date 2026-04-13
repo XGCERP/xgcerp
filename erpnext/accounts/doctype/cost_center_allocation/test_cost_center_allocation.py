@@ -15,10 +15,10 @@ from erpnext.accounts.doctype.cost_center_allocation.cost_center_allocation impo
 	WrongPercentageAllocation,
 )
 from erpnext.accounts.doctype.journal_entry.test_journal_entry import make_journal_entry
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestCostCenterAllocation(XGCERPTestSuite):
+class TestCostCenterAllocation(AXERPTestSuite):
 	def setUp(self):
 		cost_centers = [
 			"Main Cost Center 1",
@@ -191,7 +191,7 @@ class TestCostCenterAllocation(XGCERPTestSuite):
 		coa2.cancel()
 		jv.cancel()
 
-	@XGCERPTestSuite.change_settings("System Settings", {"rounding_method": "Commercial Rounding"})
+	@AXERPTestSuite.change_settings("System Settings", {"rounding_method": "Commercial Rounding"})
 	def test_debit_credit_on_cost_center_allocation_for_commercial_rounding(self):
 		from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
 

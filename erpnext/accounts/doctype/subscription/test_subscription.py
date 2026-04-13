@@ -18,10 +18,10 @@ from frappe.utils.data import (
 
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from erpnext.accounts.doctype.subscription.subscription import get_prorata_factor
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSubscription(XGCERPTestSuite):
+class TestSubscription(AXERPTestSuite):
 	def setUp(self):
 		make_plans()
 		create_parties()
@@ -467,7 +467,7 @@ class TestSubscription(XGCERPTestSuite):
 		currency = frappe.db.get_value("Sales Invoice", subscription.invoices[0].name, "currency")
 		self.assertEqual(currency, "USD")
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Accounts Settings",
 		{"allow_multi_currency_invoices_against_single_party_account": 1},
 	)

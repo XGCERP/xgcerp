@@ -7,10 +7,10 @@ from frappe.utils import random_string, today
 
 from erpnext.crm.doctype.lead.lead import make_opportunity
 from erpnext.crm.utils import get_linked_prospect
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestLead(XGCERPTestSuite):
+class TestLead(AXERPTestSuite):
 	def test_make_customer(self):
 		from erpnext.crm.doctype.lead.lead import make_customer
 

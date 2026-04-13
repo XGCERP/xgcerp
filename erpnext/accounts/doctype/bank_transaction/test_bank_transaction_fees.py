@@ -3,10 +3,10 @@
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestBankTransactionFees(XGCERPTestSuite):
+class TestBankTransactionFees(AXERPTestSuite):
 	def test_included_fee_throws(self):
 		"""A fee that's part of a withdrawal cannot be bigger than the
 		withdrawal itself."""

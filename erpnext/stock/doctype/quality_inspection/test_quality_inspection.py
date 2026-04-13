@@ -13,10 +13,10 @@ from erpnext.controllers.stock_controller import (
 from erpnext.stock.doctype.delivery_note.test_delivery_note import create_delivery_note
 from erpnext.stock.doctype.item.test_item import create_item
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestQualityInspection(XGCERPTestSuite):
+class TestQualityInspection(AXERPTestSuite):
 	def setUp(self):
 		super().setUp()
 		create_item("_Test Item with QA")
@@ -218,7 +218,7 @@ class TestQualityInspection(XGCERPTestSuite):
 		qa.save()
 		self.assertEqual(qa.status, "Accepted")
 
-	@XGCERPTestSuite.change_settings("System Settings", {"number_format": "#.###,##"})
+	@AXERPTestSuite.change_settings("System Settings", {"number_format": "#.###,##"})
 	def test_diff_number_format(self):
 		self.assertEqual(frappe.db.get_default("number_format"), "#.###,##")  # sanity check
 

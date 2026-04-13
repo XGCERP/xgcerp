@@ -4,10 +4,10 @@
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSupplierScorecardCriteria(XGCERPTestSuite):
+class TestSupplierScorecardCriteria(AXERPTestSuite):
 	def test_variables_exist(self):
 		delete_test_scorecards()
 		for d in test_good_criteria:

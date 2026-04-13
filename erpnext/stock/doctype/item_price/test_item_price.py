@@ -7,10 +7,10 @@ from frappe.tests.utils import make_test_records_for_doctype
 
 from erpnext.stock.doctype.item_price.item_price import ItemPriceDuplicateItem
 from erpnext.stock.get_item_details import ItemDetailsCtx, get_price_list_rate_for
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestItemPrice(XGCERPTestSuite):
+class TestItemPrice(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Item Price")
 

@@ -13,10 +13,10 @@ from erpnext.accounts.doctype.tax_withholding_category.test_tax_withholding_cate
 from erpnext.accounts.report.tax_withholding_details.tax_withholding_details import execute
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
 from erpnext.accounts.utils import get_fiscal_year
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestTaxWithholdingDetails(XGCERPTestSuite, AccountsTestMixin):
+class TestTaxWithholdingDetails(AXERPTestSuite, AccountsTestMixin):
 	def setUp(self):
 		self.create_company()
 		self.clear_old_entries()

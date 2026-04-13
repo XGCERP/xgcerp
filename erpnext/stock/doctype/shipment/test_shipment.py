@@ -6,10 +6,10 @@ from datetime import date, timedelta
 import frappe
 
 from erpnext.stock.doctype.delivery_note.delivery_note import make_shipment
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestShipment(XGCERPTestSuite):
+class TestShipment(AXERPTestSuite):
 	def test_shipment_from_delivery_note(self):
 		delivery_note = create_test_delivery_note()
 		delivery_note.submit()

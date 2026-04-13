@@ -1,21 +1,21 @@
-# XGCERP Local Docker Setup
+# AXERP Local Docker Setup
 # Usage:
 #   cd docker
 #   docker compose up -d
 #   Wait ~60s for site creation, then visit http://localhost:8080
 #   Login: Administrator / admin
 
-x-xgcerp-image: &xgcerp_image
-  image: xgcerp:local
+x-axerp-image: &axerp_image
+  image: axerp:local
   build:
     context: ..
     dockerfile: docker/Dockerfile
 
 services:
   backend:
-    <<: *xgcerp_image
+    <<: *axerp_image
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: on-failure
     volumes:
       - sites:/home/frappe/frappe-bench/sites
@@ -25,9 +25,9 @@ services:
         condition: service_completed_successfully
 
   configurator:
-    <<: *xgcerp_image
+    <<: *axerp_image
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: "no"
     entrypoint:
       - bash
@@ -59,9 +59,9 @@ services:
         condition: service_started
 
   create-site:
-    <<: *xgcerp_image
+    <<: *axerp_image
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: "no"
     volumes:
       - sites:/home/frappe/frappe-bench/sites
@@ -93,9 +93,9 @@ services:
         condition: service_completed_successfully
 
   frontend:
-    <<: *xgcerp_image
+    <<: *axerp_image
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: on-failure
     command:
       - nginx-entrypoint.sh
@@ -120,9 +120,9 @@ services:
         condition: service_started
 
   websocket:
-    <<: *xgcerp_image
+    <<: *axerp_image
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: on-failure
     command:
       - node
@@ -138,9 +138,9 @@ services:
         condition: service_completed_successfully
 
   queue-long:
-    <<: *xgcerp_image
+    <<: *axerp_image
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: on-failure
     command:
       - bench
@@ -158,9 +158,9 @@ services:
         condition: service_completed_successfully
 
   queue-short:
-    <<: *xgcerp_image
+    <<: *axerp_image
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: on-failure
     command:
       - bench
@@ -178,9 +178,9 @@ services:
         condition: service_completed_successfully
 
   scheduler:
-    <<: *xgcerp_image
+    <<: *axerp_image
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: on-failure
     command:
       - bench
@@ -195,7 +195,7 @@ services:
   db:
     image: mariadb:10.6
     networks:
-      - xgcerp_network
+      - axerp_network
     healthcheck:
       test: mysqladmin ping -h localhost --password=admin
       interval: 1s
@@ -215,7 +215,7 @@ services:
   redis-queue:
     image: redis:6.2-alpine
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: on-failure
     volumes:
       - redis-queue-data:/data
@@ -223,7 +223,7 @@ services:
   redis-cache:
     image: redis:6.2-alpine
     networks:
-      - xgcerp_network
+      - axerp_network
     restart: on-failure
 
 volumes:
@@ -233,5 +233,5 @@ volumes:
   logs:
 
 networks:
-  xgcerp_network:
+  axerp_network:
     driver: bridge

@@ -3,14 +3,14 @@ from uuid import uuid4 as _uuid4
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
 def uuid4():
 	return str(_uuid4())
 
 
-class TestTaxes(XGCERPTestSuite):
+class TestTaxes(AXERPTestSuite):
 	def setUp(self):
 		self.company = frappe.get_doc(
 			{

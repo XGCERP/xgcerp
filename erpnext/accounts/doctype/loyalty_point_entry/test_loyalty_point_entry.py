@@ -6,10 +6,10 @@ import frappe
 from frappe.utils import today
 
 from erpnext.accounts.doctype.sales_invoice.test_sales_invoice import create_sales_invoice
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestLoyaltyPointEntry(XGCERPTestSuite):
+class TestLoyaltyPointEntry(AXERPTestSuite):
 	def setUp(self):
 		# Create test records
 		self.loyalty_program_name = "Test Single Loyalty"

@@ -5,10 +5,10 @@ import unittest
 import frappe
 from frappe.utils import now_datetime
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestFiscalYear(XGCERPTestSuite):
+class TestFiscalYear(AXERPTestSuite):
 	def test_extra_year(self):
 		if frappe.db.exists("Fiscal Year", "_Test Fiscal Year 2000"):
 			frappe.delete_doc("Fiscal Year", "_Test Fiscal Year 2000")

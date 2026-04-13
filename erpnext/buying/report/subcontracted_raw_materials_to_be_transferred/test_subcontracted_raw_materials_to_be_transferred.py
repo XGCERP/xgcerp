@@ -14,10 +14,10 @@ from erpnext.controllers.tests.test_subcontracting_controller import (
 	make_service_item,
 )
 from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSubcontractedItemToBeTransferred(XGCERPTestSuite):
+class TestSubcontractedItemToBeTransferred(AXERPTestSuite):
 	def test_pending_and_transferred_qty(self):
 		make_service_item("Subcontracted Service Item 1")
 		service_items = [

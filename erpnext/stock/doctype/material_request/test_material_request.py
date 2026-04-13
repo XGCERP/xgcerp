@@ -1,7 +1,7 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
-# XGCERP - web based ERP (http://erpnext.com)
+# AXERP - web based ERP (http://erpnext.com)
 # For license information, please see license.txt
 
 
@@ -20,10 +20,10 @@ from erpnext.stock.doctype.material_request.material_request import (
 )
 from erpnext.stock.doctype.stock_entry.stock_entry import make_stock_in_entry
 from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestMaterialRequest(XGCERPTestSuite):
+class TestMaterialRequest(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Material Request")
 

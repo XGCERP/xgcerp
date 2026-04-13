@@ -9,10 +9,10 @@ from erpnext.crm.doctype.lead.lead import make_customer
 from erpnext.crm.doctype.lead.test_lead import make_lead
 from erpnext.crm.doctype.opportunity.opportunity import make_quotation
 from erpnext.crm.utils import get_linked_communication_list
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestOpportunity(XGCERPTestSuite):
+class TestOpportunity(AXERPTestSuite):
 	@classmethod
 	def make_opportunities(cls):
 		records = [

@@ -5,10 +5,10 @@ import unittest
 import frappe
 from frappe.utils import random_string
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestVehicle(XGCERPTestSuite):
+class TestVehicle(AXERPTestSuite):
 	def test_make_vehicle(self):
 		vehicle = frappe.get_doc(
 			{

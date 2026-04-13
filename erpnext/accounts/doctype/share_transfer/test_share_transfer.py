@@ -5,10 +5,10 @@ import unittest
 import frappe
 
 from erpnext.accounts.doctype.share_transfer.share_transfer import ShareDontExists
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestShareTransfer(XGCERPTestSuite):
+class TestShareTransfer(AXERPTestSuite):
 	def setUp(self):
 		frappe.db.sql("delete from `tabShare Transfer`")
 		frappe.db.sql("delete from `tabShare Balance`")

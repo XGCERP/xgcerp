@@ -2,11 +2,11 @@
 
 ## Introduction
 
-This feature covers the systematic rebranding of the ERP application from the old company identity (XGC Software Inc. / XGCERP) to the new identity (Axina Group Inc. / AXERP). The rebrand affects user-facing brand strings, URLs, company names, publisher metadata, logo references, and the automated rebranding script. Internal Python package names (`erpnext`), Frappe app identifiers (`app_name`), asset paths (`/assets/erpnext/`), and the `erpnext_integrations` module name are explicitly preserved to avoid breaking imports and runtime behavior.
+This feature covers the systematic rebranding of the ERP application from the old company identity (XGC Software Inc. / AXERP) to the new identity (Axina Group Inc. / AXERP). The rebrand affects user-facing brand strings, URLs, company names, publisher metadata, logo references, and the automated rebranding script. Internal Python package names (`erpnext`), Frappe app identifiers (`app_name`), asset paths (`/assets/erpnext/`), and the `erpnext_integrations` module name are explicitly preserved to avoid breaking imports and runtime behavior.
 
 ## Glossary
 
-- **AXERP**: The new product brand name, replacing XGCERP in all user-facing contexts.
+- **AXERP**: The new product brand name, replacing AXERP in all user-facing contexts.
 - **Axina_Group_Inc**: The new company and publisher name (Axina Group Inc.), replacing XGC Software Inc. and XGC CORP.
 - **axinagroup.com**: The new domain, replacing xgccorp.com in all URLs.
 - **axinagroup-logo.svg**: The new logo SVG file located in the repository root.
@@ -28,7 +28,7 @@ This feature covers the systematic rebranding of the ERP application from the ol
 4. WHEN the Hooks_File is loaded by the Frappe framework, THE Hooks_File SHALL contain `source_link = "https://github.com/AXERP/axerp"`.
 5. THE Hooks_File SHALL retain `app_name = "erpnext"` unchanged.
 6. THE Hooks_File SHALL retain all `/assets/erpnext/` asset paths unchanged.
-7. WHEN the `extend_doctype_class` entry for Address is read, THE Hooks_File SHALL reference `AXERPAddress` instead of `XGCERPAddress`.
+7. WHEN the `extend_doctype_class` entry for Address is read, THE Hooks_File SHALL reference `AXERPAddress` instead of `AXERPAddress`.
 8. WHEN the `default_mail_footer` is rendered, THE Hooks_File SHALL display "AXERP" as the product name in the footer link text.
 9. WHEN the global search doctypes comment is read, THE Hooks_File SHALL contain the comment `# AXERP doctypes for Global Search`.
 10. WHEN the Hooks_File is loaded by the Frappe framework, THE Hooks_File SHALL contain `app_color = "#f9720a"` to reflect the Axina Group orange accent color.
@@ -39,7 +39,7 @@ This feature covers the systematic rebranding of the ERP application from the ol
 
 #### Acceptance Criteria
 
-1. WHEN the README.md is viewed, THE README.md SHALL display "AXERP" as the product name in all headings, badge labels, and descriptive text where "XGCERP" previously appeared.
+1. WHEN the README.md is viewed, THE README.md SHALL display "AXERP" as the product name in all headings, badge labels, and descriptive text where "AXERP" previously appeared.
 2. WHEN the README.md is viewed, THE README.md SHALL use the alt text "AXERP Logo" for the logo image element.
 3. WHEN the README.md references screenshot image URLs, THE README.md SHALL use `axinagroup.com` as the domain instead of `xgccorp.com`.
 4. WHEN the README.md references the official documentation, THE README.md SHALL link to `docs.axinagroup.com` instead of `docs.xgccorp.com`.
@@ -51,7 +51,7 @@ This feature covers the systematic rebranding of the ERP application from the ol
 
 #### Acceptance Criteria
 
-1. WHEN the TRADEMARK_POLICY.md is viewed, THE TRADEMARK_POLICY.md SHALL use "AXERP" in place of every occurrence of "XGCERP".
+1. WHEN the TRADEMARK_POLICY.md is viewed, THE TRADEMARK_POLICY.md SHALL use "AXERP" in place of every occurrence of "AXERP".
 2. THE TRADEMARK_POLICY.md SHALL reference "Axina Group Inc." as the trademark owner where company attribution is stated, replacing references to XGC-related entities where applicable.
 
 ### Requirement 4: Update Security Policy
@@ -60,7 +60,7 @@ This feature covers the systematic rebranding of the ERP application from the ol
 
 #### Acceptance Criteria
 
-1. WHEN the SECURITY.md is viewed, THE SECURITY.md SHALL use "AXERP" in place of every occurrence of "XGCERP".
+1. WHEN the SECURITY.md is viewed, THE SECURITY.md SHALL use "AXERP" in place of every occurrence of "AXERP".
 2. WHEN the SECURITY.md references the security reporting URL, THE SECURITY.md SHALL link to `axinagroup.com/security/report` instead of `xgccorp.com/security/report`.
 3. WHEN the SECURITY.md references the security guidelines URL, THE SECURITY.md SHALL link to `axinagroup.com/security` instead of `xgccorp.com/security`.
 
@@ -70,7 +70,7 @@ This feature covers the systematic rebranding of the ERP application from the ol
 
 #### Acceptance Criteria
 
-1. WHEN the .github/CONTRIBUTING.md is viewed, THE .github/CONTRIBUTING.md SHALL use "AXERP" in place of every occurrence of "XGCERP".
+1. WHEN the .github/CONTRIBUTING.md is viewed, THE .github/CONTRIBUTING.md SHALL use "AXERP" in place of every occurrence of "AXERP".
 
 ### Requirement 6: Update Issue Template
 
@@ -78,7 +78,7 @@ This feature covers the systematic rebranding of the ERP application from the ol
 
 #### Acceptance Criteria
 
-1. WHEN the feature_request.md template is viewed, THE feature_request.md SHALL use "AXERP" in place of every occurrence of "XGCERP".
+1. WHEN the feature_request.md template is viewed, THE feature_request.md SHALL use "AXERP" in place of every occurrence of "AXERP".
 2. WHEN the feature_request.md references the documentation URL, THE feature_request.md SHALL link to `docs.axinagroup.com` instead of `docs.xgccorp.com`.
 3. WHEN the feature_request.md references the partners page, THE feature_request.md SHALL link to `axinagroup.com/partners` instead of `xgccorp.com/partners`.
 
@@ -101,11 +101,11 @@ This feature covers the systematic rebranding of the ERP application from the ol
 
 ### Requirement 9: Update Smart Rename Script for New Brand Constants
 
-**User Story:** As a developer running the rebranding script, I want the script to use the new AXERP brand constants, so that future runs of the script apply the correct XGCERP-to-AXERP transformation.
+**User Story:** As a developer running the rebranding script, I want the script to use the new AXERP brand constants, so that future runs of the script apply the correct AXERP-to-AXERP transformation.
 
 #### Acceptance Criteria
 
-1. THE Smart_Rename_Script SHALL set `OLD_BRAND` to `"XGCERP"`.
+1. THE Smart_Rename_Script SHALL set `OLD_BRAND` to `"AXERP"`.
 2. THE Smart_Rename_Script SHALL set `NEW_BRAND` to `"AXERP"`.
 3. THE Smart_Rename_Script SHALL set `NEW_PUBLISHER` to `"Axina Group Inc."`.
 4. THE Smart_Rename_Script SHALL set `NEW_EMAIL` to `"db@axinagroup.com"`.

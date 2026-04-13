@@ -5,10 +5,10 @@ import unittest
 import frappe
 
 from erpnext.regional.report.irs_1099.irs_1099 import execute as execute_1099_report
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestUnitedStates(XGCERPTestSuite):
+class TestUnitedStates(AXERPTestSuite):
 	def test_irs_1099_custom_field(self):
 		if not frappe.db.exists("Supplier", "_US 1099 Test Supplier"):
 			make_irs_1099_supplier()

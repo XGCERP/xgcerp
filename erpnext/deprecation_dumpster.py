@@ -1,11 +1,11 @@
 """
 Welcome to the Deprecation Dumpster: Where Old Code Goes to Party! 🎉🗑️
 
-This file is the final resting place (or should we say, "retirement home"?) for all the deprecated functions and methods of the XGCERP app. It's like a code nursing home, but with more monkey-patching and less bingo.
+This file is the final resting place (or should we say, "retirement home"?) for all the deprecated functions and methods of the AXERP app. It's like a code nursing home, but with more monkey-patching and less bingo.
 
 Each function or method that checks in here comes with its own personalized decorator, complete with:
 1. The date it was marked for deprecation (its "over the hill" birthday)
-2. The XGCERP version at the beginning of which it becomes an error and at the end of which it will be removed (its "graduation" to the great codebase in the sky)
+2. The AXERP version at the beginning of which it becomes an error and at the end of which it will be removed (its "graduation" to the great codebase in the sky)
 3. A user-facing note on alternative solutions (its "parting wisdom")
 
 Warning: The global namespace herein is more patched up than a sailor's favorite pair of jeans. Proceed with caution and a sense of humor!
@@ -25,18 +25,18 @@ from frappe.deprecation_dumpster import Color, _deprecated, colorize
 
 # we use Warning because DeprecationWarning has python default filters which would exclude them from showing
 # see also frappe.__init__ enabling them when a dev_server
-class XGCERPDeprecationError(Warning):
+class AXERPDeprecationError(Warning):
 	"""Deprecated feature in current version.
 
 	Raises an error by default but can be configured via PYTHONWARNINGS in an emergency.
 	"""
 
 
-class XGCERPDeprecationWarning(Warning):
+class AXERPDeprecationWarning(Warning):
 	"""Deprecated feature in next version"""
 
 
-class PendingXGCERPDeprecationWarning(XGCERPDeprecationWarning):
+class PendingAXERPDeprecationWarning(AXERPDeprecationWarning):
 	"""Deprecated feature in develop beyond next version.
 
 	Warning ignored by default.
@@ -46,19 +46,19 @@ class PendingXGCERPDeprecationWarning(XGCERPDeprecationWarning):
 	"""
 
 
-warnings.simplefilter("error", XGCERPDeprecationError)
-warnings.simplefilter("ignore", PendingXGCERPDeprecationWarning)
+warnings.simplefilter("error", AXERPDeprecationError)
+warnings.simplefilter("ignore", PendingAXERPDeprecationWarning)
 
 
-class V15XGCERPDeprecationWarning(XGCERPDeprecationError):
+class V15AXERPDeprecationWarning(AXERPDeprecationError):
 	pass
 
 
-class V16XGCERPDeprecationWarning(XGCERPDeprecationWarning):
+class V16AXERPDeprecationWarning(AXERPDeprecationWarning):
 	pass
 
 
-class V17XGCERPDeprecationWarning(PendingXGCERPDeprecationWarning):
+class V17AXERPDeprecationWarning(PendingAXERPDeprecationWarning):
 	pass
 
 
@@ -66,7 +66,7 @@ def __get_deprecation_class(graduation: str | None = None, class_name: str | Non
 	if graduation:
 		# Scrub the graduation string to ensure it's a valid class name
 		cleaned_graduation = re.sub(r"\W|^(?=\d)", "_", graduation.upper())
-		class_name = f"{cleaned_graduation}XGCERPDeprecationWarning"
+		class_name = f"{cleaned_graduation}AXERPDeprecationWarning"
 		current_module = sys.modules[__name__]
 	try:
 		return getattr(current_module, class_name)

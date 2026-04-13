@@ -2,15 +2,15 @@ Here is the comprehensive, step-by-step implementation of the **Core Masking** s
 
 ### What is "Core Masking"?
 
-Core Masking is an architectural strategy used when forking massive, frequently updated frameworks like XGCERP. Instead of destroying the original directory structures and variable names (which breaks Git’s ability to merge future updates), you **"mask"** the core system at the presentation and metadata layers.
+Core Masking is an architectural strategy used when forking massive, frequently updated frameworks like AXERP. Instead of destroying the original directory structures and variable names (which breaks Git’s ability to merge future updates), you **"mask"** the core system at the presentation and metadata layers.
 
-By executing the three steps below, the underlying code remains structurally identical to `upstream/version-16` (ensuring easy merges), but every touchpoint a user, admin, or developer interacts with screams **XGCERP**.
+By executing the three steps below, the underlying code remains structurally identical to `upstream/version-16` (ensuring easy merges), but every touchpoint a user, admin, or developer interacts with screams **AXERP**.
 
 ---
 
 ### Step 1: The "Smart UI and Metadata Rename"
 
-This step safely replaces the capitalized word **"XGCERP"** with **"XGCERP"**. This specifically targets Frappe's metadata assignments (DocType modules), Workspace titles, UI Labels, and translation strings, without touching the lowercase `import erpnext` statements.
+This step safely replaces the capitalized word **"AXERP"** with **"AXERP"**. This specifically targets Frappe's metadata assignments (DocType modules), Workspace titles, UI Labels, and translation strings, without touching the lowercase `import erpnext` statements.
 
 **1. Create the script:**
 In the root of your `xgcerp` repository, create a new file called `smart_rename.py`:
@@ -21,8 +21,8 @@ In the root of your `xgcerp` repository, create a new file called `smart_rename.
 import os
 
 # Define the exact case-sensitive strings to swap
-OLD_BRAND = "XGCERP"
-NEW_BRAND = "XGCERP"
+OLD_BRAND = "AXERP"
+NEW_BRAND = "AXERP"
 
 # Directories to ignore to prevent corrupting Git or build files
 IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'public', 'dist', 'env', 'logs'}
@@ -98,7 +98,7 @@ nano inject_copyright.sh
 COPYRIGHT_PY="# Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved."
 COPYRIGHT_JS="/* Copyright (c) 2026 XGC CORP. Created by @dzbrody Daniel Brody. All rights reserved. */"
 
-echo "Injecting copyrights into XGCERP..."
+echo "Injecting copyrights into AXERP..."
 
 # Inject into Python files
 find . -type f -name "*.py" ! -path "*/\.*" | while read -r file; do
@@ -134,7 +134,7 @@ chmod +x inject_copyright.sh
 
 ### Step 3: Deep Core Masking via `xgc_theme` App (The Final Layer)
 
-Even after renaming metadata, the core system will still try to load XGCERP logos and default Frappe styling. You must use your custom `xgc_theme` app to override the visual layer at runtime.
+Even after renaming metadata, the core system will still try to load AXERP logos and default Frappe styling. You must use your custom `xgc_theme` app to override the visual layer at runtime.
 
 In your `xgc_theme` repository, open the `xgc_theme/hooks.py` file and add these Core Masking overrides:
 
@@ -142,7 +142,7 @@ In your `xgc_theme` repository, open the `xgc_theme/hooks.py` file and add these
 # xgc_theme/hooks.py
 
 # 1. Override Global Application Name
-app_title = "XGCERP"
+app_title = "AXERP"
 app_description = "Operating System for Carbon Sovereignty"
 app_publisher = "XGC CORP."
 app_email = "db@xgccorp.com"
@@ -152,17 +152,17 @@ app_license = "Proprietary"
 app_logo_url = "/assets/xgc_theme/images/xgc_logo_dark.svg"
 brand_html = "<div><img src='/assets/xgc_theme/images/xgc_logo_dark.svg' style='max-height: 30px;'></div>"
 
-# 3. Inject Global CSS/JS to hide or restyle any remaining XGCERP elements
+# 3. Inject Global CSS/JS to hide or restyle any remaining AXERP elements
 app_include_css = "/assets/xgc_theme/css/xgcerp_master.css"
 app_include_js = "/assets/xgc_theme/js/xgcerp_master.js"
 
 # 4. Translation Override (Catch-All)
-# If a new update from upstream introduces the word "XGCERP" or "erpnext" into the UI, 
-# this translation dictionary will instantly mask it to "XGCERP" for the user.
+# If a new update from upstream introduces the word "AXERP" or "erpnext" into the UI, 
+# this translation dictionary will instantly mask it to "AXERP" for the user.
 translations = [
-    {"language": "en", "source_text": "XGCERP", "translated_text": "XGCERP"},
+    {"language": "en", "source_text": "AXERP", "translated_text": "AXERP"},
     {"language": "en", "source_text": "erpnext", "translated_text": "xgcerp"},
-    {"language": "en", "source_text": "About XGCERP", "translated_text": "About XGCERP OS"}
+    {"language": "en", "source_text": "About AXERP", "translated_text": "About AXERP OS"}
 ]
 
 ```
@@ -192,11 +192,11 @@ Finally, save your pristine, rebranded, and copyrighted fork to your repository:
 ```bash
 cd apps/xgcerp  # or wherever your repo is located
 git add .
-git commit -m "feat: complete core masking, metadata rebrand, and copyright injection for XGCERP"
+git commit -m "feat: complete core masking, metadata rebrand, and copyright injection for AXERP"
 git push origin version-16
 
 ```
 
 ### Result
 
-You now have a fully proprietary fork. The backend file structure remains compatible with `version-16` upstream updates, but every piece of metadata, UI text, and source code header is explicitly branded as **XGCERP by Daniel Brody at XGC CORP**.
+You now have a fully proprietary fork. The backend file structure remains compatible with `version-16` upstream updates, but every piece of metadata, UI text, and source code header is explicitly branded as **AXERP by Daniel Brody at XGC CORP**.

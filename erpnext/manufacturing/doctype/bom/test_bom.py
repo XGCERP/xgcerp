@@ -20,10 +20,10 @@ from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.doctype.stock_reconciliation.test_stock_reconciliation import (
 	create_stock_reconciliation,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestBOM(XGCERPTestSuite):
+class TestBOM(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("BOM")
 

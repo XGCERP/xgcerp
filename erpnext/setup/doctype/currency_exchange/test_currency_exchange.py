@@ -7,7 +7,7 @@ import frappe
 from frappe.utils import cint, flt
 
 from erpnext.setup.utils import get_exchange_rate
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
 def save_new_records(test_records):
@@ -78,7 +78,7 @@ def patched_requests_get(*args, **kwargs):
 
 
 @mock.patch("requests.get", side_effect=patched_requests_get)
-class TestCurrencyExchange(XGCERPTestSuite):
+class TestCurrencyExchange(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Currency Exchange")
 		save_new_records(self.globalTestRecords["Currency Exchange"])

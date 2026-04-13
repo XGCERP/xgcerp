@@ -1,4 +1,4 @@
-# XGCERP - web based ERP (http://erpnext.com)
+# AXERP - web based ERP (http://erpnext.com)
 # Copyright (C) 2012 Frappe Technologies Pvt Ltd
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,5 +16,5 @@
 
 # default settings that can be made for a user.
 
-product_name = "XGCERP"
+product_name = "AXERP"
 user_defaults = {"Company": "company", "Territory": "territory"}

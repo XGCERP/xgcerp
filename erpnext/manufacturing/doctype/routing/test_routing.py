@@ -5,10 +5,10 @@ import frappe
 from erpnext.manufacturing.doctype.job_card.job_card import OperationSequenceError
 from erpnext.manufacturing.doctype.work_order.test_work_order import make_wo_order_test_record
 from erpnext.stock.doctype.item.test_item import make_item
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestRouting(XGCERPTestSuite):
+class TestRouting(AXERPTestSuite):
 	def setUp(self):
 		self.item_code = "Test Routing Item - A"
 

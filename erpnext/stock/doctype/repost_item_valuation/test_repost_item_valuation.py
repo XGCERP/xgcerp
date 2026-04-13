@@ -18,10 +18,10 @@ from erpnext.stock.doctype.repost_item_valuation.repost_item_valuation import (
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 from erpnext.stock.tests.test_utils import StockTestMixin
 from erpnext.stock.utils import PendingRepostingError
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestRepostItemValuation(XGCERPTestSuite, StockTestMixin):
+class TestRepostItemValuation(AXERPTestSuite, StockTestMixin):
 	def test_repost_time_slot(self):
 		repost_settings = frappe.get_doc("Stock Reposting Settings")
 
@@ -192,7 +192,7 @@ class TestRepostItemValuation(XGCERPTestSuite, StockTestMixin):
 
 		riv.set_status("Skipped")
 
-	@XGCERPTestSuite.change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
+	@AXERPTestSuite.change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
 	def test_prevention_of_cancelled_transaction_riv(self):
 		frappe.flags.dont_execute_stock_reposts = True
 
@@ -371,7 +371,7 @@ class TestRepostItemValuation(XGCERPTestSuite, StockTestMixin):
 		company.accounts_frozen_till_date = ""
 		company.save()
 
-	@XGCERPTestSuite.change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
+	@AXERPTestSuite.change_settings("Stock Reposting Settings", {"item_based_reposting": 0})
 	def test_create_repost_entry_for_cancelled_document(self):
 		pr = make_purchase_receipt(
 			company="_Test Company with perpetual inventory",

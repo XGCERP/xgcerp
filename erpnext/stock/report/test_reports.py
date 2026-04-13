@@ -1,6 +1,6 @@
 from frappe.utils.make_random import get_random
 
-from erpnext.tests.utils import XGCERPTestSuite, ReportFilters, ReportName, execute_script_report
+from erpnext.tests.utils import AXERPTestSuite, ReportFilters, ReportName, execute_script_report
 
 DEFAULT_FILTERS = {
 	"company": "_Test Company",
@@ -80,7 +80,7 @@ OPTIONAL_FILTERS = {
 }
 
 
-class TestReports(XGCERPTestSuite):
+class TestReports(AXERPTestSuite):
 	def test_execute_all_stock_reports(self):
 		"""Test that all script report in stock modules are executable with supported filters"""
 		for report, filter in REPORT_FILTER_TEST_CASES:

@@ -4,10 +4,10 @@
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestTransactionDeletionRecord(XGCERPTestSuite):
+class TestTransactionDeletionRecord(AXERPTestSuite):
 	def setUp(self):
 		# Clear all deletion cache flags from previous tests
 		self._clear_all_deletion_cache_flags()

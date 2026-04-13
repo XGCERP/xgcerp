@@ -10,10 +10,10 @@ from frappe.utils import flt, get_datetime
 from erpnext.support.doctype.service_level_agreement.test_service_level_agreement import (
 	create_service_level_agreements_for_issues,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSetUp(XGCERPTestSuite):
+class TestSetUp(AXERPTestSuite):
 	def setUp(self):
 		frappe.db.sql("delete from `tabService Level Agreement`")
 		frappe.db.sql("delete from `tabService Level Priority`")

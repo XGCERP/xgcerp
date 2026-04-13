@@ -5,13 +5,13 @@ import frappe
 from frappe.utils.data import today
 
 from erpnext.accounts.report.balance_sheet.balance_sheet import execute
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 COMPANY = "_Test Company 6"
 COMPANY_SHORT_NAME = "_TC6"
 
 
-class TestBalanceSheet(XGCERPTestSuite):
+class TestBalanceSheet(AXERPTestSuite):
 	def test_balance_sheet(self):
 		frappe.db.sql(f"delete from `tabJournal Entry` where company='{COMPANY}'")
 		frappe.db.sql(f"delete from `tabGL Entry` where company='{COMPANY}'")

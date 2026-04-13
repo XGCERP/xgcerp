@@ -4,8 +4,8 @@
 # import frappe
 
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestIncoterm(XGCERPTestSuite):
+class TestIncoterm(AXERPTestSuite):
 	pass

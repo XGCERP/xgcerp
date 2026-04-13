@@ -5,10 +5,10 @@ import unittest
 import frappe
 from frappe.desk import notifications
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestNotifications(XGCERPTestSuite):
+class TestNotifications(AXERPTestSuite):
 	def test_get_notifications_for_targets(self):
 		"""
 		Test notification config entries for targets as percentages

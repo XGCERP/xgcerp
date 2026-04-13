@@ -4,10 +4,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestModeofPayment(XGCERPTestSuite):
+class TestModeofPayment(AXERPTestSuite):
 	pass
 
 

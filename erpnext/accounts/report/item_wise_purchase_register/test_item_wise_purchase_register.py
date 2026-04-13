@@ -4,10 +4,10 @@ from frappe.utils import getdate, today
 from erpnext.accounts.doctype.purchase_invoice.test_purchase_invoice import make_purchase_invoice
 from erpnext.accounts.report.item_wise_purchase_register.item_wise_purchase_register import execute
 from erpnext.accounts.test.accounts_mixin import AccountsTestMixin
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestItemWisePurchaseRegister(XGCERPTestSuite, AccountsTestMixin):
+class TestItemWisePurchaseRegister(AXERPTestSuite, AccountsTestMixin):
 	def setUp(self):
 		self.create_company()
 		self.create_supplier()

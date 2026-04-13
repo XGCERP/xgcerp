@@ -198,7 +198,7 @@ def insert_record(records):
 
 
 def welcome_email():
-	site_name = get_default_company() or "XGCERP"
+	site_name = get_default_company() or "AXERP"
 	title = _("Welcome to {0}").format(site_name)
 	return title
 

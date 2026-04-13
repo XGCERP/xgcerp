@@ -7,10 +7,10 @@ from frappe.utils import add_days, today
 from erpnext.maintenance.doctype.maintenance_schedule.test_maintenance_schedule import (
 	make_serial_item_with_serial,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestStockLedgerReeport(XGCERPTestSuite):
+class TestStockLedgerReeport(AXERPTestSuite):
 	def setUp(self) -> None:
 		make_serial_item_with_serial(self, "_Test Stock Report Serial Item")
 		self.filters = frappe._dict(

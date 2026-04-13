@@ -9,10 +9,10 @@ from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_orde
 from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class IntegrationTestSubcontractingInwardOrder(XGCERPTestSuite):
+class IntegrationTestSubcontractingInwardOrder(AXERPTestSuite):
 	"""
 	Integration tests for SubcontractingInwardOrder.
 	Use this class for testing interactions between multiple components.
@@ -289,8 +289,8 @@ class IntegrationTestSubcontractingInwardOrder(XGCERPTestSuite):
 		self.assertEqual(scio.items[0].delivered_qty, 2)
 		self.assertEqual(scio.items[0].returned_qty, 1)
 
-	@XGCERPTestSuite.change_settings("Selling Settings", {"allow_delivery_of_overproduced_qty": 1})
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings("Selling Settings", {"allow_delivery_of_overproduced_qty": 1})
+	@AXERPTestSuite.change_settings(
 		"Manufacturing Settings", {"overproduction_percentage_for_work_order": 20}
 	)
 	def test_over_production_delivery(self):
@@ -323,7 +323,7 @@ class IntegrationTestSubcontractingInwardOrder(XGCERPTestSuite):
 		delivery.items[0].qty = 6
 		self.assertRaises(frappe.ValidationError, delivery.submit)
 
-	@XGCERPTestSuite.change_settings("Selling Settings", {"deliver_secondary_items": 1})
+	@AXERPTestSuite.change_settings("Selling Settings", {"deliver_secondary_items": 1})
 	def test_secondary_items_delivery(self):
 		new_bom = frappe.copy_doc(frappe.get_doc("BOM", "BOM-Basic FG Item-001"))
 		new_bom.secondary_items.append(

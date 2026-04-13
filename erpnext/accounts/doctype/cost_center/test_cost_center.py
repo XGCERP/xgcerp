@@ -4,10 +4,10 @@ import unittest
 
 import frappe
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestCostCenter(XGCERPTestSuite):
+class TestCostCenter(AXERPTestSuite):
 	def test_cost_center_creation_against_child_node(self):
 		cost_center = frappe.get_doc(
 			{

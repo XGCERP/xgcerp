@@ -1,10 +1,10 @@
 from erpnext.controllers.taxes_and_totals import calculate_taxes_and_totals
 from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_order
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestTaxesAndTotals(XGCERPTestSuite):
-	@XGCERPTestSuite.change_settings("Selling Settings", {"allow_multiple_items": 1})
+class TestTaxesAndTotals(AXERPTestSuite):
+	@AXERPTestSuite.change_settings("Selling Settings", {"allow_multiple_items": 1})
 	def test_distributed_discount_amount(self):
 		so = make_sales_order(do_not_save=1)
 		so.apply_discount_on = "Net Total"
@@ -26,7 +26,7 @@ class TestTaxesAndTotals(XGCERPTestSuite):
 		self.assertEqual(so.net_total, 1400)
 		self.assertEqual(so.grand_total, 1400)
 
-	@XGCERPTestSuite.change_settings("Selling Settings", {"allow_multiple_items": 1})
+	@AXERPTestSuite.change_settings("Selling Settings", {"allow_multiple_items": 1})
 	def test_distributed_discount_amount_with_taxes(self):
 		so = make_sales_order(do_not_save=1)
 		so.apply_discount_on = "Grand Total"

@@ -19,10 +19,10 @@ from erpnext.crm.doctype.opportunity.opportunity import make_request_for_quotati
 from erpnext.crm.doctype.opportunity.test_opportunity import make_opportunity
 from erpnext.stock.doctype.item.test_item import make_item
 from erpnext.templates.pages.rfq import check_supplier_has_docname_access
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestRequestforQuotation(XGCERPTestSuite):
+class TestRequestforQuotation(AXERPTestSuite):
 	def test_rfq_qty(self):
 		rfq = make_request_for_quotation(qty=0, do_not_save=True)
 		with self.assertRaises(InvalidQtyError):
@@ -223,7 +223,7 @@ class TestRequestforQuotation(XGCERPTestSuite):
 		supplier_doc.reload()
 		self.assertTrue(supplier_doc.portal_users[0].user)
 
-	@XGCERPTestSuite.change_settings("Buying Settings", {"allow_zero_qty_in_request_for_quotation": 1})
+	@AXERPTestSuite.change_settings("Buying Settings", {"allow_zero_qty_in_request_for_quotation": 1})
 	def test_supplier_quotation_from_zero_qty_rfq(self):
 		rfq = make_request_for_quotation(qty=0)
 		sq = make_supplier_quotation_from_rfq(rfq.name, for_supplier=rfq.get("suppliers")[0].supplier)
@@ -232,7 +232,7 @@ class TestRequestforQuotation(XGCERPTestSuite):
 		self.assertEqual(sq.items[0].qty, 0)
 		self.assertEqual(sq.items[0].item_code, rfq.items[0].item_code)
 
-	@XGCERPTestSuite.change_settings(
+	@AXERPTestSuite.change_settings(
 		"Buying Settings",
 		{
 			"allow_zero_qty_in_request_for_quotation": 1,

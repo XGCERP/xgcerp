@@ -7,14 +7,14 @@ from frappe.utils import flt, today
 
 from erpnext.accounts.report.consolidated_trial_balance.consolidated_trial_balance import execute
 from erpnext.setup.utils import get_exchange_rate
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
 class ForeignCurrencyTranslationReserveNotFoundError(frappe.ValidationError):
 	pass
 
 
-class TestConsolidatedTrialBalance(XGCERPTestSuite):
+class TestConsolidatedTrialBalance(AXERPTestSuite):
 	def setUp(self):
 		from erpnext.accounts.utils import get_fiscal_year
 

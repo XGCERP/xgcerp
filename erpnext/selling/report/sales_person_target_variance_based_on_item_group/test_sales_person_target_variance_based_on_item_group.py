@@ -6,10 +6,10 @@ from erpnext.selling.doctype.sales_order.test_sales_order import make_sales_orde
 from erpnext.selling.report.sales_person_target_variance_based_on_item_group.sales_person_target_variance_based_on_item_group import (
 	execute,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSalesPersonTargetVarianceBasedOnItemGroup(XGCERPTestSuite):
+class TestSalesPersonTargetVarianceBasedOnItemGroup(AXERPTestSuite):
 	def setUp(self):
 		self.fiscal_year = get_fiscal_year(nowdate())[0]
 

@@ -6,5 +6,39 @@ node_modules
 __pycache__
 *.pyc
 .ruff_cache
+.semgrepignore
+.pre-commit-config.yaml
+.editorconfig
+.eslintrc
+.flake8
+.releaserc
+.mergify.yml
+
+# Docker volumes / local data
 docker/db-data
 docker/redis-queue-data
+
+# Documentation and non-runtime files
+*.md
+!erpnext/**/README.md
+CODE_OF_CONDUCT.md
+CODEOWNERS
+SECURITY.md
+TRADEMARK_POLICY.md
+attributions.md
+LICENSE
+
+# CI config
+codecov.yml
+crowdin.yml
+commitlint.config.js
+.git-blame-ignore-revs
+
+# Branding source assets (already baked into public/)
+axinagroup-logo.svg
+xgc_core_masking.md
+xgc_github_erpsync.md
+
+# Test / dev-only files
+.hypothesis
+babel_extractors.csv

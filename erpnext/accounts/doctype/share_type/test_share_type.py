@@ -2,8 +2,8 @@
 # See license.txt
 import unittest
 
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestShareType(XGCERPTestSuite):
+class TestShareType(AXERPTestSuite):
 	pass

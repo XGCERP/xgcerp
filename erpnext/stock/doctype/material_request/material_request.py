@@ -1,7 +1,7 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
 
-# XGCERP - web based ERP (http://erpnext.com)
+# AXERP - web based ERP (http://erpnext.com)
 # For license information, please see license.txt
 
 

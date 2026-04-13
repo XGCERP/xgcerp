@@ -23,10 +23,10 @@ from erpnext.stock.doctype.stock_reconciliation.test_stock_reconciliation import
 from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order import (
 	make_subcontracting_receipt,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestItemAlternative(XGCERPTestSuite):
+class TestItemAlternative(AXERPTestSuite):
 	def setUp(self):
 		super().setUp()
 		make_items()

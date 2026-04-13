@@ -4,7 +4,7 @@ import frappe
 from frappe.query_builder.functions import Timestamp
 
 from erpnext.stock.utils import scan_barcode
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
 class StockTestMixin:
@@ -70,7 +70,7 @@ class StockTestMixin:
 				self.assertEqual(exp_value, act_value, msg=f"{k} doesn't match \n{exp_gle}\n{act_gle}")
 
 
-class TestStockUtilities(XGCERPTestSuite, StockTestMixin):
+class TestStockUtilities(AXERPTestSuite, StockTestMixin):
 	def test_barcode_scanning(self):
 		simple_item = self.make_item(properties={"barcodes": [{"barcode": "12399"}]})
 		self.assertEqual(scan_barcode("12399")["item_code"], simple_item.name)

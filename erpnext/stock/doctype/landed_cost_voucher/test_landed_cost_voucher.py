@@ -20,10 +20,10 @@ from erpnext.stock.doctype.serial_and_batch_bundle.test_serial_and_batch_bundle 
 	get_serial_nos_from_bundle,
 )
 from erpnext.stock.serial_batch_bundle import SerialNoValuation
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestLandedCostVoucher(XGCERPTestSuite):
+class TestLandedCostVoucher(AXERPTestSuite):
 	def setUp(self):
 		self.load_test_records("Currency Exchange")
 

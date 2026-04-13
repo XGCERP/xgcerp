@@ -10,10 +10,10 @@ from erpnext.selling.report.sales_person_target_variance_based_on_item_group.tes
 	create_sales_target_doc,
 	create_target_distribution,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestSalesPartnerTargetVarianceBasedOnItemGroup(XGCERPTestSuite):
+class TestSalesPartnerTargetVarianceBasedOnItemGroup(AXERPTestSuite):
 	def setUp(self):
 		self.fiscal_year = get_fiscal_year(nowdate())[0]
 

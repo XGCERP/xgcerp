@@ -4,10 +4,10 @@ from erpnext.crm.report.opportunity_summary_by_sales_stage.opportunity_summary_b
 from erpnext.crm.report.sales_pipeline_analytics.test_sales_pipeline_analytics import (
 	create_opportunity,
 )
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestOpportunitySummaryBySalesStage(XGCERPTestSuite):
+class TestOpportunitySummaryBySalesStage(AXERPTestSuite):
 	def setUp(self):
 		create_opportunity()
 

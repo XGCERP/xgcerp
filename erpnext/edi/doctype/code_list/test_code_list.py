@@ -2,8 +2,8 @@
 # See license.txt
 
 # import frappe
-from erpnext.tests.utils import XGCERPTestSuite
+from erpnext.tests.utils import AXERPTestSuite
 
 
-class TestCodeList(XGCERPTestSuite):
+class TestCodeList(AXERPTestSuite):
 	pass
