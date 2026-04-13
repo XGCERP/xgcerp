@@ -1,12 +1,12 @@
-# Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved.
+# Copyright (c) 2026 Axina Group Inc. Created by Daniel Brody. All rights reserved.
 
 import os
 import shutil
 import re
 
 # --- CONFIGURATION ---
-OLD_BRAND = "ERPNext"
-NEW_BRAND = "XGCERP"
+OLD_BRAND = "XGCERP"
+NEW_BRAND = "AXERP"
 
 # CRITICAL: Preserve "ERPNext Integrations" module name
 # The integrations module MUST remain as "ERPNext Integrations" because:
@@ -19,12 +19,12 @@ PRESERVE_INTEGRATIONS_MODULE = "ERPNext Integrations"
 # CRITICAL: Also preserve the Python module path
 PRESERVE_PYTHON_MODULE = "erpnext_integrations"
 
-NEW_PUBLISHER = "XGC CORP."
+NEW_PUBLISHER = "Axina Group Inc."
 NEW_DESCRIPTION = "Operating System for Carbon Sovereignty"
-NEW_EMAIL = "db@xgccorp.com"
+NEW_EMAIL = "db@axinagroup.com"
 
 # The path to your logo (assuming it's in the repo root)
-SOURCE_LOGO_NAME = "xgcerp-logo.svg"
+SOURCE_LOGO_NAME = "axinagroup-logo.svg"
 
 IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'env', 'logs', 'scripts'}
 TARGET_EXTS = ('.json', '.py', '.js', '.html', '.csv', '.txt', '.md')
@@ -49,7 +49,7 @@ def update_hooks_metadata(hooks_path):
                 elif 'app_email =' in line:
                     f.write(f'app_email = "{NEW_EMAIL}"\n')
                 elif 'source_link =' in line:
-                    f.write(f'source_link = "https://github.com/XGCERP/xgcerp"\n')
+                    f.write(f'source_link = "https://github.com/AXERP/axerp"\n')
                 else:
                     # Fallback global replace for the rest of the file
                     # BUT preserve erpnext_integrations
@@ -167,7 +167,7 @@ def run_rebrand():
                         content = f.read()
                     
                     # Check if file needs processing
-                    if OLD_BRAND in content or 'xgccorp.com' in content:
+                    if OLD_BRAND in content or 'axinagroup.com' in content:
                         # Check if file contains erpnext_integrations
                         has_integrations = PRESERVE_PYTHON_MODULE in content
                         
@@ -192,7 +192,7 @@ def run_rebrand():
     # 3. Overwrite physical logos
     source_logo = os.path.join(root_dir, SOURCE_LOGO_NAME)
     if os.path.exists(source_logo):
-        # Target standard XGCERP asset paths
+        # Target standard AXERP asset paths
         paths = [
             os.path.join(root_dir, "erpnext", "public", "images", "erpnext-logo.svg"),
             os.path.join(root_dir, "erpnext", "public", "images", "erpnext-favicon.svg"),

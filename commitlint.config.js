@@ -1,4 +1,4 @@
-/* Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved. */
+/* Copyright (c) 2026 Axina Group Inc. Created by Daniel Brody. All rights reserved. */
 module.exports = {
 	parserPreset: "conventional-changelog-conventionalcommits",
 	rules: {

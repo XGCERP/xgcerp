@@ -7,7 +7,7 @@ from frappe.contacts.doctype.address.address import (
 )
 
 
-class XGCERPAddress(Address):
+class AXERPAddress(Address):
 	def validate(self):
 		self.validate_reference()
 		self.update_company_address()

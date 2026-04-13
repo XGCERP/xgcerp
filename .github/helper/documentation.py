@@ -9,7 +9,7 @@ WEBSITE_REPOS = [
 ]
 
 DOCUMENTATION_DOMAINS = [
-	"docs.xgccorp.com",
+	"docs.axinagroup.com",
 	"docs.frappe.io",
 	"frappeframework.com",
 ]

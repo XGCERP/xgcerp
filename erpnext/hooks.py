@@ -1,12 +1,12 @@
 app_name = "erpnext"
-app_title = "XGCERP"
-app_publisher = "XGC CORP."
+app_title = "AXERP"
+app_publisher = "Axina Group Inc."
 app_description = "Operating System for Carbon Sovereignty"
 app_icon = "fa fa-th"
-app_color = "#e74c3c"
-app_email = "db@xgccorp.com"
+app_color = "#f9720a"
+app_email = "db@axinagroup.com"
 app_license = "GNU General Public License (v3)"
-source_link = "https://github.com/XGCERP/xgcerp"
+source_link = "https://github.com/AXERP/axerp"
 app_logo_url = "/assets/erpnext/images/erpnext-logo.svg"
 app_home = "/desk"
 
@@ -53,7 +53,7 @@ doctype_list_js = {
 
 page_js = {"print": "public/js/print.js"}
 
-extend_doctype_class = {"Address": "erpnext.accounts.custom.address.XGCERPAddress"}
+extend_doctype_class = {"Address": "erpnext.accounts.custom.address.AXERPAddress"}
 
 override_whitelisted_methods = {"frappe.www.contact.send_message": "erpnext.templates.utils.send_message"}
 
@@ -497,7 +497,7 @@ default_mail_footer = """
 	<span>
 		Sent via
 		<a class="text-muted" href="https://frappe.io/erpnext?source=via_email_footer" target="_blank">
-			XGCERP
+			AXERP
 		</a>
 	</span>
 """
@@ -623,7 +623,7 @@ user_privacy_documents = [
 ]
 
 
-# XGCERP doctypes for Global Search
+# AXERP doctypes for Global Search
 global_search_doctypes = {
 	"Default": [
 		{"doctype": "Customer", "index": 0},
