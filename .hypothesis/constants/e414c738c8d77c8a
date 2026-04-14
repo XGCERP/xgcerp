@@ -1,0 +1,4 @@
+# file: /Users/dzbrody/Dev/GitHub/axerp/erpnext/__init__.py
+# hypothesis_version: 6.151.14
+
+[' - ', '16.13.3', 'Administrator', 'Company', 'Global Defaults', 'Party Type', 'T', '_Test Company', '__annotations__', 'abbr', 'account_type', 'company', 'cost_center', 'country', 'ctx', 'default_company', 'default_currency', 'default_finance_book', 'party_account_types', 'regional_overrides']

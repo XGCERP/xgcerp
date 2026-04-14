@@ -140,7 +140,7 @@ The following global string replacements apply across all affected files unless 
 | Target | Old | New |
 |--------|-----|-----|
 | Copyright header | `XGC CORP.` | `Axina Group Inc.` |
-| `OLD_BRAND` | `"ERPNext"` | `"AXERP"` |
+| `OLD_BRAND` | `"AXERP"` | `"AXERP"` |
 | `NEW_BRAND` | `"AXERP"` | `"AXERP"` |
 | `NEW_PUBLISHER` | `"XGC CORP."` | `"Axina Group Inc."` |
 | `NEW_EMAIL` | `"db@xgccorp.com"` | `"db@axinagroup.com"` |

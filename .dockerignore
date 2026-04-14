@@ -36,8 +36,6 @@ commitlint.config.js
 
 # Branding source assets (already baked into public/)
 axinagroup-logo.svg
-xgc_core_masking.md
-xgc_github_erpsync.md
 
 # Test / dev-only files
 .hypothesis

@@ -113,7 +113,7 @@ calendars = ["Task", "Work Order", "Sales Order", "Holiday List", "ToDo"]
 website_generators = ["BOM", "Sales Partner"]
 
 website_context = {
-	"favicon": "/assets/erpnext/images/erpnext-favicon.svg",
+	"favicon": "/assets/erpnext/images/favicon.ico",
 	"splash_image": "/assets/erpnext/images/erpnext-logo.svg",
 }
 
@@ -491,7 +491,7 @@ scheduler_events = {
 	],
 }
 
-email_brand_image = "assets/erpnext/images/erpnext-logo.jpg"
+email_brand_image = "assets/erpnext/images/erpnext-logo.png"
 
 default_mail_footer = """
 	<span>

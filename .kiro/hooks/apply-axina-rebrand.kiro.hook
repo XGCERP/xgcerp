@@ -1,7 +1,7 @@
 {
   "enabled": true,
   "name": "Apply Axina Rebrand",
-  "description": "Manually triggered hook that runs scripts/smart_rename.py to apply the XGCERP → AXERP rebrand across all files. Use this after resolving merge conflicts or when you need to re-apply branding without a full sync.",
+  "description": "Manually triggered hook that runs scripts/smart_rename.py to apply the ERPNext → AXERP rebrand across all files. Use this after resolving merge conflicts or when you need to re-apply branding without a full sync.",
   "version": "1",
   "when": {
     "type": "userTriggered"

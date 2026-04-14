@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved.
+# Copyright (c) 2026 Axina Group Inc. Created by Daniel Brody. All rights reserved.
 """
 Fix broken \\n escape sequences in Python files.
 

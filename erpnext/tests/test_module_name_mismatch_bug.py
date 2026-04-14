@@ -1,4 +1,4 @@
-# Copyright (c) 2026 XGC CORP. Created by Daniel Brody. All rights reserved.
+# Copyright (c) 2026 Axina Group Inc. Created by Daniel Brody. All rights reserved.
 """
 Bug Condition Exploration Test for Module Name Mismatch
 
@@ -6,6 +6,9 @@ Bug Condition Exploration Test for Module Name Mismatch
 
 This test explores the bug condition where modules.txt contains "AXERP Integrations"
 but the actual folder is named "erpnext_integrations/", causing installation failures.
+
+The smart_rename.py script must preserve "AXERP Integrations" in modules.txt
+(matching the folder name "erpnext_integrations") and NOT rebrand it to "AXERP Integrations".
 
 CRITICAL: This test MUST FAIL on unfixed code - failure confirms the bug exists.
 DO NOT attempt to fix the test or the code when it fails.
@@ -23,9 +26,10 @@ from pathlib import Path
 class TestModuleNameMismatchBug(unittest.TestCase):
 	"""
 	Property 1: Fault Condition - Module Name Mismatch Causes Installation Failure
-	
+
 	This test demonstrates that when modules.txt contains "AXERP Integrations" but the
 	actual folder is "erpnext_integrations/", the system cannot properly resolve the module.
+	The correct value in modules.txt should be "AXERP Integrations".
 	"""
 
 	def setUp(self):
@@ -46,43 +50,44 @@ class TestModuleNameMismatchBug(unittest.TestCase):
 	def test_01_modules_txt_has_mismatched_name(self):
 		"""
 		Test that modules.txt contains "AXERP Integrations" while folder is "erpnext_integrations".
-		
+
 		This is the core bug condition: the module name doesn't match the folder structure.
-		
+		The correct name should be "AXERP Integrations" to match the folder.
+
 		Expected on UNFIXED code: PASS (bug exists - mismatch detected)
 		Expected on FIXED code: FAIL (bug is fixed - should be "AXERP Integrations")
 		"""
 		with open(self.modules_txt_path, "r") as f:
 			content = f.read()
-		
-		# Check for the bug: modules.txt has "AXERP Integrations"
-		has_xgcerp = "AXERP Integrations" in content
-		
+
+		# Check for the bug: modules.txt has "AXERP Integrations" instead of "AXERP Integrations"
+		has_axerp_integrations = "AXERP Integrations" in content
+
 		# Check that folder is actually "erpnext_integrations"
 		folder_exists = self.integrations_folder.exists()
-		xgcerp_folder = self.repo_root / "erpnext" / "xgcerp_integrations"
-		xgcerp_folder_exists = xgcerp_folder.exists()
-		
+		axerp_folder = self.repo_root / "erpnext" / "axerp_integrations"
+		axerp_folder_exists = axerp_folder.exists()
+
 		# The bug exists when:
 		# 1. modules.txt has "AXERP Integrations" (mismatched name)
 		# 2. Folder is "erpnext_integrations" (correct folder)
-		# 3. No "xgcerp_integrations" folder exists (proves mismatch)
-		
+		# 3. No "axerp_integrations" folder exists (proves mismatch)
+
 		self.assertTrue(
-			has_xgcerp and folder_exists and not xgcerp_folder_exists,
+			has_axerp_integrations and folder_exists and not axerp_folder_exists,
 			"Bug condition: modules.txt has 'AXERP Integrations' but folder is 'erpnext_integrations/'"
 		)
 
 	def test_02_plaid_settings_json_has_mismatched_module_field(self):
 		"""
 		Test that plaid_settings.json has "module": "AXERP Integrations" (the bug).
-		
+
 		Expected on UNFIXED code: PASS (bug exists)
 		Expected on FIXED code: FAIL (bug is fixed, should be "AXERP Integrations")
 		"""
 		with open(self.plaid_settings_path, "r") as f:
 			data = json.load(f)
-		
+
 		# On unfixed code, this should be "AXERP Integrations" (bug exists)
 		# On fixed code, this should be "AXERP Integrations" (bug is fixed)
 		self.assertEqual(
@@ -94,16 +99,16 @@ class TestModuleNameMismatchBug(unittest.TestCase):
 	def test_03_python_path_mismatch_demonstrates_bug(self):
 		"""
 		Test that the Python import path doesn't match the module name in modules.txt.
-		
+
 		This demonstrates that:
 		- erpnext.erpnext_integrations CAN be imported (folder exists)
-		- erpnext.xgcerp_integrations CANNOT be imported (folder doesn't exist)
+		- erpnext.axerp_integrations CANNOT be imported (folder doesn't exist)
 		- But modules.txt references "AXERP Integrations" (the mismatch)
 		"""
 		# Add the repo root to sys.path so we can import erpnext
 		if str(self.repo_root) not in sys.path:
 			sys.path.insert(0, str(self.repo_root))
-		
+
 		# Test 1: erpnext.erpnext_integrations should be importable
 		can_import_erpnext_integrations = False
 		try:
@@ -112,34 +117,34 @@ class TestModuleNameMismatchBug(unittest.TestCase):
 			can_import_erpnext_integrations = erpnext_integrations_path.exists()
 		except Exception:
 			pass
-		
-		# Test 2: erpnext.xgcerp_integrations should NOT be importable
-		can_import_xgcerp_integrations = False
+
+		# Test 2: erpnext.axerp_integrations should NOT be importable
+		can_import_axerp_integrations = False
 		try:
-			xgcerp_integrations_path = self.repo_root / "erpnext" / "xgcerp_integrations" / "__init__.py"
-			can_import_xgcerp_integrations = xgcerp_integrations_path.exists()
+			axerp_integrations_path = self.repo_root / "erpnext" / "axerp_integrations" / "__init__.py"
+			can_import_axerp_integrations = axerp_integrations_path.exists()
 		except Exception:
 			pass
-		
+
 		# The bug exists when:
 		# - erpnext_integrations exists (correct folder)
-		# - xgcerp_integrations doesn't exist (proves mismatch)
+		# - axerp_integrations doesn't exist (proves mismatch)
 		self.assertTrue(
 			can_import_erpnext_integrations,
 			"erpnext.erpnext_integrations should be importable (folder exists)"
 		)
 		self.assertFalse(
-			can_import_xgcerp_integrations,
-			"erpnext.xgcerp_integrations should NOT be importable (demonstrates mismatch)"
+			can_import_axerp_integrations,
+			"erpnext.axerp_integrations should NOT be importable (demonstrates mismatch)"
 		)
 
 	def test_04_smart_rename_script_causes_bug(self):
 		"""
-		Test that smart_rename.py performs global replace without exclusions.
-		
-		This demonstrates the root cause: the script changes "AXERP Integrations"
+		Test that an unfixed smart_rename.py performs global replace without exclusions.
+
+		This demonstrates the root cause: an unfixed script changes "AXERP Integrations"
 		to "AXERP Integrations" without excluding the integrations module.
-		
+
 		Expected on UNFIXED code: PASS (script damages the module name)
 		Expected on FIXED code: FAIL (script preserves "AXERP Integrations")
 		"""
@@ -147,15 +152,15 @@ class TestModuleNameMismatchBug(unittest.TestCase):
 		with tempfile.TemporaryDirectory() as tmpdir:
 			test_modules_txt = Path(tmpdir) / "modules.txt"
 			test_modules_txt.write_text("AXERP Integrations\nAXERP Assets\n")
-			
-			# Simulate what the unfixed script does: global replace
+
+			# Simulate what an unfixed script does: global replace without exclusion
 			with open(test_modules_txt, "r") as f:
 				content = f.read()
-			
+
 			# The unfixed script does: content.replace("AXERP", "AXERP")
 			# This is the bug - it doesn't exclude the integrations module
 			new_content = content.replace("AXERP", "AXERP")
-			
+
 			# On unfixed code, "AXERP Integrations" should be changed to "AXERP Integrations"
 			# This demonstrates the bug
 			self.assertIn(
@@ -163,7 +168,7 @@ class TestModuleNameMismatchBug(unittest.TestCase):
 				new_content,
 				"Unfixed script changes 'AXERP Integrations' to 'AXERP Integrations' (demonstrates root cause)"
 			)
-			
+
 			# On unfixed code, "AXERP Integrations" should NOT be preserved
 			# (This confirms the bug exists)
 			self.assertNotIn(
@@ -171,7 +176,7 @@ class TestModuleNameMismatchBug(unittest.TestCase):
 				new_content,
 				"Unfixed script does NOT preserve 'AXERP Integrations' (bug exists)"
 			)
-			
+
 			# Also verify that other modules ARE rebranded (this is correct behavior)
 			self.assertIn(
 				"AXERP Assets",

@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Build Docker Images",
+  "description": "Builds new AXERP Docker images from the local codebase using docker compose (no cache), then removes the cached frappe/erpnext base image so only axerp:local remains.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run the Docker build and clean up the base image. Steps: 1) Run 'docker compose -f docker/docker-compose.yml build --no-cache' (timeout 600s). 2) After the build succeeds, run 'docker rmi frappe/erpnext:v16.13.3' to remove the cached base image. 3) Run 'docker images' to confirm only axerp:local, mariadb, and redis images remain."
+  }
+}

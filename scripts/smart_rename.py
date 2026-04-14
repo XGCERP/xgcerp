@@ -1,16 +1,17 @@
 # Copyright (c) 2026 Axina Group Inc. Created by Daniel Brody. All rights reserved.
 
+import json
 import os
 import shutil
 import re
 
 # --- CONFIGURATION ---
-OLD_BRAND = "XGCERP"
+OLD_BRAND = "ERPNext"
 NEW_BRAND = "AXERP"
 
 # CRITICAL: Preserve "ERPNext Integrations" module name
 # The integrations module MUST remain as "ERPNext Integrations" because:
-# 1. The folder is named "erpnext_integrations/" (not "xgcerp_integrations/")
+# 1. The folder is named "erpnext_integrations/" (not renamed)
 # 2. All Python imports reference "erpnext.erpnext_integrations.*"
 # 3. Renaming this module breaks installation and all existing imports
 # This exclusion prevents the bug from recurring on future upstream syncs
@@ -55,7 +56,7 @@ def update_hooks_metadata(hooks_path):
                     # BUT preserve erpnext_integrations
                     new_line = line.replace(OLD_BRAND, NEW_BRAND)
                     # Restore any erpnext_integrations that got changed
-                    new_line = new_line.replace('xgcerp_integrations', PRESERVE_PYTHON_MODULE)
+                    new_line = new_line.replace('axerp_integrations', PRESERVE_PYTHON_MODULE)
                     f.write(new_line)
         
         print(f"✅ Metadata updated in hooks.py")
@@ -206,6 +207,38 @@ def run_rebrand():
         print(f"🖼️  Overwrote core logos with {SOURCE_LOGO_NAME}")
     else:
         print(f"⚠️  Logo source not found at {source_logo}")
+    
+    # 4. Copy raster favicons and site.webmanifest
+    raster_favicons = [
+        "favicon.ico",
+        "favicon-16x16.png",
+        "favicon-32x32.png",
+        "apple-touch-icon.png",
+        "android-chrome-192x192.png",
+        "android-chrome-512x512.png",
+    ]
+    images_dir = os.path.join(root_dir, "erpnext", "public", "images")
+    os.makedirs(images_dir, exist_ok=True)
+
+    for fname in raster_favicons:
+        src = os.path.join(root_dir, fname)
+        if os.path.exists(src):
+            shutil.copyfile(src, os.path.join(images_dir, fname))
+
+    # Copy site.webmanifest with updated icon paths
+    manifest_src = os.path.join(root_dir, "site.webmanifest")
+    if os.path.exists(manifest_src):
+        with open(manifest_src, "r", encoding="utf-8") as f:
+            manifest = json.load(f)
+        for icon in manifest.get("icons", []):
+            src_path = icon.get("src", "")
+            if src_path and not src_path.startswith("/assets/erpnext/images/"):
+                basename = src_path.rsplit("/", 1)[-1]
+                icon["src"] = f"/assets/erpnext/images/{basename}"
+        with open(os.path.join(images_dir, "site.webmanifest"), "w", encoding="utf-8") as f:
+            json.dump(manifest, f)
+
+    print("🖼️  Copied raster favicons and site.webmanifest")
     
     print(f"✨ Rebrand complete!")
     print(f"   📝 {updated} files modified")
