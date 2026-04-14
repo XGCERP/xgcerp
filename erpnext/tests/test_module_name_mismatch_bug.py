@@ -18,7 +18,6 @@ The test encodes the expected behavior - it will validate the fix when it passes
 
 import json
 import sys
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -47,53 +46,52 @@ class TestModuleNameMismatchBug(unittest.TestCase):
 		self.smart_rename_path = self.repo_root / "scripts" / "smart_rename.py"
 		self.integrations_folder = self.repo_root / "erpnext" / "erpnext_integrations"
 
-	def test_01_modules_txt_has_mismatched_name(self):
+	def test_01_modules_txt_has_correct_integrations_name(self):
 		"""
-		Test that modules.txt contains "AXERP Integrations" while folder is "erpnext_integrations".
+		Test that modules.txt contains "ERPNext Integrations" matching the folder "erpnext_integrations".
 
-		This is the core bug condition: the module name doesn't match the folder structure.
-		The correct name should be "AXERP Integrations" to match the folder.
+		The smart_rename.py script must preserve "ERPNext Integrations" in modules.txt
+		because the folder is named "erpnext_integrations/" and renaming would break imports.
 
-		Expected on UNFIXED code: PASS (bug exists - mismatch detected)
-		Expected on FIXED code: FAIL (bug is fixed - should be "AXERP Integrations")
+		Expected: PASS (modules.txt has "ERPNext Integrations" matching the folder)
 		"""
 		with open(self.modules_txt_path, "r") as f:
 			content = f.read()
 
-		# Check for the bug: modules.txt has "AXERP Integrations" instead of "AXERP Integrations"
-		has_axerp_integrations = "AXERP Integrations" in content
+		# modules.txt must have "ERPNext Integrations" (preserved by smart_rename.py)
+		has_erpnext_integrations = "ERPNext Integrations" in content
 
 		# Check that folder is actually "erpnext_integrations"
 		folder_exists = self.integrations_folder.exists()
 		axerp_folder = self.repo_root / "erpnext" / "axerp_integrations"
 		axerp_folder_exists = axerp_folder.exists()
 
-		# The bug exists when:
-		# 1. modules.txt has "AXERP Integrations" (mismatched name)
+		# Correct state:
+		# 1. modules.txt has "ERPNext Integrations" (matching folder name)
 		# 2. Folder is "erpnext_integrations" (correct folder)
-		# 3. No "axerp_integrations" folder exists (proves mismatch)
+		# 3. No "axerp_integrations" folder exists
 
 		self.assertTrue(
-			has_axerp_integrations and folder_exists and not axerp_folder_exists,
-			"Bug condition: modules.txt has 'AXERP Integrations' but folder is 'erpnext_integrations/'"
+			has_erpnext_integrations and folder_exists and not axerp_folder_exists,
+			"modules.txt should have 'ERPNext Integrations' matching folder 'erpnext_integrations/'"
 		)
 
-	def test_02_plaid_settings_json_has_mismatched_module_field(self):
+	def test_02_plaid_settings_json_has_correct_module_field(self):
 		"""
-		Test that plaid_settings.json has "module": "AXERP Integrations" (the bug).
+		Test that plaid_settings.json has "module": "ERPNext Integrations" (preserved).
 
-		Expected on UNFIXED code: PASS (bug exists)
-		Expected on FIXED code: FAIL (bug is fixed, should be "AXERP Integrations")
+		The smart_rename.py script preserves "ERPNext Integrations" in JSON module fields
+		because the folder is "erpnext_integrations" and renaming would break the module.
+
+		Expected: PASS (module field matches the preserved folder name)
 		"""
 		with open(self.plaid_settings_path, "r") as f:
 			data = json.load(f)
 
-		# On unfixed code, this should be "AXERP Integrations" (bug exists)
-		# On fixed code, this should be "AXERP Integrations" (bug is fixed)
 		self.assertEqual(
 			data.get("module"),
-			"AXERP Integrations",
-			"plaid_settings.json should have 'AXERP Integrations' on unfixed code (bug condition)"
+			"ERPNext Integrations",
+			"plaid_settings.json should have 'ERPNext Integrations' (preserved by smart_rename.py)"
 		)
 
 	def test_03_python_path_mismatch_demonstrates_bug(self):
@@ -138,51 +136,47 @@ class TestModuleNameMismatchBug(unittest.TestCase):
 			"erpnext.axerp_integrations should NOT be importable (demonstrates mismatch)"
 		)
 
-	def test_04_smart_rename_script_causes_bug(self):
+	def test_04_smart_rename_script_preserves_integrations(self):
 		"""
-		Test that an unfixed smart_rename.py performs global replace without exclusions.
+		Test that smart_rename.py's smart_replace() preserves "ERPNext Integrations"
+		in modules.txt while rebranding other module names.
 
-		This demonstrates the root cause: an unfixed script changes "AXERP Integrations"
-		to "AXERP Integrations" without excluding the integrations module.
+		This verifies the fix: smart_replace() correctly handles the integrations
+		module exclusion.
 
-		Expected on UNFIXED code: PASS (script damages the module name)
-		Expected on FIXED code: FAIL (script preserves "AXERP Integrations")
+		Expected: PASS (smart_replace preserves ERPNext Integrations)
 		"""
-		# Create a temporary test file with "AXERP Integrations"
-		with tempfile.TemporaryDirectory() as tmpdir:
-			test_modules_txt = Path(tmpdir) / "modules.txt"
-			test_modules_txt.write_text("AXERP Integrations\nAXERP Assets\n")
+		import importlib.util
 
-			# Simulate what an unfixed script does: global replace without exclusion
-			with open(test_modules_txt, "r") as f:
-				content = f.read()
+		spec = importlib.util.spec_from_file_location("smart_rename", str(self.smart_rename_path))
+		module = importlib.util.module_from_spec(spec)
+		spec.loader.exec_module(module)
+		smart_replace = module.smart_replace
 
-			# The unfixed script does: content.replace("AXERP", "AXERP")
-			# This is the bug - it doesn't exclude the integrations module
-			new_content = content.replace("AXERP", "AXERP")
+		# Create test content simulating modules.txt with the original ERPNext names
+		test_content = "ERPNext Integrations\nERPNext Assets\n"
 
-			# On unfixed code, "AXERP Integrations" should be changed to "AXERP Integrations"
-			# This demonstrates the bug
-			self.assertIn(
-				"AXERP Integrations",
-				new_content,
-				"Unfixed script changes 'AXERP Integrations' to 'AXERP Integrations' (demonstrates root cause)"
-			)
+		# Apply smart_replace (which should preserve ERPNext Integrations)
+		new_content = smart_replace(test_content, "modules.txt")
 
-			# On unfixed code, "AXERP Integrations" should NOT be preserved
-			# (This confirms the bug exists)
-			self.assertNotIn(
-				"AXERP Integrations",
-				new_content,
-				"Unfixed script does NOT preserve 'AXERP Integrations' (bug exists)"
-			)
+		# "ERPNext Integrations" must be preserved (not renamed)
+		self.assertIn(
+			"ERPNext Integrations",
+			new_content,
+			"smart_replace() should preserve 'ERPNext Integrations' in modules.txt"
+		)
 
-			# Also verify that other modules ARE rebranded (this is correct behavior)
-			self.assertIn(
-				"AXERP Assets",
-				new_content,
-				"Script should rebrand other modules like 'AXERP Assets' to 'AXERP Assets'"
-			)
+		# Other modules should be rebranded
+		self.assertNotIn(
+			"ERPNext Assets",
+			new_content,
+			"smart_replace() should rebrand 'ERPNext Assets' to 'AXERP Assets'"
+		)
+		self.assertIn(
+			"AXERP Assets",
+			new_content,
+			"smart_replace() should rebrand 'ERPNext Assets' to 'AXERP Assets'"
+		)
 
 
 if __name__ == "__main__":
