@@ -3,7 +3,7 @@ name = "erpnext"
 authors = [
     { name = "Frappe Technologies Pvt Ltd", email = "developers@frappe.io"}
 ]
-description = "Open Source ERP"
+description = "ERP System Built on the Frappe Framework"
 requires-python = ">=3.14"
 readme = "README.md"
 dynamic = ["version"]

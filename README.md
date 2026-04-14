@@ -28,11 +28,11 @@
 
 ## AXERP
 
-100% Open-Source ERP system to help you run your business.
+ERP system built on the Frappe Framework to help you run your business.
 
 ### Motivation
 
-Running a business is a complex task - handling invoices, tracking stock, managing personnel and even more ad-hoc activities. In a market where software is sold separately to manage each of these tasks, AXERP does all of the above and more, for free.
+Running a business is a complex task - handling invoices, tracking stock, managing personnel and even more ad-hoc activities. In a market where software is sold separately to manage each of these tasks, AXERP does all of the above and more.
 
 ### Key Features
 
@@ -61,7 +61,7 @@ Running a business is a complex task - handling invoices, tracking stock, managi
 
 ### Managed Hosting
 
-You can try [Frappe Cloud](https://frappecloud.com), a simple, user-friendly and sophisticated [open-source](https://github.com/frappe/press) platform to host Frappe applications with peace of mind.
+You can try [Frappe Cloud](https://frappecloud.com), a simple, user-friendly and sophisticated platform to host Frappe applications with peace of mind.
 
 It takes care of installation, setup, upgrades, monitoring, maintenance and support of your Frappe deployments. It is a fully featured developer platform with an ability to manage and control multiple Frappe deployments.
 
