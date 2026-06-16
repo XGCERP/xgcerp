@@ -15,6 +15,11 @@ ARG CRM_VERSION=main
 
 FROM frappe/erpnext:${ERPNEXT_VERSION} AS builder
 
+# Re-declare ARGs after FROM — Docker ARGs before FROM are out of scope
+# inside a build stage unless explicitly re-declared (no default = inherits global)
+ARG HRMS_VERSION
+ARG CRM_VERSION
+
 USER root
 
 # ── HRMS ──────────────────────────────────────────────────────────────────
