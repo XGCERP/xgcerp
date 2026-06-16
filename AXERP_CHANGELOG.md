@@ -7,6 +7,17 @@ For upstream ERPNext release notes see: https://github.com/frappe/erpnext/releas
 
 ---
 
+## [v16.22.0-axerp.3] — upstream: v16.22.0 | 2026-06-16 | Daniel Brody
+
+### Fixed
+- **erpnext/setup/doctype/company/company.py** — Two PostgreSQL compatibility fixes:
+
+  1. **`update_company_monthly_sales`**: Replaced `frappe.utils.goal.get_monthly_results` call with a direct Query Builder query using `Sum(si.base_grand_total)` (typed column reference). `get_monthly_results` passes `goal_field` as a plain string to `Function('sum', goal_field)`, which PostgreSQL rejects with `function sum(unknown) does not exist` because it cannot infer the type of an unresolved string literal.
+
+  2. **`get_all_transactions_annual_history`**: Replaced MySQL-only `date_sub(curdate(), interval 1 year)` in raw SQL with a parameterized `%s` bound to `frappe.utils.add_to_date(today(), years=-1)`. PostgreSQL does not recognize `DATE_SUB()` or `curdate()`.
+
+---
+
 ## [v16.22.0-axerp.2] — upstream: v16.22.0 | 2026-06-16 | Daniel Brody
 
 ### Fixed
