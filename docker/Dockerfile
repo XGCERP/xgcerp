@@ -35,13 +35,12 @@ COPY --chown=frappe:frappe . /home/frappe/frappe-bench/apps/erpnext
 USER frappe
 WORKDIR /home/frappe/frappe-bench
 
-# Install all three apps and rebuild assets
-RUN pip install --no-cache-dir \
-      -e apps/erpnext \
-      -e apps/hrms \
-      -e apps/crm \
-    2>/dev/null || true
+# Install Python packages — separate steps so failures are visible
+RUN pip install --no-cache-dir -e apps/erpnext
+RUN pip install --no-cache-dir -e apps/hrms
+RUN pip install --no-cache-dir -e apps/crm
 
+# Rebuild frontend assets (bench build may fail on asset-only apps — allow)
 RUN bench build --app erpnext 2>/dev/null || true
 RUN bench build --app hrms    2>/dev/null || true
 RUN bench build --app crm     2>/dev/null || true
