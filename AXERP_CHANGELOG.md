@@ -1,23 +1,23 @@
 # AXERP Changelog
 
-This file tracks AXERP-specific changes layered on top of the upstream ERPNext fork.
+This file tracks AXERP-specific changes layered on top of the upstream AXERP fork.
 Format: `[version-tag] — upstream-base | date | author`
 
-For upstream ERPNext release notes see: https://github.com/frappe/erpnext/releases
+For upstream AXERP release notes see: https://github.com/frappe/erpnext/releases
 
 ---
 
 ## [v16.22.0-axerp.4] — upstream: v16.22.0 | 2026-06-16 | Daniel Brody
 
-### Architecture change — MariaDB replaces PostgreSQL for ERPNext
+### Architecture change — MariaDB replaces PostgreSQL for AXERP
 
 **Problem:** `frappe.utils.goal.get_monthly_goal_graph_data` (frappe core, not AXERP) builds
 `sum('base_grand_total')` as a string literal in the generated SQL. PostgreSQL rejects
 this with `function sum(unknown) is not unique`. This is one of thousands of raw SQL
-queries in ERPNext written assuming MariaDB; patching each one individually is not viable.
+queries in AXERP written assuming MariaDB; patching each one individually is not viable.
 
-**Decision:** Deploy a dedicated `axerp-mariadb` (MariaDB 10.6, arm64) container for ERPNext.
-PostgreSQL remains in use for OpenProject and Nextcloud — those apps prefer it. ERPNext gets
+**Decision:** Deploy a dedicated `axerp-mariadb` (MariaDB 10.6, arm64) container for AXERP.
+PostgreSQL remains in use for OpenProject and Nextcloud — those apps prefer it. AXERP gets
 the database it was designed for.
 
 **Changed:**
@@ -37,7 +37,7 @@ the database it was designed for.
 | Container | Engine | Used by |
 |-----------|--------|---------|
 | `openproject-postgres` | PostgreSQL 16 | OpenProject, Nextcloud |
-| `axerp-mariadb` | MariaDB 10.6 | ERPNext (AXERP) only |
+| `axerp-mariadb` | MariaDB 10.6 | AXERP (AXERP) only |
 
 **Migration required:** Existing PostgreSQL-backed site must be dropped and recreated on MariaDB.
 Site data at `/data/axerp/sites/erp.axinagroup.com/` deleted before redeploy.
@@ -88,8 +88,8 @@ Companies re-created via API provisioner (`infrastructure/axerp-api/create_compa
 ## [v16.22.0-axerp] — upstream: v16.22.0 | 2026-06-16 | Daniel Brody
 
 ### Changed (AXERP Rebrand)
-- Applied `scripts/smart_rename.py`: ERPNext → AXERP in UI strings, titles, metadata.
-- **Preserved** (not rebranded): `erpnext_integrations` module name, all `erpnext.erpnext_integrations.*` import paths, `"module": "ERPNext Integrations"` in DocType JSON.
+- Applied `scripts/smart_rename.py`: AXERP → AXERP in UI strings, titles, metadata.
+- **Preserved** (not rebranded): `erpnext_integrations` module name, all `erpnext.erpnext_integrations.*` import paths, `"module": "AXERP Integrations"` in DocType JSON.
 - **hooks.py**: `app_publisher`, `app_description`, `app_email`, `source_link` updated to Axina Group values.
 - **pyproject.toml**: author → `Axina Group Inc.`, description → `ERP System Built on the Frappe Framework`.
 - **package.json**: author, homepage, description updated.
