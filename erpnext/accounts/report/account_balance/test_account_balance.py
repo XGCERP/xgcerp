@@ -10,9 +10,6 @@ from erpnext.tests.utils import AXERPTestSuite
 
 class TestAccountBalance(AXERPTestSuite):
 	def test_account_balance(self):
-		frappe.db.sql("delete from `tabSales Invoice` where company='_Test Company 2'")
-		frappe.db.sql("delete from `tabGL Entry` where company='_Test Company 2'")
-
 		filters = {
 			"company": "_Test Company 2",
 			"report_date": getdate(),

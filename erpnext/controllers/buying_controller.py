@@ -18,7 +18,11 @@ from erpnext.buying.utils import update_last_purchase_rate, validate_for_items
 from erpnext.controllers.accounts_controller import get_taxes_and_charges
 from erpnext.controllers.sales_and_purchase_return import get_rate_for_return
 from erpnext.controllers.subcontracting_controller import SubcontractingController
-from erpnext.stock.get_item_details import get_conversion_factor, get_item_defaults
+from erpnext.stock.get_item_details import (
+	NOT_APPLICABLE_TAX,
+	get_conversion_factor,
+	get_item_defaults,
+)
 from erpnext.stock.utils import get_incoming_rate
 
 
@@ -457,7 +461,7 @@ class BuyingController(SubcontractingController):
 						get_conversion_factor(item.item_code, item.uom).get("conversion_factor") or 1.0
 					)
 
-				net_rate = item.qty * item.base_net_rate
+				net_rate = item.base_net_amount
 				if item.sales_incoming_rate:  # for internal transfer
 					net_rate = item.qty * item.sales_incoming_rate
 
@@ -521,6 +525,9 @@ class BuyingController(SubcontractingController):
 			tax_details = json.loads(item.item_tax_rate)
 			for account, rate in tax_details.items():
 				if account not in tax_accounts:
+					continue
+
+				if rate == NOT_APPLICABLE_TAX:
 					continue
 
 				net_rate = item.base_net_amount
@@ -719,19 +726,6 @@ class BuyingController(SubcontractingController):
 						item_code=frappe.bold(item_row["item_code"]),
 					)
 				)
-
-	def check_for_on_hold_or_closed_status(self, ref_doctype, ref_fieldname):
-		for d in self.get("items"):
-			if d.get(ref_fieldname):
-				status = frappe.db.get_value(ref_doctype, d.get(ref_fieldname), "status")
-				if status in ("Closed", "On Hold"):
-					frappe.throw(
-						_("{ref_doctype} {ref_name} is {status}.").format(
-							ref_doctype=frappe.bold(_(ref_doctype)),
-							ref_name=frappe.bold(d.get(ref_fieldname)),
-							status=frappe.bold(_(status)),
-						)
-					)
 
 	def update_stock_ledger(self, allow_negative_stock=False, via_landed_cost_voucher=False):
 		self.update_ordered_and_reserved_qty()

@@ -96,7 +96,7 @@ class TestFaviconBrandingBug(unittest.TestCase):
 
 	Tests that branding asset references in hooks.py and site.webmanifest resolve
 	to files that actually exist in erpnext/public/images/ and are AXERP-branded
-	(not old ERPNext branding).
+	(not old AXERP branding).
 	"""
 
 	def test_01_favicon_hook_resolves_to_existing_non_old_file(self):

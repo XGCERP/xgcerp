@@ -32,7 +32,9 @@ NEW_CODEOWNER = "@dzbrody"
 # The path to your logo (assuming it's in the repo root)
 SOURCE_LOGO_NAME = "axinagroup-logo.svg"
 
-IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'env', 'logs', 'scripts'}
+IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'env', 'logs', 'scripts', '.kiro'}
+# xgc_* docs intentionally reference both brand names for clarity — skip them
+IGNORE_FILES = {'xgc_github_erpsync.md'}
 TARGET_EXTS = ('.json', '.py', '.js', '.html', '.csv', '.txt', '.md')
 
 
@@ -408,6 +410,8 @@ def run_rebrand():
         dirnames[:] = [d for d in dirnames if d not in IGNORE_DIRS]
         
         for filename in filenames:
+            if filename in IGNORE_FILES:
+                continue
             if filename.endswith(TARGET_EXTS):
                 filepath = os.path.join(dirpath, filename)
                 

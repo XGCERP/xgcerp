@@ -417,6 +417,7 @@ def is_holiday(employee, date=None, raise_exception=True, only_non_weekly=False,
 
 @frappe.whitelist()
 def deactivate_sales_person(status=None, employee=None):
+	frappe.has_permission("Employee", doc=employee, ptype="write", throw=True)
 	if status == "Left":
 		sales_person = frappe.db.get_value("Sales Person", {"Employee": employee})
 		if sales_person:
@@ -426,6 +427,7 @@ def deactivate_sales_person(status=None, employee=None):
 @frappe.whitelist()
 def create_user(employee: str, email: str | None = None, create_user_permission: int = 0) -> str:
 	emp = frappe.get_doc("Employee", employee)
+	emp.check_permission("write")
 	if emp.user_id:
 		frappe.throw(_("Employee {0} already has a linked user").format(emp.name))
 

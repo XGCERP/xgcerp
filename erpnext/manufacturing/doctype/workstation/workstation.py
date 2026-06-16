@@ -82,7 +82,9 @@ class Workstation(Document):
 				)
 
 	def before_save(self):
-		self.set_data_based_on_workstation_type()
+		if self.has_value_changed("workstation_type"):
+			self.set_data_based_on_workstation_type()
+
 		self.set_hour_rate()
 		self.set_total_working_hours()
 		self.disabled_workstation()
@@ -112,9 +114,6 @@ class Workstation(Document):
 
 	@frappe.whitelist()
 	def set_data_based_on_workstation_type(self):
-		if self.workstation_costs:
-			return
-
 		if self.workstation_type:
 			data = frappe.get_all(
 				"Workstation Cost",
@@ -122,6 +121,9 @@ class Workstation(Document):
 				filters={"parent": self.workstation_type, "parenttype": "Workstation Type"},
 				order_by="idx",
 			)
+
+			if data:
+				self.workstation_costs = []
 
 			for row in data:
 				self.append(
@@ -514,8 +516,33 @@ def get_color_map():
 	}
 
 
+ALLOWED_JOB_CARD_METHODS = frozenset(
+	{
+		"start_timer",
+		"pause_job",
+		"resume_job",
+		"complete_job_card",
+	}
+)
+
+
 @frappe.whitelist()
 def update_job_card(job_card: str, method: str, **kwargs):
+	if method not in ALLOWED_JOB_CARD_METHODS:
+		frappe.throw(
+			_("Method {0} is not allowed to be run on a Job Card.").format(bold(method)),
+			frappe.PermissionError,
+			title=_("Not Allowed"),
+		)
+
+	frappe.has_permission("Job Card", "read", throw=True)
+
+	doc = frappe.get_doc("Job Card", job_card)
+
+	# These methods mutate the Job Card, but frappe.get_doc does not enforce permissions —
+	# require write access before running anything.
+	frappe.has_permission("Job Card", "write", doc=doc, throw=True)
+
 	if isinstance(kwargs, dict):
 		kwargs = frappe._dict(kwargs)
 
@@ -525,7 +552,6 @@ def update_job_card(job_card: str, method: str, **kwargs):
 	if kwargs.qty and isinstance(kwargs.qty, str):
 		kwargs.qty = flt(kwargs.qty)
 
-	doc = frappe.get_doc("Job Card", job_card)
 	doc.run_method(method, **kwargs)
 
 

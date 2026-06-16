@@ -142,14 +142,19 @@ class StockController(AccountsController):
 		]:
 			for item in self.get("items"):
 				if (
-					(item.get("valuation_rate") == 0 or item.get("incoming_rate") == 0)
+					(
+						item.get("valuation_rate") == 0
+						or (item.get("incoming_rate") == 0 and self.get("update_stock", 1))
+					)
 					and item.get("allow_zero_valuation_rate") == 0
 					and frappe.get_cached_value("Item", item.item_code, "is_stock_item")
 				):
 					frappe.toast(
-						_(
-							"Row #{0}: Item {1} has zero rate but 'Allow Zero Valuation Rate' is not enabled."
-						).format(item.idx, frappe.bold(item.item_code)),
+						_("Row #{0}: Item {1} has zero rate but '{2}' is not enabled.").format(
+							item.idx,
+							frappe.bold(item.item_code),
+							item.meta.get_label("allow_zero_valuation_rate"),
+						),
 						indicator="orange",
 					)
 
@@ -264,14 +269,15 @@ class StockController(AccountsController):
 		)
 
 		is_asset_pr = any(d.get("is_fixed_asset") for d in self.get("items"))
-
-		if (
+		need_inventory_map = (self.get_stock_items() or self.get("packed_items")) and (
 			cint(erpnext.is_perpetual_inventory_enabled(self.company))
-			or provisional_accounting_for_non_stock_items
-			or is_asset_pr
-		):
+		)
+
+		inventory_account_map = frappe._dict()
+		if need_inventory_map:
 			inventory_account_map = self.get_inventory_account_map()
 
+		if need_inventory_map or provisional_accounting_for_non_stock_items or is_asset_pr:
 			if self.docstatus == 1:
 				if not gl_entries:
 					gl_entries = (
@@ -1930,6 +1936,43 @@ class StockController(AccountsController):
 
 					qty -= working_qty
 
+	def check_for_on_hold_or_closed_status(
+		self, ref_doctype: str, ref_fieldname: str, exclude_if_field: str | None = None
+	) -> None:
+		def _include(d):
+			return d.get(ref_fieldname) and not (exclude_if_field and d.get(exclude_if_field))
+
+		included = [(d, d.get(ref_fieldname)) for d in self.get("items") if _include(d)]
+		if not included:
+			return
+
+		status_map = {
+			r.name: r.status
+			for r in frappe.get_all(
+				ref_doctype,
+				filters={"name": ["in", {name for _, name in included}]},
+				fields=["name", "status"],
+			)
+		}
+
+		errors = []
+		seen = set()
+		for _d, ref_name in included:
+			if ref_name in seen:
+				continue
+			seen.add(ref_name)
+			if (status := status_map.get(ref_name)) in ("Closed", "On Hold"):
+				errors.append(
+					_("{ref_doctype} {ref_name} status is {status}.").format(
+						ref_doctype=frappe.bold(_(ref_doctype)),
+						ref_name=frappe.bold(ref_name),
+						status=frappe.bold(_(status)),
+					)
+				)
+
+		if errors:
+			frappe.throw("<br>".join(errors), frappe.InvalidStatusError)
+
 
 @frappe.whitelist()
 def show_accounting_ledger_preview(company, doctype, docname):
@@ -2106,7 +2149,7 @@ def repost_required_for_queue(doc: StockController) -> bool:
 
 
 @frappe.whitelist()
-def check_item_quality_inspection(doctype, items):
+def check_item_quality_inspection(doctype: str, docstatus: str | int, items: str | list[dict]):
 	if isinstance(items, str):
 		items = json.loads(items)
 
@@ -2118,13 +2161,30 @@ def check_item_quality_inspection(doctype, items):
 		"Delivery Note": "inspection_required_before_delivery",
 	}
 
-	items_to_remove = []
-	for item in items:
-		if not frappe.db.get_value("Item", item.get("item_code"), inspection_fieldname_map.get(doctype)):
-			items_to_remove.append(item)
-	items = [item for item in items if item not in items_to_remove]
+	inspection_fieldname = inspection_fieldname_map.get(doctype)
+	if inspection_fieldname is None:
+		return []
 
-	return items
+	allow_after_transaction = cint(docstatus) == 1 and frappe.get_single_value(
+		"Stock Settings", "allow_to_make_quality_inspection_after_purchase_or_delivery"
+	)
+
+	if allow_after_transaction:
+		return items
+
+	item_codes = list({item.get("item_code") for item in items})
+
+	Item = frappe.qb.DocType("Item")
+	results = (
+		frappe.qb.from_(Item)
+		.select(Item.name)
+		.where((Item.name.isin(item_codes)) & (Item[inspection_fieldname] == 1))
+		.run(as_dict=True)
+	)
+
+	inspection_required_items = {row.name for row in results}
+
+	return [item for item in items if item.get("item_code") in inspection_required_items]
 
 
 @frappe.whitelist()
