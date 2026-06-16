@@ -897,37 +897,14 @@ def update_company_current_month_sales(company):
 
 
 def update_company_monthly_sales(company):
-	"""Cache past year monthly sales of every company based on sales invoices.
+	"""Cache past year monthly sales of every company based on sales invoices"""
+	from frappe.utils.goal import get_monthly_results
 
-	PostgreSQL fix: frappe's get_monthly_results passes goal_field as a plain
-	string to Function('sum', goal_field), which PostgreSQL cannot type-resolve
-	('function sum(unknown) does not exist').  Use the Query Builder directly
-	with a typed column reference instead.
-	"""
-	from frappe.query_builder.functions import DateFormat, Sum
-	from frappe.utils.data import add_to_date, now_datetime
-
-	si = frappe.qb.DocType("Sales Invoice")
-
-	# PostgreSQL uses 'MM-YYYY' pattern; MariaDB uses '%m-%Y'
-	date_fmt = "MM-YYYY" if frappe.db.db_type == "postgres" else "%m-%Y"
-
-	rows = (
-		frappe.qb.from_(si)
-		.select(
-			DateFormat(si.posting_date, date_fmt).as_("month_year"),
-			Sum(si.base_grand_total).as_("total"),
-		)
-		.where(
-			(si.docstatus == 1)
-			& (si.company == company)
-			& (si.status != "Draft")
-		)
-		.groupby("month_year")
-		.run(as_dict=True)
+	filter_dict = {"company": company, "status": ["!=", "Draft"], "docstatus": 1}
+	month_to_value_dict = get_monthly_results(
+		"Sales Invoice", "base_grand_total", "posting_date", filter_dict, "sum"
 	)
 
-	month_to_value_dict = {r["month_year"]: r["total"] for r in rows}
 	frappe.db.set_value("Company", company, "sales_monthly_history", json.dumps(month_to_value_dict))
 
 
@@ -984,14 +961,6 @@ def add_node():
 def get_all_transactions_annual_history(company):
 	out = {}
 
-	# PostgreSQL fix: date_sub(curdate(), interval 1 year) is MySQL-only.
-	# Use portable frappe.utils.add_to_date instead.
-	from frappe.utils import add_to_date, today
-
-	one_year_ago = add_to_date(today(), years=-1)
-
-	# Table name quoting: backticks work on MariaDB; PostgreSQL uses double-quotes.
-	# frappe.db.sql translates `tab<DocType>` correctly for both engines.
 	items = frappe.db.sql(
 		"""
 		select transaction_date, count(*) as count
@@ -1029,12 +998,12 @@ def get_all_transactions_annual_history(company):
 		where
 			company=%s
 			and
-			transaction_date > %s
+			transaction_date > date_sub(curdate(), interval 1 year)
 
 		group by
 			transaction_date
 			""",
-		(company, one_year_ago),
+		(company),
 		as_dict=True,
 	)
 
