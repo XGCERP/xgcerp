@@ -172,7 +172,7 @@ class TestPreservationProperties(unittest.TestCase):
 			alphabet=st.characters(whitelist_categories=("Lu", "Ll", "Nd", "Zs")),
 			min_size=10,
 			max_size=100
-		).filter(lambda x: "ERPNext Integrations" not in x and "Integrations" not in x)
+		).filter(lambda x: "AXERP Integrations" not in x and "Integrations" not in x)
 	)
 	@settings(
 		max_examples=50,
@@ -180,8 +180,8 @@ class TestPreservationProperties(unittest.TestCase):
 	)
 	def test_05_property_smart_rename_renames_erpnext_to_axerp(self, content):
 		"""
-		Property: For all content that does NOT contain "ERPNext Integrations",
-		the smart_replace logic should rename "ERPNext" to "AXERP".
+		Property: For all content that does NOT contain "AXERP Integrations",
+		the smart_replace logic should rename "AXERP" to "AXERP".
 
 		This verifies that the rebranding functionality continues to work correctly
 		for all content except the integrations module.
@@ -198,43 +198,43 @@ class TestPreservationProperties(unittest.TestCase):
 		module = importlib.util.module_from_spec(spec)
 		spec.loader.exec_module(module)
 
-		# Add "ERPNext" to the content to test rebranding
-		test_content = f"ERPNext {content}"
+		# Add "AXERP" to the content to test rebranding
+		test_content = f"AXERP {content}"
 
 		# Use the actual smart_replace function
 		rebranded = module.smart_replace(test_content, "test.txt")
 
-		# Verify that "ERPNext" was replaced with "AXERP"
+		# Verify that "AXERP" was replaced with "AXERP"
 		self.assertIn(
 			"AXERP",
 			rebranded,
-			"Content with 'ERPNext' should be rebranded to 'AXERP'"
+			"Content with 'AXERP' should be rebranded to 'AXERP'"
 		)
 		self.assertNotIn(
-			"ERPNext",
+			"AXERP",
 			rebranded,
-			"After rebranding, 'ERPNext' should not remain"
+			"After rebranding, 'AXERP' should not remain"
 		)
 
 	@given(
 		module_name=st.sampled_from([
-			"ERPNext Assets",
-			"ERPNext CRM",
-			"ERPNext Accounts",
-			"ERPNext Manufacturing"
+			"AXERP Assets",
+			"AXERP CRM",
+			"AXERP Accounts",
+			"AXERP Manufacturing"
 		])
 	)
 	@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 	def test_06_property_other_erpnext_modules_are_rebranded(self, module_name):
 		"""
-		Property: For all "ERPNext X" module names (except "ERPNext Integrations"),
+		Property: For all "AXERP X" module names (except "AXERP Integrations"),
 		the smart_replace logic should rename them to "AXERP X".
 
-		This verifies that other modules with "ERPNext" in their name are correctly
-		rebranded, while only "ERPNext Integrations" is excluded.
+		This verifies that other modules with "AXERP" in their name are correctly
+		rebranded, while only "AXERP Integrations" is excluded.
 
-		Expected on UNFIXED code: PASS (other ERPNext modules are rebranded)
-		Expected on FIXED code: PASS (other ERPNext modules still rebranded)
+		Expected on UNFIXED code: PASS (other AXERP modules are rebranded)
+		Expected on FIXED code: PASS (other AXERP modules still rebranded)
 		"""
 		import importlib.util
 
@@ -255,9 +255,9 @@ class TestPreservationProperties(unittest.TestCase):
 			f"Module '{module_name}' should be rebranded to use 'AXERP'"
 		)
 		self.assertNotIn(
-			"ERPNext",
+			"AXERP",
 			rebranded,
-			f"After rebranding, '{module_name}' should not contain 'ERPNext'"
+			f"After rebranding, '{module_name}' should not contain 'AXERP'"
 		)
 
 	def test_07_json_module_fields_for_other_modules_exist(self):
@@ -362,8 +362,8 @@ class TestPreservationProperties(unittest.TestCase):
 	)
 	def test_10_property_rebranding_works_for_non_integrations_content(self, prefix, suffix):
 		"""
-		Property: For all content containing "ERPNext" but NOT "ERPNext Integrations",
-		the rebranding should replace "ERPNext" with "AXERP".
+		Property: For all content containing "AXERP" but NOT "AXERP Integrations",
+		the rebranding should replace "AXERP" with "AXERP".
 
 		This is a comprehensive property test that verifies the rebranding logic
 		works correctly for all non-integrations content.
@@ -380,11 +380,11 @@ class TestPreservationProperties(unittest.TestCase):
 		mod = importlib.util.module_from_spec(spec)
 		spec.loader.exec_module(mod)
 
-		# Construct test content with "ERPNext" in the middle
-		test_content = f"{prefix} ERPNext {suffix}"
+		# Construct test content with "AXERP" in the middle
+		test_content = f"{prefix} AXERP {suffix}"
 
-		# Skip if this accidentally creates "ERPNext Integrations"
-		if "ERPNext Integrations" in test_content:
+		# Skip if this accidentally creates "AXERP Integrations"
+		if "AXERP Integrations" in test_content:
 			return
 
 		# Use the actual smart_replace function
@@ -397,11 +397,11 @@ class TestPreservationProperties(unittest.TestCase):
 			"Content should be rebranded to use 'AXERP'"
 		)
 
-		# Verify "ERPNext" was replaced
+		# Verify "AXERP" was replaced
 		self.assertNotIn(
-			"ERPNext",
+			"AXERP",
 			rebranded,
-			"After rebranding, 'ERPNext' should not remain"
+			"After rebranding, 'AXERP' should not remain"
 		)
 
 

@@ -684,21 +684,6 @@ class Company(NestedSet):
 
 			self.db_set("disposal_account", disposal_acct)
 
-		if not self.service_expense_account:
-			service_expense_acct = frappe.db.get_value(
-				"Account",
-				{
-					"account_name": _("Marketing Expenses"),
-					"company": self.name,
-					"is_group": 0,
-					"root_type": "Expense",
-				},
-				"name",
-			)
-
-			if service_expense_acct:
-				self.db_set("service_expense_account", service_expense_acct)
-
 	def _set_default_account(self, fieldname, account_type):
 		if self.get(fieldname):
 			return
@@ -1100,7 +1085,6 @@ def create_transaction_deletion_request(company):
 	tdr.reload()
 
 	tdr.submit()
-	tdr.start_deletion_tasks()
 
 	frappe.msgprint(
 		_("Transaction Deletion Document {0} has been triggered for company {1}").format(

@@ -1,12 +1,12 @@
 {
   "name": "erpnext",
-  "description": "Open Source ERP System powered by the Frappe Framework",
+  "description": "ERP System Built on the Frappe Framework",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/frappe/erpnext.git"
   },
-  "homepage": "https://frappe.io/erpnext",
-  "author": "Frappe Technologies Pvt. Ltd.",
+  "homepage": "https://axinagroup.com",
+  "author": "Axina Group Inc.",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/frappe/erpnext/issues"

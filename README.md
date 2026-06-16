@@ -8,7 +8,6 @@
         <p>Powerful, Intuitive ERP Solution</p>
     </p>
 
-[![Learn on Frappe School](https://img.shields.io/badge/Frappe%20School-Learn%20AXERP-blue?style=flat-square)](https://frappe.school)<br><br>
 [![CI](https://github.com/frappe/erpnext/actions/workflows/server-tests-mariadb.yml/badge.svg?event=schedule)](https://github.com/frappe/erpnext/actions/workflows/server-tests-mariadb.yml)
 [![docker pulls](https://img.shields.io/docker/pulls/frappe/erpnext-worker.svg)](https://hub.docker.com/r/frappe/erpnext-worker)
 
@@ -28,11 +27,11 @@
 
 ## AXERP
 
-100% Open-Source ERP system to help you run your business.
+ERP system built on the Frappe Framework to help you run your business.
 
 ### Motivation
 
-Running a business is a complex task - handling invoices, tracking stock, managing personnel and even more ad-hoc activities. In a market where software is sold separately to manage each of these tasks, AXERP does all of the above and more, for free.
+Running a business is a complex task - handling invoices, tracking stock, managing personnel and even more ad-hoc activities. In a market where software is sold separately to manage each of these tasks, AXERP does all of the above and more.
 
 ### Key Features
 
@@ -61,7 +60,7 @@ Running a business is a complex task - handling invoices, tracking stock, managi
 
 ### Managed Hosting
 
-You can try [Frappe Cloud](https://frappecloud.com), a simple, user-friendly and sophisticated [open-source](https://github.com/frappe/press) platform to host Frappe applications with peace of mind.
+You can try [Frappe Cloud](https://frappecloud.com), a simple, user-friendly and sophisticated platform to host Frappe applications with peace of mind.
 
 It takes care of installation, setup, upgrades, monitoring, maintenance and support of your Frappe deployments. It is a fully featured developer platform with an ability to manage and control multiple Frappe deployments.
 
@@ -130,33 +129,16 @@ To setup the repository locally follow the steps mentioned below:
 
 4. Open the URL `http://erpnext.localhost:8000/app` in your browser, you should see the app running
 
-## Learning and community
+## Learning
 
-1. [Frappe School](https://school.frappe.io) - Learn Frappe Framework and AXERP from the various courses by the maintainers or from the community.
-2. [Official documentation](https://docs.axinagroup.com/) - Extensive documentation for AXERP.
-3. [Discussion Forum](https://discuss.frappe.io/c/erpnext/6) - Engage with community of AXERP users and service providers.
-4. [Telegram Group](https://erpnext_public.t.me) - Get instant help from huge community of users.
+1. [Official documentation](https://docs.axinagroup.com/) - Extensive documentation for AXERP.
 
 
 ## Contributing
 
-1. [Issue Guidelines](https://github.com/frappe/erpnext/wiki/Issue-Guidelines)
 1. [Report Security Vulnerabilities](https://axinagroup.com/security)
-1. [Pull Request Requirements](https://github.com/frappe/erpnext/wiki/Contribution-Guidelines)
-2. [Translations](https://crowdin.com/project/frappe)
 
 
 ## Logo and Trademark Policy
 
 Please read our [Logo and Trademark Policy](TRADEMARK_POLICY.md).
-
-<br />
-<br />
-<div align="center" style="padding-top: 0.75rem;">
-	<a href="https://frappe.io" target="_blank">
-		<picture>
-			<source media="(prefers-color-scheme: dark)" srcset="https://frappe.io/files/Frappe-white.png">
-			<img src="https://frappe.io/files/Frappe-black.png" alt="Frappe Technologies" height="28"/>
-		</picture>
-	</a>
-</div>

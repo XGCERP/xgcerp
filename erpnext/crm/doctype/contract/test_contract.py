@@ -10,7 +10,6 @@ from erpnext.tests.utils import AXERPTestSuite
 
 class TestContract(AXERPTestSuite):
 	def setUp(self):
-		frappe.db.sql("delete from `tabContract`")
 		self.contract_doc = get_contract()
 
 	def test_validate_start_date_before_end_date(self):

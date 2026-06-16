@@ -23,11 +23,18 @@ PRESERVE_PYTHON_MODULE = "erpnext_integrations"
 NEW_PUBLISHER = "Axina Group Inc."
 NEW_DESCRIPTION = "Operating System for Carbon Sovereignty"
 NEW_EMAIL = "db@axinagroup.com"
+NEW_HOMEPAGE = "https://axinagroup.com"
+NEW_DOCS_URL = "https://docs.axinagroup.com/"
+NEW_SECURITY_URL = "https://axinagroup.com/security"
+NEW_SECURITY_REPORT_URL = "https://axinagroup.com/security/report"
+NEW_CODEOWNER = "@dzbrody"
 
 # The path to your logo (assuming it's in the repo root)
 SOURCE_LOGO_NAME = "axinagroup-logo.svg"
 
-IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'env', 'logs', 'scripts'}
+IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'env', 'logs', 'scripts', '.kiro'}
+# xgc_* docs intentionally reference both brand names for clarity — skip them
+IGNORE_FILES = {'xgc_github_erpsync.md'}
 TARGET_EXTS = ('.json', '.py', '.js', '.html', '.csv', '.txt', '.md')
 
 
@@ -140,6 +147,249 @@ def smart_replace(content, filename):
     return protected
 
 
+def update_fork_ownership(root_dir):
+    """
+    Patch files that upstream will overwrite on resync.
+    These are fork-specific ownership, contributor, and branding changes
+    that go beyond simple ERPNext->AXERP text replacement.
+    """
+
+    # --- pyproject.toml: author ---
+    pyproject_path = os.path.join(root_dir, "pyproject.toml")
+    if os.path.exists(pyproject_path):
+        with open(pyproject_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        # Replace upstream author line(s) — handles both Frappe and any prior value
+        content = re.sub(
+            r'authors\s*=\s*\[\s*\{[^}]*\}\s*\]',
+            f'authors = [\n    {{ name = "{NEW_PUBLISHER}", email = "{NEW_EMAIL}"}}\n]',
+            content,
+        )
+        content = re.sub(
+            r'description\s*=\s*"[^"]*"',
+            'description = "ERP System Built on the Frappe Framework"',
+            content,
+        )
+        with open(pyproject_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print("✅ pyproject.toml author/description updated")
+
+    # --- package.json: author, homepage, description ---
+    pkg_path = os.path.join(root_dir, "package.json")
+    if os.path.exists(pkg_path):
+        with open(pkg_path, "r", encoding="utf-8") as f:
+            pkg = json.load(f)
+        pkg["author"] = NEW_PUBLISHER
+        pkg["homepage"] = NEW_HOMEPAGE
+        pkg["description"] = "ERP System Built on the Frappe Framework"
+        with open(pkg_path, "w", encoding="utf-8") as f:
+            json.dump(pkg, f, indent=2)
+            f.write("\n")
+        print("✅ package.json author/homepage/description updated")
+
+    # --- CODEOWNERS ---
+    codeowners_path = os.path.join(root_dir, "CODEOWNERS")
+    if os.path.exists(codeowners_path):
+        codeowners_content = (
+            "# Each line is a file pattern followed by one or more owners.\n"
+            "\n"
+            "# These owners will be the default owners for everything in\n"
+            "# the repo. Unless a later match takes precedence,\n"
+            "\n"
+            f"* {NEW_CODEOWNER}\n"
+        )
+        with open(codeowners_path, "w", encoding="utf-8") as f:
+            f.write(codeowners_content)
+        print("✅ CODEOWNERS updated")
+
+    # --- CODE_OF_CONDUCT.md: contact email ---
+    coc_path = os.path.join(root_dir, "CODE_OF_CONDUCT.md")
+    if os.path.exists(coc_path):
+        with open(coc_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        content = re.sub(
+            r'contacting the project team at \S+',
+            f'contacting the project team at {NEW_EMAIL}.',
+            content,
+        )
+        with open(coc_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print("✅ CODE_OF_CONDUCT.md contact email updated")
+
+    # --- SECURITY.md ---
+    security_path = os.path.join(root_dir, "SECURITY.md")
+    if os.path.exists(security_path):
+        security_content = (
+            "# Security Policy\n"
+            "\n"
+            f"The {NEW_BRAND} team and community take security issues seriously. "
+            f"To report a security issue, fill out the form at "
+            f"[{NEW_SECURITY_REPORT_URL}]({NEW_SECURITY_REPORT_URL}).\n"
+            "\n"
+            f"You can help us make {NEW_BRAND} and all its users more secure by "
+            f"following the [Reporting guidelines]({NEW_SECURITY_URL}).\n"
+            "\n"
+            "We appreciate your efforts to responsibly disclose your findings. "
+            "We'll endeavor to respond quickly, and will keep you updated "
+            "throughout the process.\n"
+        )
+        with open(security_path, "w", encoding="utf-8") as f:
+            f.write(security_content)
+        print("✅ SECURITY.md updated")
+
+    # --- TRADEMARK_POLICY.md ---
+    tm_path = os.path.join(root_dir, "TRADEMARK_POLICY.md")
+    if os.path.exists(tm_path):
+        with open(tm_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        # Replace Frappe co-ownership with sole Axina ownership
+        content = re.sub(
+            r'trademarks of [^.]+\.',
+            f'trademarks of {NEW_PUBLISHER}.',
+            content,
+            count=1,
+        )
+        content = re.sub(
+            r'Frappe Technologies Pvt\. Ltd\. \(Frappe\) and Axina Group Inc\. own',
+            f'{NEW_PUBLISHER} owns',
+            content,
+        )
+        content = re.sub(
+            r'Frappe Technologies Pvt\. Ltd\. \(Frappe\) and .*? own',
+            f'{NEW_PUBLISHER} owns',
+            content,
+        )
+        content = content.replace(
+            "Axina Group Inc. own and oversee",
+            f"{NEW_PUBLISHER} owns and oversees",
+        )
+        content = content.replace("Frappe Trademark Usage Policy", f"{NEW_BRAND} Trademark Usage Policy")
+        content = content.replace("Permission from Frappe is", f"Permission from {NEW_PUBLISHER} is")
+        content = re.sub(
+            r'endorsement by .+? or the',
+            f'endorsement by {NEW_BRAND} or {NEW_PUBLISHER} or the',
+            content,
+        )
+        content = re.sub(
+            r'please contact .+? for clarification',
+            f'please contact {NEW_PUBLISHER} for clarification',
+            content,
+        )
+        # Remove "open source" from project references
+        content = content.replace("open source project", "project")
+        content = content.replace("open-source project", "project")
+        # Remove specific GPL reference
+        content = content.replace("the GPL license under which", "the license under which")
+        with open(tm_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print("✅ TRADEMARK_POLICY.md updated")
+
+    # --- README.md: remove open-source claims, upstream community links ---
+    readme_path = os.path.join(root_dir, "README.md")
+    if os.path.exists(readme_path):
+        with open(readme_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        # Remove "100% Open-Source" line
+        content = re.sub(
+            r'100% Open-Source ERP[^\n]*',
+            'ERP system built on the Frappe Framework to help you run your business.',
+            content,
+        )
+        # Remove "for free" from motivation
+        content = content.replace(
+            "does all of the above and more, for free.",
+            "does all of the above and more.",
+        )
+        # Remove Frappe School badge line
+        content = re.sub(r'\[!\[Learn on Frappe School\]\([^\)]+\)\]\([^\)]+\)<br><br>\n', '', content)
+        # Remove "[open-source]" link text from Frappe Cloud description
+        content = re.sub(
+            r'sophisticated \[open-source\]\([^\)]+\) platform',
+            'sophisticated platform',
+            content,
+        )
+        # Replace community/learning section with just docs
+        content = re.sub(
+            r'## Learning and community\n+'
+            r'1\. \[Frappe School\][^\n]*\n'
+            r'2\. \[Official documentation\][^\n]*\n'
+            r'3\. \[Discussion Forum\][^\n]*\n'
+            r'4\. \[Telegram Group\][^\n]*\n',
+            f'## Learning\n\n'
+            f'1. [Official documentation]({NEW_DOCS_URL}) - Extensive documentation for {NEW_BRAND}.\n',
+            content,
+        )
+        # Replace contributing section — remove upstream wiki/crowdin links
+        content = re.sub(
+            r'## Contributing\n+'
+            r'1\. \[Issue Guidelines\][^\n]*\n'
+            r'1\. \[Report Security Vulnerabilities\][^\n]*\n'
+            r'1\. \[Pull Request Requirements\][^\n]*\n'
+            r'2\. \[Translations\][^\n]*\n',
+            f'## Contributing\n\n'
+            f'1. [Report Security Vulnerabilities]({NEW_SECURITY_URL})\n',
+            content,
+        )
+        # Remove Frappe Technologies footer logo block
+        content = re.sub(
+            r'\n*<br />\s*\n<br />\s*\n<div align="center"[^>]*>\s*\n'
+            r'\s*<a href="https://frappe\.io"[^>]*>.*?</a>\s*\n'
+            r'</div>\s*$',
+            '\n',
+            content,
+            flags=re.DOTALL,
+        )
+        with open(readme_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print("✅ README.md fork ownership updated")
+
+    # --- sample_blog_post.html ---
+    blog_path = os.path.join(
+        root_dir, "erpnext", "setup", "setup_wizard", "data", "sample_blog_post.html"
+    )
+    if os.path.exists(blog_path):
+        with open(blog_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        content = re.sub(
+            r'the Open Source ERP built for the web',
+            'the ERP system built on the Frappe Framework',
+            content,
+        )
+        with open(blog_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print("✅ sample_blog_post.html updated")
+
+    # --- initiate_release.yml: disable upstream release workflow ---
+    release_wf = os.path.join(root_dir, ".github", "workflows", "initiate_release.yml")
+    if os.path.exists(release_wf):
+        with open(release_wf, "r", encoding="utf-8") as f:
+            content = f.read()
+        if "schedule:" in content and "if: false" not in content:
+            disabled_content = (
+                "# Upstream ERPNext weekly release workflow — disabled for this fork.\n"
+                "# The original workflow targets frappe/erpnext and requires a RELEASE_TOKEN secret.\n"
+                "\n"
+                "name: Create weekly release pull requests\n"
+                "\n"
+                "permissions:\n"
+                "  contents: read\n"
+                "\n"
+                "on:\n"
+                "  workflow_dispatch:\n"
+                "\n"
+                "jobs:\n"
+                "  stable-release:\n"
+                "    name: Release\n"
+                "    if: false\n"
+                "    runs-on: ubuntu-latest\n"
+                "    steps:\n"
+                '      - run: echo "disabled"\n'
+            )
+            with open(release_wf, "w", encoding="utf-8") as f:
+                f.write(disabled_content)
+            print("✅ initiate_release.yml disabled")
+
+
 def run_rebrand():
     # Resolve root directory
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -160,6 +410,8 @@ def run_rebrand():
         dirnames[:] = [d for d in dirnames if d not in IGNORE_DIRS]
         
         for filename in filenames:
+            if filename in IGNORE_FILES:
+                continue
             if filename.endswith(TARGET_EXTS):
                 filepath = os.path.join(dirpath, filename)
                 
@@ -239,7 +491,10 @@ def run_rebrand():
             json.dump(manifest, f)
 
     print("🖼️  Copied raster favicons and site.webmanifest")
-    
+
+    # 5. Patch fork-specific ownership files (survives upstream resync)
+    update_fork_ownership(root_dir)
+
     print(f"✨ Rebrand complete!")
     print(f"   📝 {updated} files modified")
     print(f"   🔒 {preserved} files with preserved erpnext_integrations")

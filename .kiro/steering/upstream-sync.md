@@ -21,20 +21,24 @@ bash scripts/sync_upstream.sh v16.13.3
 This script:
 1. Fetches upstream tags
 2. Merges the tag with `--no-ff`
-3. Runs `scripts/smart_rename.py` (AXERP → AXERP rebrand)
+3. Runs `scripts/smart_rename.py` (ERPNext → AXERP rebrand)
 4. Amends the merge commit with rebranded files
 5. Tags as `v16.13.3-axerp`
 6. Force-pushes to origin
 
-## Critical: erpnext_integrations Module
+## Critical: erpnext_integrations Module — Do NOT Rebrand
 
-The `erpnext_integrations/` folder MUST keep its original name. `smart_rename.py` has exclusion logic to preserve:
+The `erpnext_integrations/` folder and all related references MUST keep their original ERPNext names.
+Renaming these breaks any plugin, app, or DocType that imports from this module.
 
-- "AXERP Integrations" in `modules.txt`
-- `"module": "AXERP Integrations"` in DocType JSON files
+`smart_rename.py` has exclusion logic to preserve (leave untouched):
+
+- `"ERPNext Integrations"` in `modules.txt`
+- `"module": "ERPNext Integrations"` in DocType JSON files
 - All `erpnext.erpnext_integrations.*` import paths
 
-After any sync, verify `modules.txt` line 15 says "AXERP Integrations" (not "AXERP Integrations").
+After any sync, verify `modules.txt` line 15 still says `"ERPNext Integrations"` (not `"AXERP Integrations"`).
+If it reads "AXERP Integrations" the exclusion failed — revert that line before pushing.
 
 ## If Merge Conflicts Occur
 

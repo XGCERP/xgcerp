@@ -2,13 +2,13 @@
 
 ## Overview
 
-The AXERP application displays old ERPNext/XGC branding for its favicon, splash image, app logo, and email brand image. New AXERP favicon files (ICO, PNG variants, apple-touch-icon, android-chrome icons) exist in the project root but are not deployed to Frappe's static asset directory (`erpnext/public/images/`). The `hooks.py` configuration still references old `erpnext-favicon.svg` and `erpnext-logo.svg` paths. The `smart_rename.py` rebrand script only handles SVG logo overwrites and does not copy the new raster favicon/icon files. Additionally, `email_brand_image` references a non-existent `.jpg` file, and `site.webmanifest` uses root-relative icon paths that Frappe cannot serve.
+The AXERP application displays old AXERP/XGC branding for its favicon, splash image, app logo, and email brand image. New AXERP favicon files (ICO, PNG variants, apple-touch-icon, android-chrome icons) exist in the project root but are not deployed to Frappe's static asset directory (`erpnext/public/images/`). The `hooks.py` configuration still references old `erpnext-favicon.svg` and `erpnext-logo.svg` paths. The `smart_rename.py` rebrand script only handles SVG logo overwrites and does not copy the new raster favicon/icon files. Additionally, `email_brand_image` references a non-existent `.jpg` file, and `site.webmanifest` uses root-relative icon paths that Frappe cannot serve.
 
 The fix involves: (1) moving favicon files into the Frappe static asset directory, (2) updating `hooks.py` to reference the new favicon, (3) updating `site.webmanifest` icon paths, (4) extending `smart_rename.py` to copy raster favicon files during rebrand, and (5) fixing the `email_brand_image` path.
 
 ## Glossary
 
-- **Bug_Condition (C)**: The condition where branding assets (favicon, splash, app logo, email logo, webmanifest icons) reference old ERPNext files or files that don't exist in Frappe's static asset directory
+- **Bug_Condition (C)**: The condition where branding assets (favicon, splash, app logo, email logo, webmanifest icons) reference old AXERP files or files that don't exist in Frappe's static asset directory
 - **Property (P)**: All branding hooks resolve to valid AXERP asset files served by Frappe at `/assets/erpnext/images/`
 - **Preservation**: Existing static asset serving (JS bundles, CSS, sounds, POS icons), SVG logo overwriting by `smart_rename.py`, and all non-branding Desk UI functionality must remain unchanged
 - **`hooks.py`**: The Frappe app configuration file at `erpnext/hooks.py` that defines `website_context`, `app_logo_url`, `add_to_apps_screen`, and `email_brand_image`
@@ -19,7 +19,7 @@ The fix involves: (1) moving favicon files into the Frappe static asset director
 
 ### Bug Condition
 
-The bug manifests when the browser requests branding assets (favicon, splash image, app logo, email logo, webmanifest icons). The `hooks.py` configuration references old ERPNext-branded SVG files for the favicon and splash, the `email_brand_image` references a `.jpg` file that does not exist, and the new AXERP raster favicon files sit in the project root where Frappe cannot serve them.
+The bug manifests when the browser requests branding assets (favicon, splash image, app logo, email logo, webmanifest icons). The `hooks.py` configuration references old AXERP-branded SVG files for the favicon and splash, the `email_brand_image` references a `.jpg` file that does not exist, and the new AXERP raster favicon files sit in the project root where Frappe cannot serve them.
 
 **Formal Specification:**
 ```
@@ -42,7 +42,7 @@ END FUNCTION
 
 ### Examples
 
-- **Favicon**: Browser requests favicon → `hooks.py` serves `/assets/erpnext/images/erpnext-favicon.svg` → user sees old ERPNext SVG favicon instead of AXERP `.ico`
+- **Favicon**: Browser requests favicon → `hooks.py` serves `/assets/erpnext/images/erpnext-favicon.svg` → user sees old AXERP SVG favicon instead of AXERP `.ico`
 - **Email logo**: Email is sent → `email_brand_image` resolves to `assets/erpnext/images/erpnext-logo.jpg` → file does not exist (only `.svg` and `.png` exist) → broken image in email
 - **Webmanifest**: PWA install prompt → `site.webmanifest` references `/android-chrome-192x192.png` → Frappe cannot serve files from project root → broken icon
 - **Smart rename**: Developer runs `smart_rename.py` → SVG logos are overwritten but raster favicons are not copied → favicon files remain only in project root after rebrand
@@ -81,7 +81,7 @@ Based on the bug description, the most likely issues are:
 
 Property 1: Bug Condition — Branding assets resolve to valid AXERP files
 
-_For any_ branding asset reference in `hooks.py` (`website_context.favicon`, `website_context.splash_image`, `email_brand_image`) or `site.webmanifest` icon paths, the referenced file SHALL exist in `erpnext/public/images/` and SHALL be an AXERP-branded asset (not old ERPNext branding).
+_For any_ branding asset reference in `hooks.py` (`website_context.favicon`, `website_context.splash_image`, `email_brand_image`) or `site.webmanifest` icon paths, the referenced file SHALL exist in `erpnext/public/images/` and SHALL be an AXERP-branded asset (not old AXERP branding).
 
 **Validates: Requirements 2.1, 2.2, 2.4, 2.5**
 

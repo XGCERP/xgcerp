@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The application favicon still displays old XGC/ERPNext branding instead of the new AXERP branding. The `website_context` in `hooks.py` references the old `erpnext-favicon.svg` and `erpnext-logo.svg` files. New AXERP favicon files (favicon.ico, PNG variants, apple-touch-icon, android-chrome icons, and site.webmanifest) have been added to the project root but are not placed in Frappe's static asset directory (`erpnext/public/images/`) and the hooks configuration has not been updated to reference them. Additionally, the `app_logo_url`, `add_to_apps_screen` logo, `email_brand_image`, and `smart_rename.py` script still reference old branding file paths.
+The application favicon still displays old XGC/AXERP branding instead of the new AXERP branding. The `website_context` in `hooks.py` references the old `erpnext-favicon.svg` and `erpnext-logo.svg` files. New AXERP favicon files (favicon.ico, PNG variants, apple-touch-icon, android-chrome icons, and site.webmanifest) have been added to the project root but are not placed in Frappe's static asset directory (`erpnext/public/images/`) and the hooks configuration has not been updated to reference them. Additionally, the `app_logo_url`, `add_to_apps_screen` logo, `email_brand_image`, and `smart_rename.py` script still reference old branding file paths.
 
 ## Bug Analysis
 
@@ -12,7 +12,7 @@ The application favicon still displays old XGC/ERPNext branding instead of the n
 
 1.2 WHEN the website loads THEN the system serves the old `erpnext-logo.svg` as the splash image because `website_context["splash_image"]` in `hooks.py` points to `/assets/erpnext/images/erpnext-logo.svg`
 
-1.3 WHEN the app logo is displayed (Desk UI, apps screen) THEN the system shows the old ERPNext logo because `app_logo_url` and `add_to_apps_screen` logo in `hooks.py` point to `/assets/erpnext/images/erpnext-logo.svg`
+1.3 WHEN the app logo is displayed (Desk UI, apps screen) THEN the system shows the old AXERP logo because `app_logo_url` and `add_to_apps_screen` logo in `hooks.py` point to `/assets/erpnext/images/erpnext-logo.svg`
 
 1.4 WHEN the new AXERP favicon files are requested from the browser THEN the system cannot serve them because they are located in the project root instead of under `erpnext/public/` where Frappe serves static assets
 

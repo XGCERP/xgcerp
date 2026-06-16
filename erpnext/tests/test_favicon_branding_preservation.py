@@ -75,9 +75,9 @@ INTEGRATION_CONTEXTS = [
 	# Python import style
 	"from erpnext.erpnext_integrations.doctype import plaid_settings",
 	# JSON module field style
-	'{"module": "ERPNext Integrations", "name": "Plaid Settings"}',
+	'{"module": "AXERP Integrations", "name": "Plaid Settings"}',
 	# modules.txt line style
-	"ERPNext Integrations",
+	"AXERP Integrations",
 	# Dotted Python path
 	"erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings",
 	# Quoted in Python
@@ -264,7 +264,7 @@ class TestPreservationSmartReplace(unittest.TestCase):
 		# Determine filename hint for smart_replace
 		if context.strip().startswith("{"):
 			filename = "test.json"
-		elif context.strip() == "ERPNext Integrations":
+		elif context.strip() == "AXERP Integrations":
 			filename = "modules.txt"
 		else:
 			filename = "test.py"
@@ -284,12 +284,12 @@ class TestPreservationSmartReplace(unittest.TestCase):
 				f"smart_replace() incorrectly renamed erpnext_integrations in: {context!r}",
 			)
 
-		# "ERPNext Integrations" module name must be preserved in modules.txt and JSON
-		if "ERPNext Integrations" in context:
+		# "AXERP Integrations" module name must be preserved in modules.txt and JSON
+		if "AXERP Integrations" in context:
 			self.assertIn(
-				"ERPNext Integrations",
+				"AXERP Integrations",
 				result,
-				f"smart_replace() corrupted 'ERPNext Integrations' module name in: {context!r}",
+				f"smart_replace() corrupted 'AXERP Integrations' module name in: {context!r}",
 			)
 
 
