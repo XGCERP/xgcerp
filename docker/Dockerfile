@@ -2,7 +2,7 @@
 # Builds a custom ERPNext image with the local AXERP codebase
 
 # Stage 1: Build with the upstream base
-FROM frappe/erpnext:v16.13.3 AS builder
+FROM frappe/erpnext:v16.26.4 AS builder
 
 USER root
 
