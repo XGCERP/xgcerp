@@ -40,10 +40,12 @@ COPY --chown=frappe:frappe . /home/frappe/frappe-bench/apps/erpnext
 USER frappe
 WORKDIR /home/frappe/frappe-bench
 
-# Install Python packages — separate steps so failures are visible
-RUN pip install --no-cache-dir -e apps/erpnext
-RUN pip install --no-cache-dir -e apps/hrms
-RUN pip install --no-cache-dir -e apps/crm
+# Install into the bench virtualenv explicitly.
+# Plain `pip` resolves to ~/.local/bin/pip (user packages), which bench's
+# virtualenv can't see. env/bin/pip installs into the venv's site-packages.
+RUN env/bin/pip install --no-cache-dir -e apps/erpnext
+RUN env/bin/pip install --no-cache-dir -e apps/hrms
+RUN env/bin/pip install --no-cache-dir -e apps/crm
 
 # Rebuild frontend assets (bench build may fail on asset-only apps — allow)
 RUN bench build --app erpnext 2>/dev/null || true
