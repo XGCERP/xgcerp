@@ -1,28 +1,50 @@
 # AXERP Production Dockerfile
 # Base: frappe/erpnext:<ERPNEXT_VERSION> (arm64 + amd64 multi-arch)
-# To bump: change ERPNEXT_VERSION, run sync_upstream.sh, rebuild.
+# Bundled apps: frappe/hrms@HRMS_VERSION, frappe/crm@CRM_VERSION
+# To bump ERPNext: change ERPNEXT_VERSION, run sync_upstream.sh, rebuild.
+# To bump HRMS/CRM: change the ARGs below, rebuild.
 #
 # Build:
-#   docker build -f docker/Dockerfile -t axerp:v16.22.0-axerp.2 -t axerp:prod .
 #   # On EC2 (arm64):
-#   docker build --platform linux/arm64 -f docker/Dockerfile -t axerp:prod .
+#   docker build --platform linux/arm64 -f docker/Dockerfile \
+#     -t axerp:v16.23.0-axerp.1 -t axerp:prod .
 
-ARG ERPNEXT_VERSION=v16.22.0
+ARG ERPNEXT_VERSION=v16.23.0
+ARG HRMS_VERSION=version-16
+ARG CRM_VERSION=main
+
 FROM frappe/erpnext:${ERPNEXT_VERSION} AS builder
 
 USER root
 
-# Copy AXERP code (rebranded fork) over the upstream erpnext app
+# ── HRMS ──────────────────────────────────────────────────────────────────
+RUN git clone --depth 1 --branch ${HRMS_VERSION} \
+      https://github.com/frappe/hrms.git \
+      /home/frappe/frappe-bench/apps/hrms \
+    && chown -R frappe:frappe /home/frappe/frappe-bench/apps/hrms
+
+# ── CRM ───────────────────────────────────────────────────────────────────
+RUN git clone --depth 1 --branch ${CRM_VERSION} \
+      https://github.com/frappe/crm.git \
+      /home/frappe/frappe-bench/apps/crm \
+    && chown -R frappe:frappe /home/frappe/frappe-bench/apps/crm
+
+# ── AXERP (rebranded ERPNext) ──────────────────────────────────────────────
 COPY --chown=frappe:frappe . /home/frappe/frappe-bench/apps/erpnext
 
 USER frappe
 WORKDIR /home/frappe/frappe-bench
 
-# Reinstall app to pick up any Python dependency changes in pyproject.toml
-RUN pip install --no-cache-dir -e apps/erpnext 2>/dev/null || true
+# Install all three apps and rebuild assets
+RUN pip install --no-cache-dir \
+      -e apps/erpnext \
+      -e apps/hrms \
+      -e apps/crm \
+    2>/dev/null || true
 
-# Rebuild frontend assets with AXERP branding (logos, strings)
 RUN bench build --app erpnext 2>/dev/null || true
+RUN bench build --app hrms    2>/dev/null || true
+RUN bench build --app crm     2>/dev/null || true
 
 FROM builder AS final
 LABEL org.opencontainers.image.title="AXERP" \

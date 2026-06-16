@@ -7,6 +7,47 @@ For upstream AXERP release notes see: https://github.com/frappe/erpnext/releases
 
 ---
 
+## [v16.23.0-axerp.1] — upstream: v16.23.0 | 2026-06-16 | Daniel Brody
+
+### Added — HRMS and CRM apps; ERPNext v16.23.0 upstream sync
+
+**Upstream sync:** `sync_upstream.sh v16.23.0` — merged clean, no conflicts. AXERP branding re-applied via `smart_rename.py`.
+
+**Bundled apps added to Docker image:**
+| App | Source | Version |
+|-----|--------|---------|
+| `frappe/hrms` | `version-16` branch | v16.9.0 (HR, Payroll, Leave, Expenses, Recruitment) |
+| `frappe/crm` | `main` branch | v1.73.2 (Sales CRM, frappe >=15 <17) |
+
+**Changed:**
+- `docker/Dockerfile`: Base ARG bumped `v16.22.0` → `v16.23.0`. Added `RUN git clone --depth 1` steps for hrms and crm before AXERP COPY. All three apps installed via `pip install -e` and assets built with `bench build` per app. Added `HRMS_VERSION` and `CRM_VERSION` ARGs.
+- Infrastructure `docker-compose.axerp.yml`: Image tag bumped to `axerp:v16.23.0-axerp.1`. `create-site` extended to `bench install-app hrms` and `bench install-app crm` after base erpnext install.
+
+**Deploy steps for existing site (no data loss):**
+```bash
+# 1. Pull updated source and rebuild on EC2 (arm64)
+cd /data/axerp-src && git pull
+docker build --platform linux/arm64 -f docker/Dockerfile \
+  -t axerp:v16.23.0-axerp.1 -t axerp:prod .
+
+# 2. Install apps into running site
+docker exec axerp-backend bench --site erp.axinagroup.com install-app hrms
+docker exec axerp-backend bench --site erp.axinagroup.com install-app crm
+
+# 3. Run migrations (ERPNext v16.23.0 may add DB columns)
+docker exec axerp-backend bench --site erp.axinagroup.com migrate
+
+# 4. Redeploy workers + frontend with new image
+cd /opt/openproject
+docker compose -f docker-compose.axerp.yml up -d --force-recreate \
+  backend frontend websocket queue-long queue-short scheduler
+
+# 5. Clear cache
+docker exec axerp-backend bench --site erp.axinagroup.com clear-cache
+```
+
+---
+
 ## [v16.22.0-axerp.4] — upstream: v16.22.0 | 2026-06-16 | Daniel Brody
 
 ### Architecture change — MariaDB replaces PostgreSQL for AXERP
