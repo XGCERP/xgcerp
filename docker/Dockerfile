@@ -59,7 +59,16 @@ RUN env/bin/pip install --no-cache-dir -e apps/insights
 
 # hrms imports html2canvas in hierarchy_chart_desktop.js but it is not
 # declared as a dependency in hrms/package.json — add it before bench build.
+# yarn add triggers hrms postinstall (cd frontend && yarn install) which is fine.
 RUN cd apps/hrms && yarn add html2canvas --silent
+
+# hrms Vite build imports socketio_port from sites/common_site_config.json
+# at build time. This file doesn't exist during docker build (it's created
+# at container startup by the configurator). Create a minimal stub so the
+# import resolves without error.
+RUN mkdir -p sites && \
+    echo '{"socketio_port":9000,"db_host":"localhost","redis_cache":"redis://localhost:6379","redis_queue":"redis://localhost:6379"}' \
+    > sites/common_site_config.json
 
 # Build frontend assets for all apps.
 # bench build compiles JS/CSS bundles via Node.
