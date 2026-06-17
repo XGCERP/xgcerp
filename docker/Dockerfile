@@ -70,27 +70,24 @@ RUN bench build --app hrms
 RUN bench build --app crm
 RUN bench build --app insights
 
-# Collect all app public/ dirs into sites/assets/ so the image contains
-# a self-consistent asset tree. This mirrors what bench build does at runtime
-# but produces a real directory tree (not symlinks) that survives container
-# restarts and is immediately usable when mounted into sites/.
-RUN python3 -c "
-import os, shutil
-bench = '/home/frappe/frappe-bench'
-assets = os.path.join(bench, 'sites', 'assets')
-os.makedirs(assets, exist_ok=True)
-for app in ['frappe', 'erpnext', 'hrms', 'crm', 'insights']:
-    src = os.path.join(bench, 'apps', app, app, 'public')
-    dst = os.path.join(assets, app)
-    if os.path.isdir(src):
-        if os.path.islink(dst) or os.path.exists(dst):
-            if os.path.islink(dst):
-                os.unlink(dst)
-            else:
-                shutil.rmtree(dst)
-        shutil.copytree(src, dst)
-        print(f'Copied {app}: {len(list(os.walk(dst)))} dirs')
-"
+# Materialise all app public/ dirs as real directories in sites/assets/.
+# bench build creates symlinks pointing into the image layer, which only
+# resolve inside the container that owns that layer. Real directories on
+# the sites/assets volume are visible to every container without symlink
+# resolution crossing layer boundaries.
+RUN set -e; \
+    BENCH=/home/frappe/frappe-bench; \
+    ASSETS=${BENCH}/sites/assets; \
+    for APP in frappe erpnext hrms crm insights; do \
+      SRC="${BENCH}/apps/${APP}/${APP}/public"; \
+      DST="${ASSETS}/${APP}"; \
+      if [ -d "${SRC}" ]; then \
+        rm -rf "${DST}"; \
+        cp -r "${SRC}" "${DST}"; \
+        COUNT=$(find "${DST}" -type f | wc -l); \
+        echo "Copied ${APP}: ${COUNT} files"; \
+      fi; \
+    done
 
 FROM builder AS final
 LABEL org.opencontainers.image.title="AXERP" \
