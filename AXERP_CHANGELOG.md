@@ -7,6 +7,29 @@ For upstream AXERP release notes see: https://github.com/frappe/erpnext/releases
 
 ---
 
+## [v16.23.0-axerp.2] — upstream: v16.23.0 | 2026-06-16 | Daniel Brody
+
+### Added — Frappe Insights v3 (develop branch, v16-compatible)
+
+**Insights:** `frappe/insights` `develop` branch (v3.3.1). The stable `version-3` branch targets frappe 14/15 only; `develop` has explicit v16 CI (`ci: run compatibility check for v15 & v16`) and v16-specific fixes.
+
+**Changed:**
+- `docker/Dockerfile`: Added `RUN git clone --depth 1 --branch develop` for insights, `env/bin/pip install -e apps/insights`, `bench build --app insights`. Added `INSIGHTS_VERSION` ARG.
+- `docker-compose.axerp.yml`: Image bumped to `axerp:v16.23.0-axerp.2`. `create-site` now installs insights after hrms/crm.
+
+**Post-deploy bench sequence (full expert run):**
+```bash
+bench --site erp.axinagroup.com install-app insights
+bench --site erp.axinagroup.com migrate
+bench build --production
+bench --site erp.axinagroup.com clear-cache
+bench --site erp.axinagroup.com clear-website-cache
+bench --site erp.axinagroup.com build-search-index
+bench doctor
+```
+
+---
+
 ## [v16.23.0-axerp.1] — upstream: v16.23.0 | 2026-06-16 | Daniel Brody
 
 ### Added — HRMS and CRM apps; ERPNext v16.23.0 upstream sync
