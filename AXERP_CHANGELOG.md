@@ -20,7 +20,7 @@ For upstream AXERP release notes see: https://github.com/frappe/erpnext/releases
 | `frappe/crm` | `main` branch | v1.73.2 (Sales CRM, frappe >=15 <17) |
 
 **Changed:**
-- `docker/Dockerfile`: Base ARG bumped `v16.22.0` → `v16.23.0`. Added `RUN git clone --depth 1` steps for hrms and crm before AXERP COPY. All three apps installed via `pip install -e` and assets built with `bench build` per app. Added `HRMS_VERSION` and `CRM_VERSION` ARGs.
+- `docker/Dockerfile`: Base ARG bumped `v16.22.0` → `v16.23.0`. Added `RUN git clone --depth 1` steps for hrms and crm before AXERP COPY. Added `HRMS_VERSION` and `CRM_VERSION` ARGs (must be re-declared after `FROM` — Docker ARG scope rule). All three apps installed via `env/bin/pip install -e` (bench venv, not user site-packages) and assets built with `bench build` per app.
 - Infrastructure `docker-compose.axerp.yml`: Image tag bumped to `axerp:v16.23.0-axerp.1`. `create-site` extended to `bench install-app hrms` and `bench install-app crm` after base erpnext install.
 
 **Deploy steps for existing site (no data loss):**
