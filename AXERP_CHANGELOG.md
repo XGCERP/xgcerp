@@ -9,31 +9,72 @@ For upstream AXERP release notes see: https://github.com/frappe/erpnext/releases
 
 ## [v16.23.0-axerp.3] — upstream: v16.23.0 | 2026-06-17 | Daniel Brody
 
-### Fixed — Asset pipeline: broken CRM/insights Vite assets + socket.io 502
+### Fixed — Asset pipeline, blank desktop, and socket.io
 
-**Root cause:** `sites/assets/` on the host bind mount was a broken symlink to `/home/frappe/frappe-bench/assets` (a container-internal path). `bench build` wrote into the backend container's writable layer; the frontend container could not resolve symlinks into the backend's layer, so CRM, insights, hrms, and erpnext assets returned 404s. Socket.io returned 502 due to nginx misconfiguration.
+**All assets 200, socket.io 200, desktop loads correctly.**
 
-**Fixes:**
-- `docker/Dockerfile`: Removed `|| true` suppression from `bench build` steps. Added `yarn add html2canvas` in `apps/hrms` before build (required missing dependency). Added post-build `python3` copy step that materialises all app `public/` dirs as real directories in `sites/assets/` — eliminating symlinks from the image entirely.
-- `docker-compose.axerp.yml`: Added `axerp-assets` named volume mounted at `sites/assets/` for both backend and frontend. Shared named volume means `bench build` output is immediately visible to nginx. Added `logging` limits (10m × 3 files) on all services. Added `deploy.resources.limits` (backend: 2g, queue-long: 1g, queue-short: 512m).
-- Image tag bumped to `axerp:v16.23.0-axerp.3`.
+#### Root causes resolved
 
-**Immediate remediation (live on running instance):**
+**1. Asset pipeline (404s / MIME type errors for all .bundle.css/js)**
+
+The frappe_docker `entrypoint.sh` runs on every container start:
 ```bash
-# Remove broken symlink, docker cp real app dirs to host volume
-# All 5 apps: frappe, erpnext, hrms, crm, insights → /data/axerp/sites/assets/
-# Assets verified HTTP 200: hrms.bundle.css, erpnext.bundle.js, CRM Vite CSS,
-# Insights Vite CSS, socket.io
+rm -rf sites/assets && ln -s /home/frappe/frappe-bench/assets sites/assets
+```
+`BAKED_PATH=/home/frappe/frappe-bench/assets` is the canonical asset directory — not
+`sites/assets/`. Previous builds wrote assets to `sites/assets/` which the entrypoint
+then deleted. Fixed by baking all app `public/` dirs into `BAKED_PATH` at image build time.
+
+Additional Dockerfile fixes required:
+- `yarn add html2canvas` in `apps/hrms` before bench build (undeclared dependency in hrms package.json)
+- Stub `sites/common_site_config.json` before bench build (hrms Vite imports `socketio_port` from it at build time)
+- Removed `|| true` suppression from all `bench build` steps (was hiding failures)
+
+**2. Post-deploy assets.json mismatch**
+
+After `docker compose up -d`, `bench build --app frappe` runs on the live backend and
+regenerates `assets.json` with new hashes in the backend's writable layer. The frontend
+container still has the image-baked version → hash mismatch → 404s.
+
+Fix: after every redeploy, sync frappe/dist + assets.json from backend to frontend:
+```bash
+bash /tmp/axerp-fix-assets-json.sh  # on S3: axina-openproject-files/deploy/
 ```
 
-**HTTP verification results (2026-06-17):**
-- `hrms.bundle.css` → **200**
-- `hrms.bundle.js` → **200**
-- `erpnext.bundle.js` → **200**
-- `erpnext.bundle.css` → **200**
-- `crm/frontend/assets/*.css` → **200**
-- `insights/frontend/assets/*.css` → **200**
+**3. Blank desktop after login**
+
+Three issues in the DB from failed setup wizard runs:
+- `common_site_config.json` had `db_type: postgres` (stale) → removed
+- `System Settings.setup_complete = 0` → set to 1 via SQL on `tabSingles`
+- Default company was `TGI Solar Power Group Inc. (Demo)` → corrected to `Axina Group Inc.`
+
+**Dockerfile changes:**
+```
++ yarn add html2canvas before hrms build
++ stub common_site_config.json before bench build
++ removed || true from bench build steps
++ bake all app public/ dirs into BAKED_PATH (/home/frappe/frappe-bench/assets)
++ assets.json + assets-rtl.json copied to BAKED_PATH
+```
+
+**docker-compose.axerp.yml changes:**
+```
++ logging limits: json-file 10m×3 on all services
++ deploy.resources.limits: backend 2g, queue-long 1g, queue-short 512m
+- removed axerp-assets named volume (conflicted with entrypoint, caused crash loop)
+- removed --remove-orphans from deploy (was stopping OpenProject/Nextcloud)
+```
+
+**HTTP verification (2026-06-17, all 60 assets from public internet):**
+- `login.bundle.css`, `desk.bundle.css`, `website.bundle.css` → **200**
+- `libs.bundle.js`, `desk.bundle.js`, `frappe-web.bundle.js` → **200**
+- `hrms.bundle.css`, `hrms.bundle.js` → **200**
+- `erpnext.bundle.js`, `erpnext.bundle.css` → **200**
+- `crm/frontend/assets/*.css` and `*.js` → **200**
+- `insights/frontend/assets/*.css` and `*.js` → **200**
 - `socket.io` → **200**
+- `frappe/icons/lucide.svg` → **200**
+- Desk page after login → **200** (frappe.boot loads, 29 workspaces, all roles)
 
 ---
 
