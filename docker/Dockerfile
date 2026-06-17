@@ -7,7 +7,7 @@
 #
 # Build:
 #   docker build --platform linux/arm64 -f docker/Dockerfile \
-#     -t axerp:v16.23.0-axerp.2 -t axerp:prod .
+#     -t axerp:v16.23.0-axerp.3 -t axerp:prod .
 
 ARG ERPNEXT_VERSION=v16.23.0
 ARG HRMS_VERSION=version-16
@@ -57,13 +57,40 @@ RUN env/bin/pip install --no-cache-dir -e apps/hrms
 RUN env/bin/pip install --no-cache-dir -e apps/crm
 RUN env/bin/pip install --no-cache-dir -e apps/insights
 
+# hrms imports html2canvas in hierarchy_chart_desktop.js but it is not
+# declared as a dependency in hrms/package.json — add it before bench build.
+RUN cd apps/hrms && yarn add html2canvas --silent
+
 # Build frontend assets for all apps.
-# bench build compiles JS/CSS bundles via Node. Failures are non-fatal
-# (some apps have no bundle; frontend is also rebuilt at container runtime).
-RUN bench build --app erpnext  2>/dev/null || true
-RUN bench build --app hrms     2>/dev/null || true
-RUN bench build --app crm      2>/dev/null || true
-RUN bench build --app insights 2>/dev/null || true
+# bench build compiles JS/CSS bundles via Node.
+# CRM and insights use Vite and output to <app>/public/frontend/assets/ —
+# these are baked here so the image ships complete assets at every tag.
+RUN bench build --app erpnext
+RUN bench build --app hrms
+RUN bench build --app crm
+RUN bench build --app insights
+
+# Collect all app public/ dirs into sites/assets/ so the image contains
+# a self-consistent asset tree. This mirrors what bench build does at runtime
+# but produces a real directory tree (not symlinks) that survives container
+# restarts and is immediately usable when mounted into sites/.
+RUN python3 -c "
+import os, shutil
+bench = '/home/frappe/frappe-bench'
+assets = os.path.join(bench, 'sites', 'assets')
+os.makedirs(assets, exist_ok=True)
+for app in ['frappe', 'erpnext', 'hrms', 'crm', 'insights']:
+    src = os.path.join(bench, 'apps', app, app, 'public')
+    dst = os.path.join(assets, app)
+    if os.path.isdir(src):
+        if os.path.islink(dst) or os.path.exists(dst):
+            if os.path.islink(dst):
+                os.unlink(dst)
+            else:
+                shutil.rmtree(dst)
+        shutil.copytree(src, dst)
+        print(f'Copied {app}: {len(list(os.walk(dst)))} dirs')
+"
 
 FROM builder AS final
 LABEL org.opencontainers.image.title="AXERP" \

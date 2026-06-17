@@ -7,6 +7,36 @@ For upstream AXERP release notes see: https://github.com/frappe/erpnext/releases
 
 ---
 
+## [v16.23.0-axerp.3] — upstream: v16.23.0 | 2026-06-17 | Daniel Brody
+
+### Fixed — Asset pipeline: broken CRM/insights Vite assets + socket.io 502
+
+**Root cause:** `sites/assets/` on the host bind mount was a broken symlink to `/home/frappe/frappe-bench/assets` (a container-internal path). `bench build` wrote into the backend container's writable layer; the frontend container could not resolve symlinks into the backend's layer, so CRM, insights, hrms, and erpnext assets returned 404s. Socket.io returned 502 due to nginx misconfiguration.
+
+**Fixes:**
+- `docker/Dockerfile`: Removed `|| true` suppression from `bench build` steps. Added `yarn add html2canvas` in `apps/hrms` before build (required missing dependency). Added post-build `python3` copy step that materialises all app `public/` dirs as real directories in `sites/assets/` — eliminating symlinks from the image entirely.
+- `docker-compose.axerp.yml`: Added `axerp-assets` named volume mounted at `sites/assets/` for both backend and frontend. Shared named volume means `bench build` output is immediately visible to nginx. Added `logging` limits (10m × 3 files) on all services. Added `deploy.resources.limits` (backend: 2g, queue-long: 1g, queue-short: 512m).
+- Image tag bumped to `axerp:v16.23.0-axerp.3`.
+
+**Immediate remediation (live on running instance):**
+```bash
+# Remove broken symlink, docker cp real app dirs to host volume
+# All 5 apps: frappe, erpnext, hrms, crm, insights → /data/axerp/sites/assets/
+# Assets verified HTTP 200: hrms.bundle.css, erpnext.bundle.js, CRM Vite CSS,
+# Insights Vite CSS, socket.io
+```
+
+**HTTP verification results (2026-06-17):**
+- `hrms.bundle.css` → **200**
+- `hrms.bundle.js` → **200**
+- `erpnext.bundle.js` → **200**
+- `erpnext.bundle.css` → **200**
+- `crm/frontend/assets/*.css` → **200**
+- `insights/frontend/assets/*.css` → **200**
+- `socket.io` → **200**
+
+---
+
 ## [v16.23.0-axerp.2] — upstream: v16.23.0 | 2026-06-16 | Daniel Brody
 
 ### Added — Frappe Insights v3 (develop branch, v16-compatible)
