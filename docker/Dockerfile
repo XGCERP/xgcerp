@@ -79,24 +79,31 @@ RUN bench build --app hrms
 RUN bench build --app crm
 RUN bench build --app insights
 
-# Materialise all app public/ dirs as real directories in sites/assets/.
-# bench build creates symlinks pointing into the image layer, which only
-# resolve inside the container that owns that layer. Real directories on
-# the sites/assets volume are visible to every container without symlink
-# resolution crossing layer boundaries.
+# The frappe_docker entrypoint.sh does:
+#   rm -rf sites/assets
+#   ln -s /home/frappe/frappe-bench/assets sites/assets
+# So the canonical asset path is BAKED_PATH=/home/frappe/frappe-bench/assets.
+# We must populate THAT directory (not sites/assets/) with all app public dirs
+# so the symlink resolves correctly in both backend and frontend containers.
 RUN set -e; \
     BENCH=/home/frappe/frappe-bench; \
-    ASSETS=${BENCH}/sites/assets; \
+    BAKED=${BENCH}/assets; \
+    mkdir -p "${BAKED}"; \
     for APP in frappe erpnext hrms crm insights; do \
       SRC="${BENCH}/apps/${APP}/${APP}/public"; \
-      DST="${ASSETS}/${APP}"; \
+      DST="${BAKED}/${APP}"; \
       if [ -d "${SRC}" ]; then \
         rm -rf "${DST}"; \
         cp -r "${SRC}" "${DST}"; \
         COUNT=$(find "${DST}" -type f | wc -l); \
-        echo "Copied ${APP}: ${COUNT} files"; \
+        echo "Baked ${APP}: ${COUNT} files into assets/"; \
       fi; \
-    done
+    done; \
+    # Also copy assets.json and assets-rtl.json from sites/assets/ \
+    for F in assets.json assets-rtl.json; do \
+      [ -f "${BENCH}/sites/assets/${F}" ] && cp "${BENCH}/sites/assets/${F}" "${BAKED}/${F}"; \
+    done; \
+    echo "Baked path contents:"; ls "${BAKED}/"
 
 FROM builder AS final
 LABEL org.opencontainers.image.title="AXERP" \
