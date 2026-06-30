@@ -1,9 +1,30 @@
 # AXERP Changelog
 
-This file tracks AXERP-specific changes layered on top of the upstream AXERP fork.
+This file tracks AXERP-specific changes layered on top of the upstream ERPNext fork.
 Format: `[version-tag] — upstream-base | date | author`
 
-For upstream AXERP release notes see: https://github.com/frappe/erpnext/releases
+For upstream ERPNext release notes see: https://github.com/frappe/erpnext/releases
+
+---
+
+## [v16.25.0-axerp.1] — upstream: v16.25.0 | 2026-06-30 | Daniel Brody
+
+### Upgraded — upstream ERPNext v16.25.0
+
+Merged upstream ERPNext v16.25.0 into version-16 branch with AXERP branding applied.
+
+**Merge conflict resolutions (all in test files — upstream logic accepted):**
+- `test_opening_invoice_creation_tool.py` — upstream refactored `make_invoices` signature (invoices/project/cost_center params), updated expected outstanding_amount values
+- `test_taxes_and_totals.py` — upstream added `test_regional_round_off_accounts` test
+- `test_party_specific_item.py` — upstream added `test_item_query_for_supplier_with_item_restricted_to_multiple_suppliers` test
+- `erpnext/public/js/utils/naming_series.js` — upstream deleted this file (accepted deletion)
+
+**Dockerfile:**
+- `ERPNEXT_VERSION=v16.23.0` → `v16.25.0`
+- Build tag: `axerp:v16.25.0-axerp.1`
+
+**smart_rename.py fix:**
+- Added `CLAUDE.md` to `IGNORE_FILES` — prevents future upgrades from corrupting Claude Code instruction files
 
 ---
 
@@ -103,7 +124,7 @@ bench doctor
 
 ## [v16.23.0-axerp.1] — upstream: v16.23.0 | 2026-06-16 | Daniel Brody
 
-### Added — HRMS and CRM apps; ERPNext v16.23.0 upstream sync
+### Added — HRMS and CRM apps; AXERP v16.23.0 upstream sync
 
 **Upstream sync:** `sync_upstream.sh v16.23.0` — merged clean, no conflicts. AXERP branding re-applied via `smart_rename.py`.
 
@@ -128,7 +149,7 @@ docker build --platform linux/arm64 -f docker/Dockerfile \
 docker exec axerp-backend bench --site erp.axinagroup.com install-app hrms
 docker exec axerp-backend bench --site erp.axinagroup.com install-app crm
 
-# 3. Run migrations (ERPNext v16.23.0 may add DB columns)
+# 3. Run migrations (AXERP v16.23.0 may add DB columns)
 docker exec axerp-backend bench --site erp.axinagroup.com migrate
 
 # 4. Redeploy workers + frontend with new image
