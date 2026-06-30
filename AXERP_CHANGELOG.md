@@ -7,6 +7,25 @@ For upstream ERPNext release notes see: https://github.com/frappe/erpnext/releas
 
 ---
 
+## [v16.25.0-axerp.2] — upstream: v16.25.0 | 2026-06-30 | Daniel Brody
+
+### Fixed — add wiki app to Dockerfile (was in DB but missing from image)
+
+`wiki 3.0.0` (version-3) was installed in the production DB from a previous image
+(`axerp:v16.23.0-axerp.4`) but was never committed to the Dockerfile. `bench migrate`
+failed with `ModuleNotFoundError: No module named 'wiki'`. Added wiki to all relevant
+Dockerfile sections: clone, pip install, bench build, and BAKED_PATH copy loop.
+
+**Dockerfile changes:**
+- Added `ARG WIKI_VERSION=version-3`
+- Added `RUN git clone --depth 1 --branch ${WIKI_VERSION} .../wiki.git`
+- Added `RUN env/bin/pip install --no-cache-dir -e apps/wiki`
+- Added `RUN bench build --app wiki`
+- Added `wiki` to BAKED_PATH copy loop
+- Build tag: `axerp:v16.25.0-axerp.2`
+
+---
+
 ## [v16.25.0-axerp.1] — upstream: v16.25.0 | 2026-06-30 | Daniel Brody
 
 ### Upgraded — upstream ERPNext v16.25.0
