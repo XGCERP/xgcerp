@@ -87,7 +87,7 @@ print(json.dumps(lines))
   echo "── SSM output ──────────────────────────────────"
   echo "$out"
   echo "────────────────────────────────────────────────"
-  [[ "$status" != "Success" ]] && fail "SSM failed: ${status}"
+  if [[ "$status" != "Success" ]]; then fail "SSM failed: ${status}"; fi
 }
 
 poll_background_build() {
