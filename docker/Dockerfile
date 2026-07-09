@@ -7,7 +7,7 @@
 #
 # Build:
 #   docker build --platform linux/arm64 -f docker/Dockerfile \
-#     -t axerp:v16.26.2-axerp.2 -t axerp:prod .
+#     -t axerp:v16.26.2-axerp.3 -t axerp:prod .
 
 ARG ERPNEXT_VERSION=v16.26.2
 ARG HRMS_VERSION=version-16
@@ -79,6 +79,12 @@ RUN env/bin/pip install --no-cache-dir -e apps/blog
 # declared as a dependency in hrms/package.json — add it before bench build.
 # yarn add triggers hrms postinstall (cd frontend && yarn install) which is fine.
 RUN cd apps/hrms && yarn add html2canvas --silent
+
+# CRM's build command runs `yarn install --frozen-lockfile` internally via
+# --run-build-command. If the lockfile is out of sync with package.json on
+# the main branch this fails. Pre-install with --no-frozen-lockfile to let
+# yarn resolve any lockfile drift before bench build takes over.
+RUN cd apps/crm && yarn install --no-frozen-lockfile --silent
 
 # hrms Vite build imports socketio_port from sites/common_site_config.json
 # at build time. This file doesn't exist during docker build (it's created
