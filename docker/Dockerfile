@@ -7,9 +7,9 @@
 #
 # Build:
 #   docker build --platform linux/arm64 -f docker/Dockerfile \
-#     -t axerp:v16.25.0-axerp.2 -t axerp:prod .
+#     -t axerp:v16.26.2-axerp.1 -t axerp:prod .
 
-ARG ERPNEXT_VERSION=v16.25.0
+ARG ERPNEXT_VERSION=v16.26.2
 ARG HRMS_VERSION=version-16
 ARG CRM_VERSION=main
 # insights version-3 is frappe 14/15 only; develop branch has explicit v16 CI

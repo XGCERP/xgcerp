@@ -7,6 +7,25 @@ For upstream ERPNext release notes see: https://github.com/frappe/erpnext/releas
 
 ---
 
+## [v16.26.2-axerp.1] — upstream: v16.26.2 | 2026-07-09 | Daniel Brody
+
+### Upgraded — upstream ERPNext v16.26.2
+
+Merged upstream ERPNext v16.26.2 into version-16 branch with AXERP branding applied.
+
+**Merge conflict resolutions (all in test files — upstream logic accepted):**
+- `erpnext/accounts/doctype/payment_ledger_entry/test_payment_ledger_entry.py` — upstream removed `create_item` import; accepted upstream
+- `erpnext/accounts/doctype/sales_invoice/test_sales_invoice.py` — upstream added `test_non_stock_item_over_billing_against_so_is_blocked` and `test_non_stock_item_over_billing_against_so_from_quotation_is_blocked` tests
+- `erpnext/bulk_transaction/doctype/bulk_transaction_log/test_bulk_transaction_log.py` — upstream added `test_load_raises_when_no_detail_rows`, `test_load_succeeds_and_aggregates_after_detail_inserted`, `test_load_isolated_per_date` tests
+- `erpnext/controllers/tests/test_accounts_controller.py` — upstream removed unused `make_customer`/`make_supplier` helpers; accepted upstream
+- `erpnext/stock/doctype/stock_ledger_entry/test_stock_ledger_entry.py` — upstream added `test_update_qty_in_future_sle_shifts_same_timestamp_later_entry`, `test_cancel_first_of_two_same_timestamp_entries`, `test_get_next_stock_reco_respects_creation_order` tests
+
+**Dockerfile:**
+- `ERPNEXT_VERSION` bumped `v16.25.0` → `v16.26.2`
+- Build tag: `axerp:v16.26.2-axerp.1`
+
+---
+
 ## [v16.25.0-axerp.2] — upstream: v16.25.0 | 2026-06-30 | Daniel Brody
 
 ### Fixed — add wiki app to Dockerfile (was in DB but missing from image)
@@ -28,9 +47,9 @@ Dockerfile sections: clone, pip install, bench build, and BAKED_PATH copy loop.
 
 ## [v16.25.0-axerp.1] — upstream: v16.25.0 | 2026-06-30 | Daniel Brody
 
-### Upgraded — upstream ERPNext v16.25.0
+### Upgraded — upstream AXERP v16.25.0
 
-Merged upstream ERPNext v16.25.0 into version-16 branch with AXERP branding applied.
+Merged upstream AXERP v16.25.0 into version-16 branch with AXERP branding applied.
 
 **Merge conflict resolutions (all in test files — upstream logic accepted):**
 - `test_opening_invoice_creation_tool.py` — upstream refactored `make_invoices` signature (invoices/project/cost_center params), updated expected outstanding_amount values
@@ -263,7 +282,7 @@ Companies re-created via API provisioner (`infrastructure/axerp-api/create_compa
 ## [v16.22.0-axerp] — upstream: v16.22.0 | 2026-06-16 | Daniel Brody
 
 ### Changed (AXERP Rebrand)
-- Applied `scripts/smart_rename.py`: AXERP → AXERP in UI strings, titles, metadata.
+- Applied `scripts/smart_rename.py`: ERPNext → AXERP in UI strings, titles, metadata.
 - **Preserved** (not rebranded): `erpnext_integrations` module name, all `erpnext.erpnext_integrations.*` import paths, `"module": "AXERP Integrations"` in DocType JSON.
 - **hooks.py**: `app_publisher`, `app_description`, `app_email`, `source_link` updated to Axina Group values.
 - **pyproject.toml**: author → `Axina Group Inc.`, description → `ERP System Built on the Frappe Framework`.
