@@ -2,6 +2,22 @@
 
 This document describes the initial setup for syncing the AXERP fork with the upstream ERPNext repository.
 
+## Claude Skill for Upstream Sync and Rebrand.
+ The /axerp-sync skill is now installed at /Users/dzbrody/.claude/skills/axerp-sync/skill.md. Here's what it does:
+
+  - Step 1 — Fetches the latest v16.x.x release tag from the GitHub API (confirmed v16.26.2 right now)
+  - Step 2 — Checks your current AXERP version so you know how far behind you are
+  - Step 3 — Runs bash scripts/sync_upstream.sh <tag>
+  - Step 4 — Post-sync verification, including the critical erpnext_integrations safety check
+
+  It also embeds the "never rebrand erpnext_integrations" rule with a fix command if modules.txt gets corrupted. You can invoke it anytime with /axerp-sync.
+
+  *The claude skill is performing all the fuction below to update the erpnext to axerp.*
+  
+
+  ---
+
+
 > **Note:** For ongoing sync operations, use `scripts/sync_upstream.sh`. See `.kiro/steering/upstream-sync.md` for the full workflow.
 
 ## Initial Repository Setup
