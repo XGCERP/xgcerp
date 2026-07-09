@@ -16,15 +16,24 @@ AXERP (Axina Group's ERPNext fork) running at **https://erp.tspgusa.com**.
   - `/data/axerp/mariadb/` — MariaDB data directory
   - `/data/axerp/logs/` — bench logs
 
-## Image naming convention
+## Image registry — AWS ECR Private
 
 ```
-axerp:v<ERPNEXT_VERSION>-axerp.<PATCH>
+010438486646.dkr.ecr.us-east-1.amazonaws.com/axerp:<tag>
 ```
 
-Examples: `axerp:v16.23.0-axerp.3`, `axerp:prod` (alias for latest)
+Lifecycle: last 5 tagged images kept; untagged expire after 1 day.
+EC2 pulls via IAM role `axina-openproject-role` (AmazonEC2ContainerRegistryPowerUser) — no credentials needed.
+Local tag `axerp:<tag>` is also applied during build for reference; ECR URI is what compose uses.
 
-Bump `<PATCH>` for any change to the Dockerfile or bundled apps. Bump `<ERPNEXT_VERSION>` when syncing upstream ERPNext.
+### Image tag convention
+
+```
+<ERPNEXT_VERSION>-axerp.<PATCH>    e.g.  v16.26.2-axerp.4
+```
+
+Bump `<PATCH>` for any Dockerfile or bundled app change. Bump `<ERPNEXT_VERSION>` when syncing upstream ERPNext.
+The build comment on Dockerfile line 10 (`-t axerp:v16.26.2-axerp.4`) is what `scripts/deploy.sh` reads to auto-detect the tag.
 
 ## Bundled apps (current: axerp.4 @ v16.26.2)
 
