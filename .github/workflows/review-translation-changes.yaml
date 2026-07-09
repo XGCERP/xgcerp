@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   review-po-pr:
+    if: false # disabled — AXERP fork does not manage translation PRs
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

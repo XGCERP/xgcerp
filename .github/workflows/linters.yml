@@ -9,6 +9,7 @@ permissions:
 jobs:
 
   linters:
+    if: false # disabled — AXERP fork does not enforce upstream linting rules
     name: linters
     runs-on: ubuntu-latest
     steps:
@@ -24,6 +25,7 @@ jobs:
         uses: pre-commit/action@v3.0.1
 
   semgrep:
+    if: false # disabled — AXERP fork does not run semgrep
     name: semgrep
     runs-on: ubuntu-latest
     steps:

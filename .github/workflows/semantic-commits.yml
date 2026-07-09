@@ -12,6 +12,7 @@ concurrency:
 
 jobs:
   commitlint:
+    if: false # disabled — AXERP fork does not enforce semantic commit format
     name: Check Commit Titles
     runs-on: ubuntu-latest
     steps:

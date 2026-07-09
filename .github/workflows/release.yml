@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   release:
+    if: false # disabled — AXERP uses manual tagging, no RELEASE_TOKEN secret
     name: Release
     runs-on: ubuntu-latest
     steps:

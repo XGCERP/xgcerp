@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   build-assets:
+    if: false # disabled — AXERP builds Docker images, not GitHub release assets
     name: Build JS/CSS and upload to release
     runs-on: ubuntu-latest
 

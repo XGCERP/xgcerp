@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   test:
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'postgres') }}
+    if: false # disabled — AXERP fork does not run upstream CI
     runs-on: ubuntu-latest
     timeout-minutes: 60
 

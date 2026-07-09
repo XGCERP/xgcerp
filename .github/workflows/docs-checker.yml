@@ -8,6 +8,7 @@ permissions:
 
 jobs:
   build:
+    if: false # disabled — AXERP fork does not require upstream documentation PRs
     runs-on: ubuntu-latest
     timeout-minutes: 10
 

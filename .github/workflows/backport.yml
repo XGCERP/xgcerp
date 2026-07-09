@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   main:
+    if: false # disabled — AXERP does not backport PRs, no RELEASE_TOKEN secret
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
