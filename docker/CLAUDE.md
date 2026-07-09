@@ -89,6 +89,18 @@ The build script (axerp-build-v3b.sh):
 
 Build time: ~8 minutes on arm64 Graviton2.
 
+## Frappe version tracking
+
+Frappe Framework is bundled inside the base image (`frappe/erpnext:${ERPNEXT_VERSION}`).
+When `ERPNEXT_VERSION` is bumped (e.g. `v16.25.0` → `v16.26.2`), the base image is pulled
+fresh during `docker build --no-cache`, which automatically brings the matching frappe version.
+No separate frappe pin is needed — frappe and erpnext versions are always in sync via the base image tag.
+
+To verify the running frappe version:
+```bash
+docker exec axerp-backend bench version
+```
+
 ## Post-deploy asset sync (REQUIRED after every redeploy)
 
 **Why:** The frappe_docker entrypoint runs on every container start:
@@ -98,22 +110,33 @@ ln -s /home/frappe/frappe-bench/assets sites/assets
 ```
 This replaces `sites/assets/` with a symlink to `BAKED_PATH=/home/frappe/frappe-bench/assets`.
 The image bakes all app `public/` dirs into `BAKED_PATH` at build time.
-However, `bench build --app frappe` on the live backend regenerates `assets.json` with new
-hashes into the backend's writable layer — the frontend container still has the baked version.
-The hashes mismatch → 404s → MIME type errors in browser.
+After every deploy, the backend container regenerates `assets.json` with new content hashes
+in its writable layer — the frontend container still has the baked version → hash mismatch →
+404s, MIME errors, broken icons/CSS.
+
+**Critical:** use `bench build --production` (not per-app builds). Per-app builds only update
+that app's entries in `assets.json`, leaving other apps' hashes stale. `--production` rebuilds
+all apps in one pass and writes a fully consistent `assets.json`.
 
 **Fix after every `docker compose up -d` with a new image:**
 
 ```bash
-# On EC2 (run via SSM or upload to S3 first):
+# On EC2 (run via SSM or S3):
 # Script: s3://axina-openproject-files/deploy/axerp-fix-assets-json.sh
+# Also runs automatically via scripts/deploy.sh
 
 # What it does:
-docker exec axerp-backend bench build --app frappe   # regenerates assets.json (20s)
-# Then docker cp frappe/dist + erpnext/dist + assets.json from backend → frontend
+docker exec axerp-backend bench build --production   # rebuild ALL bundles + regenerate assets.json
+# docker cp all app assets (frappe/erpnext/hrms/crm/insights/wiki/blog) backend → frontend
+# nginx reload, Redis FLUSHALL, clear-cache, verify all bundles return 200
 ```
 
-Run time: ~30 seconds. After this, all 48 bundles return 200.
+Run time: ~2–3 minutes (full rebuild). After this, all bundles return 200.
+
+**Migrate also runs `bench build --production`:**
+The `axerp-migrate` compose service runs `bench migrate` followed immediately by
+`bench build --production` before the backend starts — so DB schema changes and
+frontend asset changes are always applied together.
 
 **Verify everything is serving:**
 ```bash

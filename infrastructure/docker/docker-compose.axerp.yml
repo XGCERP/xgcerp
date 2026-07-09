@@ -184,10 +184,11 @@ services:
           echo "Site $$SITE_NAME does not exist yet — skipping migrate (create-site will handle it).";
           exit 0;
         fi;
-        echo "Running bench migrate for $$SITE_NAME...";
+        echo "=== [1/3] bench migrate — apply DB schema + patches ===";
         bench --site $$SITE_NAME migrate;
-        echo "Migration complete.";
-        echo "Clearing caches...";
+        echo "=== [2/3] bench build --production — rebuild all JS/CSS bundles ===";
+        bench build --production;
+        echo "=== [3/3] Clear site caches ===";
         bench --site $$SITE_NAME clear-cache;
         bench --site $$SITE_NAME clear-website-cache;
         echo "Done.";
