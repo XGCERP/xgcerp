@@ -26,7 +26,7 @@ Examples: `axerp:v16.23.0-axerp.3`, `axerp:prod` (alias for latest)
 
 Bump `<PATCH>` for any change to the Dockerfile or bundled apps. Bump `<ERPNEXT_VERSION>` when syncing upstream ERPNext.
 
-## Bundled apps (current: axerp.3 @ v16.26.2)
+## Bundled apps (current: axerp.4 @ v16.26.2)
 
 | App | Branch/Pin | Version |
 |-----|-----------|---------|
