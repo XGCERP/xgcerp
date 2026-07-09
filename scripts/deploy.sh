@@ -381,7 +381,7 @@ else
       --instance-ids "${EC2_INSTANCE}" --document-name "AWS-RunShellScript" \
       --parameters '{"commands":["tail -30 /tmp/axerp-deploy-run.log"]}' \
       --region "${AWS_REGION}" --query "Command.CommandId" --output text)
-    local _fs="InProgress" _fw=0
+    _fs="InProgress"; _fw=0
     while [[ "$_fs" == "InProgress" || "$_fs" == "Pending" ]]; do
       sleep 3; _fw=$((_fw+3))
       _fs=$(aws ssm get-command-invocation --command-id "${FINAL_LOG_ID}" --instance-id "${EC2_INSTANCE}" \
