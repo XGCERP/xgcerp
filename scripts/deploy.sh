@@ -63,7 +63,8 @@ print(json.dumps(lines))
   cmd_id=$(aws ssm send-command \
     --instance-ids "${EC2_INSTANCE}" \
     --document-name "AWS-RunShellScript" \
-    --parameters "{\"commands\":${cmd_json}}" \
+    --parameters "{\"commands\":${cmd_json},\"executionTimeout\":[\"3600\"]}" \
+    --timeout-seconds 3600 \
     --region "${AWS_REGION}" \
     --query "Command.CommandId" \
     --output text)
@@ -83,8 +84,8 @@ print(json.dumps(lines))
       --query "Status" \
       --output text 2>/dev/null || echo "Pending")
     echo "  ${elapsed}s — ${status}"
-    if [[ $elapsed -ge 900 ]]; then
-      fail "SSM command timed out after 15 minutes"
+    if [[ $elapsed -ge 3600 ]]; then
+      fail "SSM command timed out after 60 minutes"
     fi
   done
 
