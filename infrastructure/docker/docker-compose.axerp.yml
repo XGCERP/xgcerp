@@ -11,7 +11,7 @@
 #   axerp-mariadb         → ERPNext only              (MariaDB 10.6)
 #
 # Image tag convention: axerp:<ERPNEXT_VERSION>-axerp.<PATCH>
-# Current: axerp:v16.26.2-axerp.2 (adds blog app + orange icon)
+# Current: axerp:v16.26.2-axerp.3 (fix crm yarn install lockfile drift)
 # To upgrade upstream: bump tag, pull + rebuild on EC2, redeploy.
 #
 # Apps: frappe → erpnext → crm → hrms → insights → wiki → blog
@@ -25,7 +25,7 @@
 # After every deploy, migrate runs automatically via the migrate service.
 
 x-axerp-image: &axerp_image
-  image: axerp:v16.26.2-axerp.2
+  image: axerp:v16.26.2-axerp.3
   platform: linux/arm64
   restart: unless-stopped
   networks:
