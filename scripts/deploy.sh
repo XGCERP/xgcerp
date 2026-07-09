@@ -63,8 +63,7 @@ print(json.dumps(lines))
   cmd_id=$(aws ssm send-command \
     --instance-ids "${EC2_INSTANCE}" \
     --document-name "AWS-RunShellScript" \
-    --parameters "{\"commands\":${cmd_json},\"executionTimeout\":[\"3600\"]}" \
-    --timeout-seconds 3600 \
+    --parameters "{\"commands\":${cmd_json}}" \
     --region "${AWS_REGION}" \
     --query "Command.CommandId" \
     --output text)
@@ -260,12 +259,105 @@ ok "Step 2 complete"
 echo ""
 
 # ── Step 3: Trigger EC2 build ─────────────────────────────────────────────────
+# The docker build takes 15-20 min. SSM AWS-RunShellScript enforces a max execution
+# timeout that kills long-running commands. Workaround: download the script in one
+# short SSM command, then launch it via nohup in the background, then poll a status
+# file for completion.
 if $SKIP_BUILD; then
   warn "Step 3/6 — Skipped (--skip-build)"
 else
-  ssm_run "Step 3/6 — EC2: Docker build + deploy + asset fix (allow ~15 min)" \
+  log "Step 3/6 — EC2: Stage build script..."
+  ssm_run "Stage deploy script on EC2" \
     "aws s3 cp s3://${S3_BUCKET}/${S3_PREFIX}/axerp-deploy-run.sh /tmp/axerp-deploy-run.sh --quiet" \
-    "bash /tmp/axerp-deploy-run.sh"
+    "chmod +x /tmp/axerp-deploy-run.sh" \
+    "rm -f /tmp/axerp-deploy-status"
+
+  log "Step 3/6 — EC2: Launch build in background (nohup)..."
+  ssm_run "Launch background build" \
+    "nohup bash -c 'bash /tmp/axerp-deploy-run.sh > /tmp/axerp-deploy-run.log 2>&1; echo \$? > /tmp/axerp-deploy-status' &" \
+    "echo launched; sleep 3; pgrep -f axerp-deploy-run.sh && echo running || echo NOT_RUNNING"
+
+  log "Step 3/6 — Polling EC2 build progress (allow ~25 min)..."
+  BUILD_DONE=false
+  POLL_ELAPSED=0
+  while [[ $POLL_ELAPSED -lt 1800 ]]; do
+    sleep 30
+    POLL_ELAPSED=$((POLL_ELAPSED + 30))
+
+    # Check if status file exists (build finished)
+    STATUS_OUT=$(aws ssm send-command \
+      --instance-ids "${EC2_INSTANCE}" \
+      --document-name "AWS-RunShellScript" \
+      --parameters "{\"commands\":[\"cat /tmp/axerp-deploy-status 2>/dev/null || echo RUNNING\"],\"executionTimeout\":[\"30\"]}" \
+      --timeout-seconds 60 \
+      --region "${AWS_REGION}" \
+      --query "Command.CommandId" --output text 2>/dev/null || echo "")
+
+    if [[ -n "$STATUS_OUT" ]]; then
+      sleep 8
+      STATUS_VAL=$(aws ssm get-command-invocation \
+        --command-id "${STATUS_OUT}" \
+        --instance-id "${EC2_INSTANCE}" \
+        --region "${AWS_REGION}" \
+        --query "StandardOutputContent" --output text 2>/dev/null | tr -d '[:space:]')
+
+      if [[ "$STATUS_VAL" == "0" ]]; then
+        ok "  Build completed successfully (${POLL_ELAPSED}s)"
+        BUILD_DONE=true
+        break
+      elif [[ "$STATUS_VAL" =~ ^[1-9][0-9]*$ ]]; then
+        # Non-zero exit — fetch last 40 lines of log
+        LOG_CMD=$(aws ssm send-command \
+          --instance-ids "${EC2_INSTANCE}" \
+          --document-name "AWS-RunShellScript" \
+          --parameters "{\"commands\":[\"tail -40 /tmp/axerp-deploy-run.log 2>/dev/null\"],\"executionTimeout\":[\"30\"]}" \
+          --timeout-seconds 60 \
+          --region "${AWS_REGION}" \
+          --query "Command.CommandId" --output text 2>/dev/null || echo "")
+        sleep 8
+        [[ -n "$LOG_CMD" ]] && aws ssm get-command-invocation \
+          --command-id "${LOG_CMD}" --instance-id "${EC2_INSTANCE}" \
+          --region "${AWS_REGION}" --query "StandardOutputContent" --output text 2>/dev/null
+        fail "EC2 build failed with exit code ${STATUS_VAL} after ${POLL_ELAPSED}s"
+      else
+        # Still RUNNING — show tail of log for progress
+        LOG_CMD=$(aws ssm send-command \
+          --instance-ids "${EC2_INSTANCE}" \
+          --document-name "AWS-RunShellScript" \
+          --parameters "{\"commands\":[\"tail -5 /tmp/axerp-deploy-run.log 2>/dev/null | tr '\\n' '|'\"],\"executionTimeout\":[\"30\"]}" \
+          --timeout-seconds 60 \
+          --region "${AWS_REGION}" \
+          --query "Command.CommandId" --output text 2>/dev/null || echo "")
+        sleep 8
+        TAIL=""
+        [[ -n "$LOG_CMD" ]] && TAIL=$(aws ssm get-command-invocation \
+          --command-id "${LOG_CMD}" --instance-id "${EC2_INSTANCE}" \
+          --region "${AWS_REGION}" --query "StandardOutputContent" --output text 2>/dev/null | head -c 200)
+        log "  ${POLL_ELAPSED}s — still running | ${TAIL}"
+      fi
+    else
+      log "  ${POLL_ELAPSED}s — polling..."
+    fi
+  done
+
+  if [[ "$BUILD_DONE" != "true" ]]; then
+    fail "Build timed out after 30 minutes — check EC2: tail /tmp/axerp-deploy-run.log"
+  fi
+
+  # Show final deploy log
+  LOG_CMD=$(aws ssm send-command \
+    --instance-ids "${EC2_INSTANCE}" \
+    --document-name "AWS-RunShellScript" \
+    --parameters "{\"commands\":[\"tail -40 /tmp/axerp-deploy-run.log\"],\"executionTimeout\":[\"30\"]}" \
+    --timeout-seconds 60 \
+    --region "${AWS_REGION}" \
+    --query "Command.CommandId" --output text)
+  sleep 8
+  echo "── EC2 deploy log (tail) ──────────────────────────────"
+  aws ssm get-command-invocation \
+    --command-id "${LOG_CMD}" --instance-id "${EC2_INSTANCE}" \
+    --region "${AWS_REGION}" --query "StandardOutputContent" --output text 2>/dev/null
+  echo "────────────────────────────────────────────────────────"
 fi
 ok "Step 3 complete"
 echo ""
