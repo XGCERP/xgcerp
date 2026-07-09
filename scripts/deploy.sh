@@ -19,6 +19,7 @@ S3_BUCKET="axina-openproject-files"
 S3_PREFIX="deploy"
 SITE="erp.tspgusa.com"
 COMPOSE_LOCAL="infrastructure/docker/docker-compose.axerp.yml"
+MIGRATE_MONITOR_SECONDS=120  # how long to tail migrate logs after deploy
 
 DRY_RUN=false
 SKIP_BUILD=false
@@ -210,15 +211,33 @@ echo "[4] Redeploy stack..."
 cd /opt/openproject
 docker compose -f docker-compose.axerp.yml up -d 2>&1 | grep -vE "^(Pulling|pulled)" | head -20
 
-echo "[5] Waiting 20s..."
+echo "[5] Waiting 20s for containers to start..."
 sleep 20
 docker ps --filter "name=axerp" --format "  {{.Names}} | {{.Status}}" | sort
 
-echo "[6] Post-deploy asset fix..."
+echo "[6] DB migration — tail axerp-migrate logs..."
+# migrate container runs as a one-shot; wait for it to exit then show output
+MIGRATE_DEADLINE=\$(( \$(date +%s) + 300 ))
+while docker ps -a --filter "name=axerp-migrate" --filter "status=running" --format "{{.Names}}" | grep -q axerp-migrate; do
+  if [ \$(date +%s) -gt \${MIGRATE_DEADLINE} ]; then
+    echo "  WARN: migrate still running after 5 minutes"
+    break
+  fi
+  sleep 5
+done
+MIGRATE_EXIT=\$(docker inspect axerp-migrate --format "{{.State.ExitCode}}" 2>/dev/null || echo "?")
+echo "  migrate exit code: \${MIGRATE_EXIT}"
+docker logs axerp-migrate 2>&1 | tail -20
+if [ "\${MIGRATE_EXIT}" != "0" ] && [ "\${MIGRATE_EXIT}" != "?" ]; then
+  echo "  ERROR: migration failed — check docker logs axerp-migrate"
+  exit 1
+fi
+
+echo "[7] Post-deploy asset fix..."
 aws s3 cp s3://${S3_BUCKET}/${S3_PREFIX}/axerp-fix-assets-json.sh /tmp/axerp-fix-assets-json.sh --quiet
 SITE=\${SITE} bash /tmp/axerp-fix-assets-json.sh
 
-echo "[7] Health check..."
+echo "[8] Health check..."
 CODE=\$(curl -sk -o /dev/null -w "%{http_code}" "https://\${SITE}/api/method/ping")
 if [ "\${CODE}" = "200" ]; then
   echo "  PASS: \${SITE} returned 200"
@@ -226,7 +245,7 @@ else
   echo "  WARN: ping returned \${CODE} (site may still be warming up)"
 fi
 
-echo "[8] Clean old images..."
+echo "[9] Clean old images..."
 docker images axerp --format "  {{.Repository}}:{{.Tag}} | {{.Size}}"
 EOBUILD
 )
