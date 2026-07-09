@@ -322,11 +322,36 @@ echo "[11] Asset fix..."
 aws s3 cp s3://\${S3_BUCKET}/\${S3_PREFIX}/axerp-fix-assets-json.sh /tmp/axerp-fix-assets-json.sh --quiet
 SITE=\${SITE} bash /tmp/axerp-fix-assets-json.sh
 
-echo "[12] Ping..."
+echo "[12] Post-deploy cleanup checks..."
+# a) Remove 'Delete Demo Data' navbar item if present (causes GET /undefined 404)
+#    ERPNext may load this via migrations — it has no icon so add_app_item renders src="undefined"
+DB_NAME=\$(docker exec axerp-backend python3 -c \
+  "import json; c=json.load(open('/home/frappe/frappe-bench/sites/\${SITE}/site_config.json')); print(c['db_name'])" 2>/dev/null)
+DB_PASS=\$(docker exec axerp-backend python3 -c \
+  "import json; c=json.load(open('/home/frappe/frappe-bench/sites/\${SITE}/site_config.json')); print(c['db_password'])" 2>/dev/null)
+if [ -n "\$DB_NAME" ]; then
+  DEMO_COUNT=\$(docker exec axerp-mariadb mysql -u "\$DB_NAME" -p"\$DB_PASS" "\$DB_NAME" \
+    -sN -e "SELECT COUNT(*) FROM \`tabNavbar Item\` WHERE parentfield='settings_dropdown' AND item_label='Delete Demo Data';" 2>/dev/null || echo "0")
+  if [ "\$DEMO_COUNT" != "0" ] && [ "\$DEMO_COUNT" != "" ]; then
+    docker exec axerp-mariadb mysql -u "\$DB_NAME" -p"\$DB_PASS" "\$DB_NAME" \
+      -e "DELETE FROM \`tabNavbar Item\` WHERE parentfield='settings_dropdown' AND item_label='Delete Demo Data';" 2>/dev/null
+    echo "  Removed 'Delete Demo Data' navbar item (was causing GET /undefined 404)"
+  else
+    echo "  Navbar items: OK (no icon-less demo items found)"
+  fi
+fi
+
+# b) Flush Redis boot cache — prevents stale frappe.boot.sitename causing socket.io 'Invalid namespace'
+docker exec axerp-redis-cache redis-cli FLUSHALL > /dev/null 2>&1
+docker exec axerp-redis-queue redis-cli FLUSHALL > /dev/null 2>&1
+docker exec axerp-backend bench --site \${SITE} clear-cache 2>&1 | tail -1
+echo "  Redis boot cache flushed (prevents socket.io Invalid namespace on first login)"
+
+echo "[13] Ping..."
 CODE=\$(curl -sk -o /dev/null -w "%{http_code}" "https://\${SITE}/api/method/ping")
 [ "\${CODE}" = "200" ] && echo "  PASS: \${SITE} 200" || echo "  WARN: \${SITE} returned \${CODE}"
 
-echo "[13] Clean old local images (keep 3 most recent, remove the rest)..."
+echo "[14] Clean old local images (keep 3 most recent, remove the rest)..."
 # Dynamic cleanup — never hardcodes tags, so can't accidentally delete an active image.
 # Sort by creation date, keep the 3 newest, remove the rest.
 OLD_IMAGES=\$(docker images axerp --format "{{.CreatedAt}}\t{{.Repository}}:{{.Tag}}" 2>/dev/null | \
@@ -419,9 +444,21 @@ check_url "ping"       "https://${SITE}/api/method/ping"
 check_url "login page" "https://${SITE}/login"
 check_url "desk"       "https://${SITE}/app" "302"
 
+# App logo files — missing logos cause GET /undefined 404 in sidebar
+# (discovered in v16.26.2: fix-assets script syncs them from backend→frontend)
+for LOGO_PATH in \
+  "/assets/erpnext/images/erpnext-logo.svg" \
+  "/assets/hrms/images/frappe-hr-logo.svg" \
+  "/assets/crm/images/logo.svg" \
+  "/assets/insights/frontend/insights-logo.png" \
+  "/assets/wiki/images/wiki-logo.png" \
+  "/assets/blog/blog.svg"; do
+  check_url "logo: $(basename $LOGO_PATH)" "https://${SITE}${LOGO_PATH}"
+done
+
 echo ""
 log "Health checks: ${CHECKS_PASSED} passed / ${CHECKS_FAILED} failed"
-[[ $CHECKS_FAILED -gt 0 ]] && warn "Some checks failed"
+[[ $CHECKS_FAILED -gt 0 ]] && warn "Some checks failed — re-run: bash scripts/deploy.sh --skip-build"
 
 # ── Step 5: ECR image verification ────────────────────────────────────────────
 log "Step 5/7 — Verify ECR image pushed"

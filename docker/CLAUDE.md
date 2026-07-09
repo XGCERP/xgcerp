@@ -252,14 +252,77 @@ AXERP_SITE_NAME=erp.tspgusa.com
 
 Admin password after first setup is managed inside Frappe. Stored in 1Password as **"AXERP Admin"** (Administrator account).
 
+## Post-Deploy Health Verification (run after every upgrade)
+
+These checks catch the class of issues discovered in the v16.26.2 deploy. Run them after every upgrade before declaring done.
+
+```bash
+# 1. Ping
+curl -s "https://erp.tspgusa.com/api/method/ping"
+# Expected: {"message":"pong"}
+
+# 2. Socket.io namespace (flush stale boot cache if this fails)
+docker exec axerp-redis-cache redis-cli FLUSHALL
+docker exec axerp-redis-queue redis-cli FLUSHALL
+docker exec axerp-backend bench --site erp.tspgusa.com clear-cache 2>&1 | tail -2
+docker restart axerp-backend axerp-websocket
+
+# 3. Navbar Settings — confirm no icon-less items (causes /undefined 404)
+DB=$(docker exec axerp-backend python3 -c \
+  "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.tspgusa.com/site_config.json')); print(c['db_name'])")
+PASS=$(docker exec axerp-backend python3 -c \
+  "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.tspgusa.com/site_config.json')); print(c['db_password'])")
+docker exec axerp-mariadb mysql -u "$DB" -p"$PASS" "$DB" \
+  -e "SELECT name, item_label FROM \`tabNavbar Item\` WHERE parentfield='settings_dropdown';" 2>/dev/null
+# Should only show standard Frappe items with icons. Remove any 'Delete Demo Data' entries:
+# docker exec axerp-mariadb mysql -u "$DB" -p"$PASS" "$DB" \
+#   -e "DELETE FROM \`tabNavbar Item\` WHERE parentfield='settings_dropdown' AND item_label='Delete Demo Data';" 2>/dev/null
+
+# 4. frappe.boot.sitename in the served HTML (must not be empty)
+# Check via bench:
+docker exec axerp-backend bench --site erp.tspgusa.com execute \
+  "frappe.boot.get_bootinfo().get('sitename')" 2>&1 | tail -3
+# Expected: erp.tspgusa.com
+
+# 5. All app logo files accessible
+for URL in /assets/erpnext/images/erpnext-logo.svg /assets/hrms/images/frappe-hr-logo.svg \
+  /assets/crm/images/logo.svg /assets/insights/frontend/insights-logo.png \
+  /assets/wiki/images/wiki-logo.png /assets/blog/blog.svg; do
+  CODE=$(curl -sk -o /dev/null -w "%{http_code}" "https://erp.tspgusa.com$URL")
+  echo "$CODE $URL"
+done
+# All must return 200
+```
+
 ## Symptom → Fix Reference
 
-| Symptom | First check | Fix |
-|---------|------------|-----|
-| 502 Bad Gateway | `grep X-Frappe-Site-Name /data/axerp/sites/frappe_nginx.conf` | Update inner nginx, `docker restart axerp-frontend` |
-| 502 persists | `grep X-Frappe-Site-Name /opt/openproject/nginx.conf` | Update outer nginx, reload |
-| CSS/icons broken | assets.json hash mismatch | Run `axerp-fix-assets-json.sh` |
-| Blank desktop | `setup_complete` flag or stale db_type in common_site_config | See CLAUDE.md troubleshooting above |
-| Build fails: CRM yarn | `yarn.lock` drift in CRM `main` | Already fixed in Dockerfile; if it recurrs, check CRM upstream |
-| Nextcloud 503 after deploy | compose up killed Nextcloud orphan containers | `docker compose -f docker-compose.nextcloud.yml up -d` |
-| socket.io 502 | `axerp-websocket` container down | `docker compose -f docker-compose.axerp.yml up -d axerp-websocket` |
+| Symptom | Root cause | Fix |
+|---------|-----------|-----|
+| 502 Bad Gateway | nginx site name mismatch | `grep X-Frappe-Site-Name /data/axerp/sites/frappe_nginx.conf` → update + `docker restart axerp-frontend` |
+| 502 persists | outer nginx still has old domain | `grep X-Frappe-Site-Name /opt/openproject/nginx.conf` → update + `docker exec openproject-nginx nginx -s reload` |
+| CSS/icons broken (MIME text/html) | assets.json hash mismatch between backend/frontend | Run `axerp-fix-assets-json.sh` via SSM |
+| `GET /undefined 404` in sidebar | `tabNavbar Item` has an entry with no icon (e.g. "Delete Demo Data" from demo fixture) | Delete from DB: `DELETE FROM tabNavbar Item WHERE item_label='Delete Demo Data'` then `FLUSHALL` |
+| `socket.io: Invalid namespace` | `frappe.boot.sitename` empty in browser boot (stale Redis cache) | `FLUSHALL` both Redis, `clear-cache`, `docker restart axerp-backend axerp-websocket` |
+| Blank desktop after login | `setup_complete=0` or stale db_type | See diagnostic commands above |
+| Build fails: CRM yarn lockfile | `yarn.lock` drift in CRM `main` branch | Already fixed in Dockerfile; pre-install both `apps/crm/` AND `apps/crm/frontend/` |
+| Nextcloud 503 after deploy | compose up with `--remove-orphans` stopped it | `docker compose -f docker-compose.nextcloud.yml up -d` |
+| App logo `<img src="undefined">` | An app in `navbar_settings.settings_dropdown` lacks `icon` field | Remove the offending row from `tabNavbar Item` |
+
+## Known Issues to Check After Every Upgrade
+
+These issues manifested in the v16.26.2 upgrade and should be explicitly checked every time:
+
+**1. Navbar Demo Data fixture** — ERPNext may re-introduce "Delete Demo Data" or other icon-less items via migrations. After every `bench migrate`, check:
+```bash
+docker exec axerp-mariadb mysql -u "$DB" -p"$PASS" "$DB" \
+  -e "SELECT name, item_label, item_type FROM \`tabNavbar Item\` WHERE parentfield='settings_dropdown';" 2>/dev/null
+```
+
+**2. Redis boot cache with stale sitename** — After any container restart sequence, the Redis boot cache may hold old `sitename` values. Always `FLUSHALL` both Redis instances after a domain change or major restart.
+
+**3. frappe.boot.sitename must equal the actual site name** — The socket.io client uses this to build the namespace. If it's empty or wrong, socket.io gets "Invalid namespace". Verified via:
+```bash
+docker exec axerp-backend bench --site erp.tspgusa.com execute "frappe.local.site" 2>&1 | tail -2
+```
+
+**4. App logo files must exist in axerp-frontend** — The fix-assets script syncs them. If logos are missing, run the fix script. The `/assets/<app>/images/*.svg` files come from the app's `public/images/` directory and are synced via `docker cp` in the fix script.
