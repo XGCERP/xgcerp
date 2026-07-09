@@ -7,7 +7,7 @@
 #
 # Build:
 #   docker build --platform linux/arm64 -f docker/Dockerfile \
-#     -t axerp:v16.26.2-axerp.4 -t axerp:prod .
+#     -t axerp:v16.26.2-axerp.5 -t axerp:prod .
 
 ARG ERPNEXT_VERSION=v16.26.2
 ARG HRMS_VERSION=version-16
@@ -80,11 +80,12 @@ RUN env/bin/pip install --no-cache-dir -e apps/blog
 # yarn add triggers hrms postinstall (cd frontend && yarn install) which is fine.
 RUN cd apps/hrms && yarn add html2canvas --silent
 
-# frappe's esbuild.js (run via --run-build-command) calls
-# `yarn install --frozen-lockfile` inside apps/crm/frontend/ before building.
+# frappe's esbuild.js detects missing node_modules and runs
+# `yarn install --frozen-lockfile` in the app root (apps/crm/).
 # If the CRM main branch lockfile is out of sync with package.json this fails.
-# Pre-install in frontend/ with --no-frozen-lockfile to update the lockfile
-# so the subsequent --frozen-lockfile call succeeds.
+# Pre-install in both the app root and frontend/ with --no-frozen-lockfile
+# so the lockfile is current before frappe's frozen check runs.
+RUN cd apps/crm && yarn install --no-frozen-lockfile --silent
 RUN cd apps/crm/frontend && yarn install --no-frozen-lockfile --silent
 
 # hrms Vite build imports socketio_port from sites/common_site_config.json
