@@ -1,258 +1,180 @@
 # AXERP Docker — Claude Code Instructions
 
-This directory contains the production Dockerfile and all deployment tooling for
-AXERP (Axina Group's ERPNext fork) running at **https://erp.tspgusa.com**.
+Production AXERP (ERPNext fork) running at **https://erp.tspgusa.com**.
 
 ## Environment
 
-- **Host:** EC2 i-07bb8581203e52527 (t4g.xlarge, arm64 Graviton2, us-east-1f)
-- **Access:** AWS SSM only — no SSH. All remote commands via `aws ssm send-command`.
-- **S3 bucket:** `s3://axina-openproject-files/deploy/` — upload scripts here before running on EC2 to avoid SSM JSON-escaping limits.
-- **Compose file locations:**
-  - Local: `infrastructure/docker/docker-compose.axerp.yml` (source of truth)
-  - EC2: `/opt/openproject/docker-compose.axerp.yml`
-- **Data volumes on EC2:**
-  - `/data/axerp/sites/` — Frappe site config, uploaded files, site DB credentials
-  - `/data/axerp/mariadb/` — MariaDB data directory
-  - `/data/axerp/logs/` — bench logs
+| Item | Value |
+|------|-------|
+| Host | EC2 `i-07bb8581203e52527` (t4g.xlarge, arm64 Graviton2, us-east-1f) |
+| Access | AWS SSM only — no SSH. Use `aws ssm send-command` |
+| ECR registry | `010438486646.dkr.ecr.us-east-1.amazonaws.com/axerp` |
+| EC2 IAM role | `axina-openproject-role` (has `AmazonEC2ContainerRegistryPowerUser`) |
+| Compose on EC2 | `/opt/openproject/docker-compose.axerp.yml` |
+| Outer nginx | `/opt/openproject/nginx.conf` |
+| Inner nginx | `/data/axerp/sites/frappe_nginx.conf` (bind-mounted into axerp-frontend) |
+| Site data | `/data/axerp/sites/erp.tspgusa.com/` |
+| MariaDB data | `/data/axerp/mariadb/` |
+| S3 deploy | `s3://axina-openproject-files/deploy/` |
 
-## Image registry — AWS ECR Private
+## Image Registry — AWS ECR Private
 
 ```
 010438486646.dkr.ecr.us-east-1.amazonaws.com/axerp:<tag>
 ```
 
-Lifecycle: last 5 tagged images kept; untagged expire after 1 day.
-EC2 pulls via IAM role `axina-openproject-role` (AmazonEC2ContainerRegistryPowerUser) — no credentials needed.
-Local tag `axerp:<tag>` is also applied during build for reference; ECR URI is what compose uses.
+ECR lifecycle policy: keep last 5 tagged images; untagged expire after 1 day.
+EC2 pulls via IAM role — no `docker login` needed for pulls on EC2.
+`docker login` IS needed for pushes (done inside the build script).
 
 ### Image tag convention
 
 ```
-<ERPNEXT_VERSION>-axerp.<PATCH>    e.g.  v16.26.2-axerp.4
+v<ERPNEXT_VERSION>-axerp.<PATCH>   e.g.  v16.26.2-axerp.5
 ```
 
-Bump `<PATCH>` for any Dockerfile or bundled app change. Bump `<ERPNEXT_VERSION>` when syncing upstream ERPNext.
-The build comment on Dockerfile line 10 (`-t axerp:v16.26.2-axerp.4`) is what `scripts/deploy.sh` reads to auto-detect the tag.
+- Bump `<PATCH>` for any Dockerfile or bundled app change at the same ERPNext version
+- Reset to `.1` when syncing a new upstream ERPNext version
+- **Two files must always be in sync:**
+  - `docker/Dockerfile` line 10: `# -t axerp:v16.26.2-axerp.5 -t axerp:prod .`
+  - `infrastructure/docker/docker-compose.axerp.yml`: `image: 010438486646.dkr.ecr.us-east-1.amazonaws.com/axerp:v16.26.2-axerp.5`
+- `deploy.sh` reads the tag from the **compose file** (primary); the Dockerfile comment is fallback only
 
-## Bundled apps (current: axerp.4 @ v16.26.2)
+## Bundled Apps (current: axerp.5 @ v16.26.2)
 
-| App | Branch/Pin | Version |
-|-----|-----------|---------|
-| frappe | base image | 16.26.2 |
-| erpnext (AXERP) | production branch | 16.26.2 |
-| hrms | version-16 | 16.10.1 |
-| crm | main | 1.76.0 |
-| insights | develop (v16-compatible) | 3.3.1 |
-| wiki | version-3 | 3.0.0 |
-| blog | develop | 0.0.1 |
+| App | Branch/Pin | Version | Notes |
+|-----|-----------|---------|-------|
+| frappe | base image | 16.26.2 | auto-matches ERPNEXT_VERSION |
+| erpnext (AXERP) | production branch | 16.26.2 | rebranded fork |
+| hrms | version-16 | 16.12.1 | |
+| crm | main | 1.77.3 | yarn pre-install required |
+| insights | develop | 3.3.1 | version-3 is frappe 14/15 only |
+| wiki | version-3 | 3.0.0 | |
+| blog | develop | 0.0.1 | orange icon baked in |
 
-## How to upgrade upstream ERPNext
+## How to Deploy
 
 ```bash
-# 1. Sync upstream on version-16 branch
-git checkout version-16
-bash scripts/sync_upstream.sh v16.X.Y   # merges upstream, applies AXERP branding
-
-# 2. Bump ARG in Dockerfile
-# ERPNEXT_VERSION=v16.X.Y
-# Build tag: axerp:v16.X.Y-axerp.1
-
-# 3. Add CHANGELOG entry in AXERP_CHANGELOG.md
-
-# 4. Open PR: version-16 → production
-# 5. Merge, then run the build+deploy procedure below
+bash scripts/deploy.sh
 ```
 
-## How to add or upgrade a bundled app
+The script does everything: `git fetch` → tarball → S3 → EC2 build → ECR push → compose up → migrate → asset fix → health checks → GitHub release. See `scripts/deploy.sh` for the full flow.
 
-1. Update the `ARG <APP>_VERSION` at the top of `Dockerfile`
-2. If adding a new app:
-   - Add `RUN git clone --depth 1 --branch ${APP_VERSION}` block
-   - Add `RUN env/bin/pip install --no-cache-dir -e apps/<app>`
-   - Add `RUN bench build --app <app>`
-   - Add to the `BAKED_PATH` copy loop at the bottom
-   - Add `bench --site $$SITE_NAME install-app <app>` to `create-site` in compose
-3. Bump the axerp patch number in the image tag
-4. Update `AXERP_CHANGELOG.md`
+**Critical:** `deploy.sh` always runs `git fetch origin production` before `git archive`. Never skip this — the known failure mode is packaging a stale pre-merge Dockerfile from the local ref cache.
 
-## Build procedure (on EC2 via SSM)
-
-Scripts are on S3 at `s3://axina-openproject-files/deploy/`:
+## How to Upgrade Upstream ERPNext
 
 ```bash
-# Package the production branch
-git archive production --format=tar.gz -o /tmp/axerp-production.tar.gz --prefix=axerp/
-aws s3 cp /tmp/axerp-production.tar.gz s3://axina-openproject-files/deploy/axerp-production.tar.gz
-aws s3 cp infrastructure/docker/docker-compose.axerp.yml s3://axina-openproject-files/deploy/docker-compose.axerp.yml
+# 1. Check latest v16 tag
+curl -s "https://api.github.com/repos/frappe/erpnext/releases?per_page=20" | \
+  python3 -c "import sys,json; r=[x['tag_name'] for x in json.load(sys.stdin) if x['tag_name'].startswith('v16')]; print(r[0])"
 
-# Run the build script on EC2 (uploads build output to /tmp/docker-build.log)
-# Script: s3://axina-openproject-files/deploy/axerp-build-v3b.sh
+# 2. Run /axerp-sync — merges, rebrands, bumps Dockerfile ERPNEXT_VERSION, writes changelog
+
+# 3. Bump image tag in BOTH files:
+#    docker/Dockerfile line 10 comment
+#    infrastructure/docker/docker-compose.axerp.yml image: line
+
+# 4. Verify erpnext_integrations not rebranded
+grep -n "Integrations" erpnext/modules.txt   # must say ERPNext Integrations
+
+# 5. Open PR: version-16 → production, merge
+
+# 6. Deploy
+bash scripts/deploy.sh
 ```
 
-The build script (axerp-build-v3b.sh):
-1. Downloads source tarball + compose from S3
-2. Runs `docker build --platform linux/arm64 --no-cache`
-3. Runs `docker compose up -d` (no `--remove-orphans` — would stop OpenProject/Nextcloud)
-4. Runs the post-deploy asset sync (see below)
+## How to Add a Bundled App
 
-Build time: ~8 minutes on arm64 Graviton2.
+1. Add `ARG <APP>_VERSION=<branch>` at the top of `Dockerfile` (before and after `FROM`)
+2. Add `RUN git clone --depth 1 --branch ${APP_VERSION} https://github.com/frappe/<app>.git apps/<app>`
+3. Add `RUN env/bin/pip install --no-cache-dir -e apps/<app>`
+4. Add `RUN bench build --app <app>`
+5. Add `<app>` to the BAKED_PATH copy loop
+6. Add `bench --site $$SITE_NAME install-app <app>` to `create-site` in compose
+7. Add app to the fix-assets sync loop in `axerp-fix-assets-json.sh` on S3
+8. Bump patch tag in both files, update `AXERP_CHANGELOG.md`
 
-## Frappe version tracking
+## Known Dockerfile Build Constraints
 
-Frappe Framework is bundled inside the base image (`frappe/erpnext:${ERPNEXT_VERSION}`).
-When `ERPNEXT_VERSION` is bumped (e.g. `v16.25.0` → `v16.26.2`), the base image is pulled
-fresh during `docker build --no-cache`, which automatically brings the matching frappe version.
-No separate frappe pin is needed — frappe and erpnext versions are always in sync via the base image tag.
+Do not remove any of these — each was added to fix a real build failure:
 
-To verify the running frappe version:
-```bash
-docker exec axerp-backend bench version
-```
+### yarn add html2canvas (hrms)
+hrms imports `html2canvas` but doesn't declare it in `package.json`. Without `yarn add html2canvas` before `bench build --app hrms`, the build fails with `Could not resolve "html2canvas"`.
 
-## Post-deploy asset sync (REQUIRED after every redeploy)
-
-**Why:** The frappe_docker entrypoint runs on every container start:
-```bash
-rm -rf sites/assets
-ln -s /home/frappe/frappe-bench/assets sites/assets
-```
-This replaces `sites/assets/` with a symlink to `BAKED_PATH=/home/frappe/frappe-bench/assets`.
-The image bakes all app `public/` dirs into `BAKED_PATH` at build time.
-After every deploy, the backend container regenerates `assets.json` with new content hashes
-in its writable layer — the frontend container still has the baked version → hash mismatch →
-404s, MIME errors, broken icons/CSS.
-
-**Critical:** use `bench build --production` (not per-app builds). Per-app builds only update
-that app's entries in `assets.json`, leaving other apps' hashes stale. `--production` rebuilds
-all apps in one pass and writes a fully consistent `assets.json`.
-
-**Fix after every `docker compose up -d` with a new image:**
-
-```bash
-# On EC2 (run via SSM or S3):
-# Script: s3://axina-openproject-files/deploy/axerp-fix-assets-json.sh
-# Also runs automatically via scripts/deploy.sh
-
-# What it does:
-docker exec axerp-backend bench build --production   # rebuild ALL bundles + regenerate assets.json
-# docker cp all app assets (frappe/erpnext/hrms/crm/insights/wiki/blog) backend → frontend
-# nginx reload, Redis FLUSHALL, clear-cache, verify all bundles return 200
-```
-
-Run time: ~2–3 minutes (full rebuild). After this, all bundles return 200.
-
-**Migrate also runs `bench build --production`:**
-The `axerp-migrate` compose service runs `bench migrate` followed immediately by
-`bench build --production` before the backend starts — so DB schema changes and
-frontend asset changes are always applied together.
-
-**Verify everything is serving:**
-```bash
-# Quick spot-check from your laptop:
-curl -sk -o /dev/null -w "%{http_code}" "https://erp.tspgusa.com/assets/frappe/dist/js/desk.bundle.$(...)js"
-```
-
-## Known Dockerfile constraints
-
-### `common_site_config.json` stub required
-hrms Vite build imports `socketio_port` from `sites/common_site_config.json` at build time.
-This file doesn't exist during `docker build`. A stub is created before `bench build`:
+### CRM yarn pre-install in app root AND frontend/
+frappe's `esbuild.js:536` runs `yarn install --frozen-lockfile` in `apps/crm/` (not just `frontend/`) when `node_modules` is absent. The CRM `main` branch `yarn.lock` drifts from `package.json`. Pre-install both with `--no-frozen-lockfile`:
 ```dockerfile
-RUN mkdir -p sites && \
-    echo '{"socketio_port":9000,...}' > sites/common_site_config.json
-```
-If removed, hrms build fails with `"socketio_port" is not exported`.
-
-### `html2canvas` must be yarn-added before hrms build
-hrms imports `html2canvas` in `hierarchy_chart_desktop.js` but doesn't declare it in
-`package.json`. Without `yarn add html2canvas`, bench build fails with `Could not resolve "html2canvas"`.
-
-### Docker ARG scope
-ARGs declared before `FROM` go out of scope inside the build stage. Always re-declare after `FROM`:
-```dockerfile
-ARG HRMS_VERSION
-ARG CRM_VERSION
-ARG INSIGHTS_VERSION
-# (no default = inherits global value)
+RUN cd apps/crm && yarn install --no-frozen-lockfile --silent
+RUN cd apps/crm/frontend && yarn install --no-frozen-lockfile --silent
 ```
 
-### `env/bin/pip` not plain `pip`
-bench uses a virtualenv at `env/`. Plain `pip` installs to `~/.local` (user site-packages),
-invisible to the venv. Always use `env/bin/pip install -e apps/<app>`.
+### common_site_config.json stub (hrms Vite)
+hrms Vite build imports `socketio_port` from `sites/common_site_config.json` at build time. Without the stub, hrms build fails with `"socketio_port" is not exported`.
 
-### BAKED_PATH = `/home/frappe/frappe-bench/assets`
-The frappe_docker entrypoint symlinks `sites/assets → /home/frappe/frappe-bench/assets`.
-Asset files must be in `BAKED_PATH`, not in `sites/assets/`. The final RUN in the Dockerfile
-copies all app `public/` dirs there.
+### env/bin/pip not plain pip
+bench uses a venv at `env/`. Plain `pip` installs to `~/.local`, invisible to the venv. Always `env/bin/pip install -e apps/<app>`.
 
-## Fixing a blank desktop / broken assets on a running instance
+### BAKED_PATH = /home/frappe/frappe-bench/assets
+The frappe_docker entrypoint does `rm -rf sites/assets && ln -s /home/frappe/frappe-bench/assets sites/assets`. Assets must go into `BAKED_PATH`, not `sites/assets/`.
 
-### Symptom: MIME type errors, 404 for `.bundle.css`/`.bundle.js`
-**Cause:** assets.json hash mismatch between backend and frontend containers.
+### blog-orange.svg is NOT in .dockerignore
+Confirmed — `docker/blog-orange.svg` is tracked in git and not excluded. `COPY docker/blog-orange.svg` works.
+
+## Frappe Version Tracking
+
+Frappe is bundled in the base image `frappe/erpnext:${ERPNEXT_VERSION}`. When `ERPNEXT_VERSION` is bumped, `docker build --no-cache` pulls the new base image automatically. No separate frappe pin is needed.
+
 ```bash
-docker exec axerp-backend bench build --app frappe
-# then run axerp-fix-assets-json.sh
+docker exec axerp-backend bench version   # check running frappe version
 ```
 
-### Symptom: Blank white page after login
-**Check 1:** `setup_complete` flag:
+## Post-Deploy Asset Fix (REQUIRED after every deploy)
+
+`bench build --production` in the migrate container does not propagate to the frontend container's filesystem. Always run the fix script after every deploy.
+
+**Always use `bench build --production`, never per-app builds.** Per-app builds leave other apps' hashes stale in `assets.json`, causing 404s for those bundles.
+
 ```bash
-DB_NAME=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.tspgusa.com/site_config.json')); print(c['db_name'])")
-DB_PASS=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.tspgusa.com/site_config.json')); print(c['db_password'])")
-docker exec axerp-mariadb mysql -u ${DB_NAME} -p"${DB_PASS}" ${DB_NAME} \
-  -e "SELECT field, value FROM tabSingles WHERE doctype='System Settings' AND field='setup_complete';"
-# If value != 1:
-docker exec axerp-mariadb mysql -u ${DB_NAME} -p"${DB_PASS}" ${DB_NAME} \
-  -e "INSERT INTO tabSingles (doctype,field,value) VALUES('System Settings','setup_complete','1') ON DUPLICATE KEY UPDATE value='1';"
-docker exec axerp-redis-cache redis-cli FLUSHALL
-docker exec axerp-backend bench --site erp.tspgusa.com clear-cache
+# Runs automatically via scripts/deploy.sh
+# To run manually:
+aws ssm send-command \
+  --instance-ids i-07bb8581203e52527 \
+  --document-name "AWS-RunShellScript" --region us-east-1 \
+  --parameters '{"commands":["aws s3 cp s3://axina-openproject-files/deploy/axerp-fix-assets-json.sh /tmp/fix.sh --quiet && SITE=erp.tspgusa.com bash /tmp/fix.sh"]}'
 ```
 
-**Check 2:** Stale `db_type: postgres` in `common_site_config.json`:
+## Nginx Architecture (two layers)
+
+When debugging 502s after a deploy or domain change, both layers must use the correct site name:
+
+```
+Internet
+  → openproject-nginx (/opt/openproject/nginx.conf)
+       proxy_set_header Host erp.tspgusa.com
+       proxy_set_header X-Frappe-Site-Name erp.tspgusa.com
+       upstream axerp → axerp-frontend:8080
+  → axerp-frontend (/data/axerp/sites/frappe_nginx.conf)
+       proxy_set_header X-Frappe-Site-Name erp.tspgusa.com
+       upstream backend-server → axerp-backend:8000
+  → axerp-backend (Gunicorn)
+       resolves site from X-Frappe-Site-Name header
+       looks up sites/erp.tspgusa.com/
+```
+
+After domain changes or first deploy with a new site name:
 ```bash
-docker exec axerp-backend cat /home/frappe/frappe-bench/sites/common_site_config.json
-# If db_type: postgres is present, remove it:
-docker exec axerp-backend python3 -c "
-import json
-p='/home/frappe/frappe-bench/sites/common_site_config.json'
-c=json.load(open(p)); c.pop('db_type',None); json.dump(c,open(p,'w'),indent=1)"
-docker exec axerp-redis-cache redis-cli FLUSHALL
-docker exec axerp-backend bench --site erp.tspgusa.com clear-cache
+# Fix inner nginx and restart (reload alone is not enough)
+sed -i "s/OLD_DOMAIN/erp.tspgusa.com/g" /data/axerp/sites/frappe_nginx.conf
+docker restart axerp-frontend
+
+# Fix outer nginx proxy headers and reload
+sed -i "s/proxy_set_header X-Frappe-Site-Name OLD/proxy_set_header X-Frappe-Site-Name erp.tspgusa.com/g" /opt/openproject/nginx.conf
+sed -i "s/proxy_set_header Host OLD/proxy_set_header Host erp.tspgusa.com/g" /opt/openproject/nginx.conf
+docker exec openproject-nginx nginx -s reload
 ```
 
-### Symptom: socket.io 400/502
-- 400 = socket.io server rejecting plain HTTP GET (normal — it needs a WS upgrade handshake)
-- 502 = nginx can't reach `axerp-websocket:9000` — check `docker ps` for websocket container
-- The outer nginx (openproject-nginx) proxies `/socket.io/` directly to `axerp-websocket:9000`
-
-### Symptom: Nextcloud 503 after AXERP redeploy
-The AXERP build script previously used `--remove-orphans` which stops all containers in
-the `openproject_default` network including Nextcloud. The current build script does NOT use
-`--remove-orphans`. If Nextcloud is down, restart it:
-```bash
-cd /opt/openproject && docker compose -f docker-compose.nextcloud.yml up -d
-```
-If Nextcloud shows "invalid data directory", create the missing `.ncdata` marker:
-```bash
-NC_VOL=$(docker inspect nextcloud-app --format '{{range .Mounts}}{{if eq .Destination "/var/www/html"}}{{.Source}}{{end}}{{end}}')
-echo "# Nextcloud data directory" > ${NC_VOL}/data/.ncdata
-chown 33:33 ${NC_VOL}/data/.ncdata
-```
-
-## Deploy .env variables
-
-The compose file reads from `/opt/openproject/.env` on EC2 (chmod 600):
-```
-AXERP_DB_ROOT_PASSWORD=...
-AXERP_ADMIN_PASSWORD=...   # used only on first-run site creation
-AXERP_SITE_NAME=erp.tspgusa.com
-```
-
-Admin password after initial setup is managed inside Frappe (not from env).
-Stored in 1Password as **"AXERP Admin"** under Administrator account.
-
-## Container names and roles
+## Container Names and Roles
 
 | Container | Role |
 |-----------|------|
@@ -264,24 +186,32 @@ Stored in 1Password as **"AXERP Admin"** under Administrator account.
 | `axerp-queue-short` | RQ worker — short/default queues |
 | `axerp-configurator` | One-shot: writes common_site_config.json |
 | `axerp-create-site` | One-shot: bench new-site + install-app (first run only) |
+| `axerp-migrate` | One-shot: bench migrate + bench build --production (every deploy) |
 | `axerp-mariadb` | MariaDB 10.6 (arm64) |
 | `axerp-redis-cache` | Redis cache (no persistence) |
 | `axerp-redis-queue` | Redis job queue (persisted) |
 
-## Useful diagnostic commands
+## Diagnostic Commands
 
 ```bash
-# Health check
-docker ps --filter "name=axerp" --format "{{.Names}} | {{.Status}}"
+# Container health
+docker ps --filter "name=axerp" --format "{{.Names}} | {{.Status}}" | sort
 
 # Live logs
 docker logs axerp-backend --tail 50 -f
-docker logs axerp-frontend --tail 20
+docker logs axerp-migrate --tail 30
+
+# Verify ping
+curl -s "https://erp.tspgusa.com/api/method/ping"   # expect: {"message":"pong"}
+
+# Installed apps + versions
+docker exec axerp-backend bench --site erp.tspgusa.com list-apps
+docker exec axerp-backend bench version
 
 # Frappe site shell
 docker exec axerp-backend bench --site erp.tspgusa.com console
 
-# Run migrate (after app updates)
+# Run migrate manually
 docker exec axerp-backend bench --site erp.tspgusa.com migrate
 
 # Clear all caches
@@ -289,15 +219,47 @@ docker exec axerp-redis-cache redis-cli FLUSHALL
 docker exec axerp-backend bench --site erp.tspgusa.com clear-cache
 docker exec axerp-backend bench --site erp.tspgusa.com clear-website-cache
 
-# Check installed apps + versions
-docker exec axerp-backend bench --site erp.tspgusa.com list-apps
-
-# Test API
-curl -s "https://erp.tspgusa.com/api/method/ping"
+# Test Gunicorn directly with correct host header (bypasses nginx)
+BACKEND_IP=$(docker inspect axerp-backend \
+  --format "{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}" | awk '{print $1}')
+curl -sk -H "Host: erp.tspgusa.com" http://$BACKEND_IP:8000/api/method/ping
 
 # Reset admin password
 docker exec axerp-backend bench --site erp.tspgusa.com set-admin-password <newpassword>
 
 # DB shell
 docker exec -it axerp-mariadb mysql -u root -p
+
+# ECR image list
+aws ecr describe-images --repository-name axerp --region us-east-1 \
+  --query "sort_by(imageDetails,&imagePushedAt)[-5:] | reverse(@) | [].{tag:imageTag[0],pushed:imagePushedAt,mb:to_string(imageSizeInBytes)}" \
+  --output table
+
+# Check build log from last EC2 deploy
+# (run via SSM send-command)
+tail -50 /tmp/axerp-deploy-run.log
+tail -40 /tmp/docker-build.log
 ```
+
+## Deploy .env on EC2
+
+`/opt/openproject/.env` (chmod 600):
+```
+AXERP_DB_ROOT_PASSWORD=...
+AXERP_ADMIN_PASSWORD=...   # used only on first-run site creation
+AXERP_SITE_NAME=erp.tspgusa.com
+```
+
+Admin password after first setup is managed inside Frappe. Stored in 1Password as **"AXERP Admin"** (Administrator account).
+
+## Symptom → Fix Reference
+
+| Symptom | First check | Fix |
+|---------|------------|-----|
+| 502 Bad Gateway | `grep X-Frappe-Site-Name /data/axerp/sites/frappe_nginx.conf` | Update inner nginx, `docker restart axerp-frontend` |
+| 502 persists | `grep X-Frappe-Site-Name /opt/openproject/nginx.conf` | Update outer nginx, reload |
+| CSS/icons broken | assets.json hash mismatch | Run `axerp-fix-assets-json.sh` |
+| Blank desktop | `setup_complete` flag or stale db_type in common_site_config | See CLAUDE.md troubleshooting above |
+| Build fails: CRM yarn | `yarn.lock` drift in CRM `main` | Already fixed in Dockerfile; if it recurrs, check CRM upstream |
+| Nextcloud 503 after deploy | compose up killed Nextcloud orphan containers | `docker compose -f docker-compose.nextcloud.yml up -d` |
+| socket.io 502 | `axerp-websocket` container down | `docker compose -f docker-compose.axerp.yml up -d axerp-websocket` |
