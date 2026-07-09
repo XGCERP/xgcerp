@@ -373,7 +373,7 @@ else
   ssm_run "Step 3b/7 — Launch background build" \
     "bash /tmp/axerp-launch.sh" \
     "sleep 5" \
-    "pgrep -f axerp-deploy-run.sh > /dev/null && echo 'BUILD RUNNING' || { echo 'LAUNCH_FAILED: process not found after 5s'; exit 1; }"
+    "if pgrep -f axerp-deploy-run.sh > /dev/null; then echo BUILD_RUNNING; else echo LAUNCH_FAILED && exit 1; fi"
 
   if ! $DRY_RUN; then
     poll_background_build
