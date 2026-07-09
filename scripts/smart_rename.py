@@ -34,7 +34,7 @@ SOURCE_LOGO_NAME = "axinagroup-logo.svg"
 
 IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'env', 'logs', 'scripts', '.kiro'}
 # xgc_* docs intentionally reference both brand names for clarity — skip them
-IGNORE_FILES = {'xgc_github_erpsync.md', 'CLAUDE.md'}
+IGNORE_FILES = {'xgc_github_erpsync.md', 'CLAUDE.md', 'AXERP_CHANGELOG.md'}
 TARGET_EXTS = ('.json', '.py', '.js', '.html', '.csv', '.txt', '.md')
 
 
