@@ -1,7 +1,7 @@
 # AXERP Docker — Claude Code Instructions
 
 This directory contains the production Dockerfile and all deployment tooling for
-AXERP (Axina Group's ERPNext fork) running at **https://erp.axinagroup.com**.
+AXERP (Axina Group's ERPNext fork) running at **https://erp.tspgusa.com**.
 
 ## Environment
 
@@ -117,7 +117,7 @@ Run time: ~30 seconds. After this, all 48 bundles return 200.
 **Verify everything is serving:**
 ```bash
 # Quick spot-check from your laptop:
-curl -sk -o /dev/null -w "%{http_code}" "https://erp.axinagroup.com/assets/frappe/dist/js/desk.bundle.$(...)js"
+curl -sk -o /dev/null -w "%{http_code}" "https://erp.tspgusa.com/assets/frappe/dist/js/desk.bundle.$(...)js"
 ```
 
 ## Known Dockerfile constraints
@@ -165,15 +165,15 @@ docker exec axerp-backend bench build --app frappe
 ### Symptom: Blank white page after login
 **Check 1:** `setup_complete` flag:
 ```bash
-DB_NAME=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.axinagroup.com/site_config.json')); print(c['db_name'])")
-DB_PASS=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.axinagroup.com/site_config.json')); print(c['db_password'])")
+DB_NAME=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.tspgusa.com/site_config.json')); print(c['db_name'])")
+DB_PASS=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.tspgusa.com/site_config.json')); print(c['db_password'])")
 docker exec axerp-mariadb mysql -u ${DB_NAME} -p"${DB_PASS}" ${DB_NAME} \
   -e "SELECT field, value FROM tabSingles WHERE doctype='System Settings' AND field='setup_complete';"
 # If value != 1:
 docker exec axerp-mariadb mysql -u ${DB_NAME} -p"${DB_PASS}" ${DB_NAME} \
   -e "INSERT INTO tabSingles (doctype,field,value) VALUES('System Settings','setup_complete','1') ON DUPLICATE KEY UPDATE value='1';"
 docker exec axerp-redis-cache redis-cli FLUSHALL
-docker exec axerp-backend bench --site erp.axinagroup.com clear-cache
+docker exec axerp-backend bench --site erp.tspgusa.com clear-cache
 ```
 
 **Check 2:** Stale `db_type: postgres` in `common_site_config.json`:
@@ -185,7 +185,7 @@ import json
 p='/home/frappe/frappe-bench/sites/common_site_config.json'
 c=json.load(open(p)); c.pop('db_type',None); json.dump(c,open(p,'w'),indent=1)"
 docker exec axerp-redis-cache redis-cli FLUSHALL
-docker exec axerp-backend bench --site erp.axinagroup.com clear-cache
+docker exec axerp-backend bench --site erp.tspgusa.com clear-cache
 ```
 
 ### Symptom: socket.io 400/502
@@ -213,7 +213,7 @@ The compose file reads from `/opt/openproject/.env` on EC2 (chmod 600):
 ```
 AXERP_DB_ROOT_PASSWORD=...
 AXERP_ADMIN_PASSWORD=...   # used only on first-run site creation
-AXERP_SITE_NAME=erp.axinagroup.com
+AXERP_SITE_NAME=erp.tspgusa.com
 ```
 
 Admin password after initial setup is managed inside Frappe (not from env).
@@ -246,24 +246,24 @@ docker logs axerp-backend --tail 50 -f
 docker logs axerp-frontend --tail 20
 
 # Frappe site shell
-docker exec axerp-backend bench --site erp.axinagroup.com console
+docker exec axerp-backend bench --site erp.tspgusa.com console
 
 # Run migrate (after app updates)
-docker exec axerp-backend bench --site erp.axinagroup.com migrate
+docker exec axerp-backend bench --site erp.tspgusa.com migrate
 
 # Clear all caches
 docker exec axerp-redis-cache redis-cli FLUSHALL
-docker exec axerp-backend bench --site erp.axinagroup.com clear-cache
-docker exec axerp-backend bench --site erp.axinagroup.com clear-website-cache
+docker exec axerp-backend bench --site erp.tspgusa.com clear-cache
+docker exec axerp-backend bench --site erp.tspgusa.com clear-website-cache
 
 # Check installed apps + versions
-docker exec axerp-backend bench --site erp.axinagroup.com list-apps
+docker exec axerp-backend bench --site erp.tspgusa.com list-apps
 
 # Test API
-curl -s "https://erp.axinagroup.com/api/method/ping"
+curl -s "https://erp.tspgusa.com/api/method/ping"
 
 # Reset admin password
-docker exec axerp-backend bench --site erp.axinagroup.com set-admin-password <newpassword>
+docker exec axerp-backend bench --site erp.tspgusa.com set-admin-password <newpassword>
 
 # DB shell
 docker exec -it axerp-mariadb mysql -u root -p
