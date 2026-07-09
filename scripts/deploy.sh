@@ -272,10 +272,13 @@ else
     "chmod +x /tmp/axerp-deploy-run.sh" \
     "rm -f /tmp/axerp-deploy-status"
 
-  log "Step 3/6 — EC2: Launch build in background (nohup)..."
+  log "Step 3/6 — EC2: Launch build in background..."
   ssm_run "Launch background build" \
-    "nohup bash -c 'bash /tmp/axerp-deploy-run.sh > /tmp/axerp-deploy-run.log 2>&1; echo \$? > /tmp/axerp-deploy-status' &" \
-    "echo launched; sleep 3; pgrep -f axerp-deploy-run.sh && echo running || echo NOT_RUNNING"
+    "aws s3 cp s3://${S3_BUCKET}/${S3_PREFIX}/axerp-launch.sh /tmp/axerp-launch.sh --quiet" \
+    "chmod +x /tmp/axerp-launch.sh" \
+    "bash /tmp/axerp-launch.sh" \
+    "sleep 3" \
+    "pgrep -f axerp-deploy-run.sh && echo 'BUILD RUNNING' || echo 'NOT RUNNING'"
 
   log "Step 3/6 — Polling EC2 build progress (allow ~25 min)..."
   BUILD_DONE=false
