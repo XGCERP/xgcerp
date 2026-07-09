@@ -2,6 +2,22 @@
 
 This document describes the initial setup for syncing the AXERP fork with the upstream ERPNext repository.
 
+## Claude Skill for Upstream Sync and Rebrand.
+ The /axerp-sync skill is now installed at /Users/dzbrody/.claude/skills/axerp-sync/skill.md. Here's what it does:
+
+  - Step 1 — Fetches the latest v16.x.x release tag from the GitHub API (confirmed v16.26.2 right now)
+  - Step 2 — Checks your current AXERP version so you know how far behind you are
+  - Step 3 — Runs bash scripts/sync_upstream.sh <tag>
+  - Step 4 — Post-sync verification, including the critical erpnext_integrations safety check
+
+  It also embeds the "never rebrand erpnext_integrations" rule with a fix command if modules.txt gets corrupted. You can invoke it anytime with /axerp-sync.
+
+  *The claude skill is performing all the fuction below to update the erpnext to axerp.*
+  
+
+  ---
+
+
 > **Note:** For ongoing sync operations, use `scripts/sync_upstream.sh`. See `.kiro/steering/upstream-sync.md` for the full workflow.
 
 ## Initial Repository Setup
@@ -39,15 +55,26 @@ git push -u origin version-16
 
 ## Ongoing Sync
 
-Whenever Frappe releases a new version (e.g., `v16.13.3`), run:
+### 1. Get the latest v16 release tag
 
 ```bash
-./scripts/sync_upstream.sh v16.13.3
+curl -s "https://api.github.com/repos/frappe/erpnext/releases?per_page=20" \
+  | python3 -c "import sys,json; r=[x['tag_name'] for x in json.load(sys.stdin) if x['tag_name'].startswith('v16')]; print(r[0])"
 ```
 
-This script handles fetching, merging, rebranding (ERPNext → AXERP), committing, tagging as `v16.13.3-axerp`, and force-pushing to origin.
+This prints the latest tag (e.g., `v16.26.2`). Compare it to the most recent `*-axerp` tag in your repo:
 
-Check `https://github.com/frappe/erpnext/releases` for latest releases.
+```bash
+git tag --sort=-version:refname | grep axerp | head -3
+```
+
+### 2. Run the sync
+
+```bash
+bash scripts/sync_upstream.sh v16.26.2
+```
+
+This script handles fetching, merging, rebranding (ERPNext → AXERP), committing, tagging as `v16.26.2-axerp`, and force-pushing to origin.
 
 ## Critical: erpnext_integrations Module — Do NOT Rebrand
 

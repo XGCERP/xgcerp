@@ -7,14 +7,15 @@
 #
 # Build:
 #   docker build --platform linux/arm64 -f docker/Dockerfile \
-#     -t axerp:v16.25.0-axerp.2 -t axerp:prod .
+#     -t axerp:v16.26.2-axerp.2 -t axerp:prod .
 
-ARG ERPNEXT_VERSION=v16.25.0
+ARG ERPNEXT_VERSION=v16.26.2
 ARG HRMS_VERSION=version-16
 ARG CRM_VERSION=main
 # insights version-3 is frappe 14/15 only; develop branch has explicit v16 CI
 ARG INSIGHTS_VERSION=develop
 ARG WIKI_VERSION=version-3
+ARG BLOG_VERSION=develop
 
 FROM frappe/erpnext:${ERPNEXT_VERSION} AS builder
 
@@ -24,6 +25,7 @@ ARG HRMS_VERSION
 ARG CRM_VERSION
 ARG INSIGHTS_VERSION
 ARG WIKI_VERSION
+ARG BLOG_VERSION
 
 USER root
 
@@ -51,6 +53,12 @@ RUN git clone --depth 1 --branch ${WIKI_VERSION} \
       /home/frappe/frappe-bench/apps/wiki \
     && chown -R frappe:frappe /home/frappe/frappe-bench/apps/wiki
 
+# ── Blog ──────────────────────────────────────────────────────────────────
+RUN git clone --depth 1 --branch ${BLOG_VERSION} \
+      https://github.com/frappe/blog.git \
+      /home/frappe/frappe-bench/apps/blog \
+    && chown -R frappe:frappe /home/frappe/frappe-bench/apps/blog
+
 # ── AXERP (rebranded ERPNext) ──────────────────────────────────────────────
 COPY --chown=frappe:frappe . /home/frappe/frappe-bench/apps/erpnext
 
@@ -65,6 +73,7 @@ RUN env/bin/pip install --no-cache-dir -e apps/hrms
 RUN env/bin/pip install --no-cache-dir -e apps/crm
 RUN env/bin/pip install --no-cache-dir -e apps/insights
 RUN env/bin/pip install --no-cache-dir -e apps/wiki
+RUN env/bin/pip install --no-cache-dir -e apps/blog
 
 # hrms imports html2canvas in hierarchy_chart_desktop.js but it is not
 # declared as a dependency in hrms/package.json — add it before bench build.
@@ -88,6 +97,7 @@ RUN bench build --app hrms
 RUN bench build --app crm
 RUN bench build --app insights
 RUN bench build --app wiki
+RUN bench build --app blog
 
 # The frappe_docker entrypoint.sh does:
 #   rm -rf sites/assets
@@ -99,7 +109,7 @@ RUN set -e; \
     BENCH=/home/frappe/frappe-bench; \
     BAKED=${BENCH}/assets; \
     mkdir -p "${BAKED}"; \
-    for APP in frappe erpnext hrms crm insights wiki; do \
+    for APP in frappe erpnext hrms crm insights wiki blog; do \
       SRC="${BENCH}/apps/${APP}/${APP}/public"; \
       DST="${BAKED}/${APP}"; \
       if [ -d "${SRC}" ]; then \
@@ -114,6 +124,9 @@ RUN set -e; \
       [ -f "${BENCH}/sites/assets/${F}" ] && cp "${BENCH}/sites/assets/${F}" "${BAKED}/${F}"; \
     done; \
     echo "Baked path contents:"; ls "${BAKED}/"
+
+# Blog icon override — upstream ships teal #016E7D; AXERP uses orange
+COPY --chown=frappe:frappe docker/blog-orange.svg /home/frappe/frappe-bench/assets/blog/blog.svg
 
 FROM builder AS final
 LABEL org.opencontainers.image.title="AXERP" \

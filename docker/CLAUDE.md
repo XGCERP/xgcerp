@@ -1,7 +1,7 @@
 # AXERP Docker — Claude Code Instructions
 
 This directory contains the production Dockerfile and all deployment tooling for
-AXERP (Axina Group's ERPNext fork) running at **https://erp.axinagroup.com**.
+AXERP (Axina Group's ERPNext fork) running at **https://erp.tspgusa.com**.
 
 ## Environment
 
@@ -26,16 +26,17 @@ Examples: `axerp:v16.23.0-axerp.3`, `axerp:prod` (alias for latest)
 
 Bump `<PATCH>` for any change to the Dockerfile or bundled apps. Bump `<ERPNEXT_VERSION>` when syncing upstream ERPNext.
 
-## Bundled apps (current: axerp.2 @ v16.25.0)
+## Bundled apps (current: axerp.2 @ v16.26.2)
 
 | App | Branch/Pin | Version |
 |-----|-----------|---------|
-| frappe | base image | 16.25.0 |
-| erpnext (AXERP) | production branch | 16.25.0 |
-| hrms | version-16 | 16.9.0 |
-| crm | main | 1.73.2 |
+| frappe | base image | 16.26.2 |
+| erpnext (AXERP) | production branch | 16.26.2 |
+| hrms | version-16 | 16.10.1 |
+| crm | main | 1.76.0 |
 | insights | develop (v16-compatible) | 3.3.1 |
 | wiki | version-3 | 3.0.0 |
+| blog | develop | 0.0.1 |
 
 ## How to upgrade upstream ERPNext
 
@@ -88,6 +89,18 @@ The build script (axerp-build-v3b.sh):
 
 Build time: ~8 minutes on arm64 Graviton2.
 
+## Frappe version tracking
+
+Frappe Framework is bundled inside the base image (`frappe/erpnext:${ERPNEXT_VERSION}`).
+When `ERPNEXT_VERSION` is bumped (e.g. `v16.25.0` → `v16.26.2`), the base image is pulled
+fresh during `docker build --no-cache`, which automatically brings the matching frappe version.
+No separate frappe pin is needed — frappe and erpnext versions are always in sync via the base image tag.
+
+To verify the running frappe version:
+```bash
+docker exec axerp-backend bench version
+```
+
 ## Post-deploy asset sync (REQUIRED after every redeploy)
 
 **Why:** The frappe_docker entrypoint runs on every container start:
@@ -97,27 +110,38 @@ ln -s /home/frappe/frappe-bench/assets sites/assets
 ```
 This replaces `sites/assets/` with a symlink to `BAKED_PATH=/home/frappe/frappe-bench/assets`.
 The image bakes all app `public/` dirs into `BAKED_PATH` at build time.
-However, `bench build --app frappe` on the live backend regenerates `assets.json` with new
-hashes into the backend's writable layer — the frontend container still has the baked version.
-The hashes mismatch → 404s → MIME type errors in browser.
+After every deploy, the backend container regenerates `assets.json` with new content hashes
+in its writable layer — the frontend container still has the baked version → hash mismatch →
+404s, MIME errors, broken icons/CSS.
+
+**Critical:** use `bench build --production` (not per-app builds). Per-app builds only update
+that app's entries in `assets.json`, leaving other apps' hashes stale. `--production` rebuilds
+all apps in one pass and writes a fully consistent `assets.json`.
 
 **Fix after every `docker compose up -d` with a new image:**
 
 ```bash
-# On EC2 (run via SSM or upload to S3 first):
+# On EC2 (run via SSM or S3):
 # Script: s3://axina-openproject-files/deploy/axerp-fix-assets-json.sh
+# Also runs automatically via scripts/deploy.sh
 
 # What it does:
-docker exec axerp-backend bench build --app frappe   # regenerates assets.json (20s)
-# Then docker cp frappe/dist + erpnext/dist + assets.json from backend → frontend
+docker exec axerp-backend bench build --production   # rebuild ALL bundles + regenerate assets.json
+# docker cp all app assets (frappe/erpnext/hrms/crm/insights/wiki/blog) backend → frontend
+# nginx reload, Redis FLUSHALL, clear-cache, verify all bundles return 200
 ```
 
-Run time: ~30 seconds. After this, all 48 bundles return 200.
+Run time: ~2–3 minutes (full rebuild). After this, all bundles return 200.
+
+**Migrate also runs `bench build --production`:**
+The `axerp-migrate` compose service runs `bench migrate` followed immediately by
+`bench build --production` before the backend starts — so DB schema changes and
+frontend asset changes are always applied together.
 
 **Verify everything is serving:**
 ```bash
 # Quick spot-check from your laptop:
-curl -sk -o /dev/null -w "%{http_code}" "https://erp.axinagroup.com/assets/frappe/dist/js/desk.bundle.$(...)js"
+curl -sk -o /dev/null -w "%{http_code}" "https://erp.tspgusa.com/assets/frappe/dist/js/desk.bundle.$(...)js"
 ```
 
 ## Known Dockerfile constraints
@@ -165,15 +189,15 @@ docker exec axerp-backend bench build --app frappe
 ### Symptom: Blank white page after login
 **Check 1:** `setup_complete` flag:
 ```bash
-DB_NAME=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.axinagroup.com/site_config.json')); print(c['db_name'])")
-DB_PASS=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.axinagroup.com/site_config.json')); print(c['db_password'])")
+DB_NAME=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.tspgusa.com/site_config.json')); print(c['db_name'])")
+DB_PASS=$(docker exec axerp-backend python3 -c "import json; c=json.load(open('/home/frappe/frappe-bench/sites/erp.tspgusa.com/site_config.json')); print(c['db_password'])")
 docker exec axerp-mariadb mysql -u ${DB_NAME} -p"${DB_PASS}" ${DB_NAME} \
   -e "SELECT field, value FROM tabSingles WHERE doctype='System Settings' AND field='setup_complete';"
 # If value != 1:
 docker exec axerp-mariadb mysql -u ${DB_NAME} -p"${DB_PASS}" ${DB_NAME} \
   -e "INSERT INTO tabSingles (doctype,field,value) VALUES('System Settings','setup_complete','1') ON DUPLICATE KEY UPDATE value='1';"
 docker exec axerp-redis-cache redis-cli FLUSHALL
-docker exec axerp-backend bench --site erp.axinagroup.com clear-cache
+docker exec axerp-backend bench --site erp.tspgusa.com clear-cache
 ```
 
 **Check 2:** Stale `db_type: postgres` in `common_site_config.json`:
@@ -185,7 +209,7 @@ import json
 p='/home/frappe/frappe-bench/sites/common_site_config.json'
 c=json.load(open(p)); c.pop('db_type',None); json.dump(c,open(p,'w'),indent=1)"
 docker exec axerp-redis-cache redis-cli FLUSHALL
-docker exec axerp-backend bench --site erp.axinagroup.com clear-cache
+docker exec axerp-backend bench --site erp.tspgusa.com clear-cache
 ```
 
 ### Symptom: socket.io 400/502
@@ -213,7 +237,7 @@ The compose file reads from `/opt/openproject/.env` on EC2 (chmod 600):
 ```
 AXERP_DB_ROOT_PASSWORD=...
 AXERP_ADMIN_PASSWORD=...   # used only on first-run site creation
-AXERP_SITE_NAME=erp.axinagroup.com
+AXERP_SITE_NAME=erp.tspgusa.com
 ```
 
 Admin password after initial setup is managed inside Frappe (not from env).
@@ -246,24 +270,24 @@ docker logs axerp-backend --tail 50 -f
 docker logs axerp-frontend --tail 20
 
 # Frappe site shell
-docker exec axerp-backend bench --site erp.axinagroup.com console
+docker exec axerp-backend bench --site erp.tspgusa.com console
 
 # Run migrate (after app updates)
-docker exec axerp-backend bench --site erp.axinagroup.com migrate
+docker exec axerp-backend bench --site erp.tspgusa.com migrate
 
 # Clear all caches
 docker exec axerp-redis-cache redis-cli FLUSHALL
-docker exec axerp-backend bench --site erp.axinagroup.com clear-cache
-docker exec axerp-backend bench --site erp.axinagroup.com clear-website-cache
+docker exec axerp-backend bench --site erp.tspgusa.com clear-cache
+docker exec axerp-backend bench --site erp.tspgusa.com clear-website-cache
 
 # Check installed apps + versions
-docker exec axerp-backend bench --site erp.axinagroup.com list-apps
+docker exec axerp-backend bench --site erp.tspgusa.com list-apps
 
 # Test API
-curl -s "https://erp.axinagroup.com/api/method/ping"
+curl -s "https://erp.tspgusa.com/api/method/ping"
 
 # Reset admin password
-docker exec axerp-backend bench --site erp.axinagroup.com set-admin-password <newpassword>
+docker exec axerp-backend bench --site erp.tspgusa.com set-admin-password <newpassword>
 
 # DB shell
 docker exec -it axerp-mariadb mysql -u root -p
