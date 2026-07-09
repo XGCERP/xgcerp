@@ -105,7 +105,15 @@ poll_background_build() {
       --query "Command.CommandId" --output text 2>/dev/null || echo "")
     [[ -z "$poll_id" ]] && { log "  ${elapsed}s — polling..."; continue; }
 
-    sleep 8
+    # Wait for the SSM command to finish (not just 8s fixed sleep)
+    local poll_status="InProgress" poll_waited=0
+    while [[ "$poll_status" == "InProgress" || "$poll_status" == "Pending" ]]; do
+      sleep 3; poll_waited=$((poll_waited + 3))
+      poll_status=$(aws ssm get-command-invocation \
+        --command-id "${poll_id}" --instance-id "${EC2_INSTANCE}" \
+        --region "${AWS_REGION}" --query "Status" --output text 2>/dev/null || echo "Pending")
+      [[ $poll_waited -ge 30 ]] && break  # cap at 30s — shouldn't take this long for a cat
+    done
     local val
     val=$(aws ssm get-command-invocation \
       --command-id "${poll_id}" --instance-id "${EC2_INSTANCE}" \
@@ -119,9 +127,17 @@ poll_background_build() {
       local log_id
       log_id=$(aws ssm send-command \
         --instance-ids "${EC2_INSTANCE}" --document-name "AWS-RunShellScript" \
-        --parameters '{"commands":["tail -50 /tmp/axerp-deploy-run.log"]}' \
+        --parameters '{"commands":["tail -50 /tmp/axerp-deploy-run.log; echo ---; tail -30 /tmp/docker-build.log 2>/dev/null"]}' \
         --region "${AWS_REGION}" --query "Command.CommandId" --output text 2>/dev/null || echo "")
-      sleep 8
+      if [[ -n "$log_id" ]]; then
+        local _ls="InProgress" _lw=0
+        while [[ "$_ls" == "InProgress" || "$_ls" == "Pending" ]]; do
+          sleep 3; _lw=$((_lw+3))
+          _ls=$(aws ssm get-command-invocation --command-id "${log_id}" --instance-id "${EC2_INSTANCE}" \
+            --region "${AWS_REGION}" --query "Status" --output text 2>/dev/null || echo "Pending")
+          [[ $_lw -ge 30 ]] && break
+        done
+      fi
       echo "── Build log (tail) ────────────────────────────"
       [[ -n "$log_id" ]] && aws ssm get-command-invocation \
         --command-id "${log_id}" --instance-id "${EC2_INSTANCE}" \
@@ -135,7 +151,14 @@ poll_background_build() {
         --instance-ids "${EC2_INSTANCE}" --document-name "AWS-RunShellScript" \
         --parameters '{"commands":["tail -3 /tmp/axerp-deploy-run.log 2>/dev/null | tr \"\\n\" \"|\" | head -c 200"]}' \
         --region "${AWS_REGION}" --query "Command.CommandId" --output text 2>/dev/null || echo "")
-      sleep 8
+      if [[ -n "$tail_id" ]]; then
+        local _ts="InProgress" _tw=0
+        while [[ "$_ts" == "InProgress" || "$_ts" == "Pending" ]]; do
+          sleep 3; _tw=$((_tw+3)); [[ $_tw -ge 20 ]] && break
+          _ts=$(aws ssm get-command-invocation --command-id "${tail_id}" --instance-id "${EC2_INSTANCE}" \
+            --region "${AWS_REGION}" --query "Status" --output text 2>/dev/null || echo "Pending")
+        done
+      fi
       local tail=""
       [[ -n "$tail_id" ]] && tail=$(aws ssm get-command-invocation \
         --command-id "${tail_id}" --instance-id "${EC2_INSTANCE}" \
@@ -158,10 +181,19 @@ cd "${REPO_ROOT}"
 CURRENT_BRANCH=$(git branch --show-current)
 [[ "$CURRENT_BRANCH" != "production" ]] && warn "On branch ${CURRENT_BRANCH} — packaging origin/production"
 
-# Detect image tag from Dockerfile comment line
-IMAGE_TAG=$(grep "axerp:v" docker/Dockerfile | grep -v "^#.*ARG" | head -1 | \
-  sed -E 's/.*-t (axerp:v[^ ]+).*/\1/' | grep -v "^$" || echo "")
-[[ -z "$IMAGE_TAG" ]] && IMAGE_TAG="axerp:$(grep '^ARG ERPNEXT_VERSION=' docker/Dockerfile | cut -d= -f2)-axerp.1"
+# Detect image tag from the compose file (source of truth for what gets deployed),
+# falling back to the Dockerfile build comment. Reading the compose file avoids
+# the freeform-comment parsing fragility that produced wrong tags silently.
+_COMPOSE_TAG=$(grep 'image:.*dkr\.ecr.*axerp:' "${COMPOSE_LOCAL}" | head -1 | \
+  sed -E 's|.*axerp:([^ ]+).*|\1|' | grep -v "^$" || echo "")
+if [[ -n "$_COMPOSE_TAG" ]]; then
+  IMAGE_TAG="axerp:${_COMPOSE_TAG}"
+else
+  # Fallback: parse Dockerfile build comment
+  IMAGE_TAG=$(grep "axerp:v" docker/Dockerfile | grep -v "^#.*ARG" | head -1 | \
+    sed -E 's/.*-t (axerp:v[^ ]+).*/\1/' | grep -v "^$" || echo "")
+  [[ -z "$IMAGE_TAG" ]] && IMAGE_TAG="axerp:$(grep '^ARG ERPNEXT_VERSION=' docker/Dockerfile | cut -d= -f2)-axerp.1"
+fi
 ECR_IMAGE="${ECR_REPO}:${IMAGE_TAG#axerp:}"
 ECR_IMAGE_PROD="${ECR_REPO}:prod"
 
@@ -175,13 +207,11 @@ echo ""
 # ── Step 1: Package production branch ────────────────────────────────────────
 log "Step 1/7 — Package production branch → S3"
 
+# Always fetch first — without this, git archive uses a stale cached local ref
+# (the known production failure: tarball packaged the pre-merge Dockerfile)
+run git fetch origin production
 run git archive origin/production \
-  --format=tar.gz -o /tmp/axerp-production.tar.gz --prefix=axerp/ 2>/dev/null || {
-  warn "Fetching origin/production..."
-  run git fetch origin production
-  run git archive origin/production \
-    --format=tar.gz -o /tmp/axerp-production.tar.gz --prefix=axerp/
-}
+  --format=tar.gz -o /tmp/axerp-production.tar.gz --prefix=axerp/
 
 log "  Tarball: $(du -sh /tmp/axerp-production.tar.gz 2>/dev/null | cut -f1)"
 run aws s3 cp /tmp/axerp-production.tar.gz \
@@ -251,12 +281,11 @@ docker push \${ECR_IMAGE_PROD}
 echo "  Pushed: \${ECR_IMAGE}"
 
 echo "[6] Update compose image tag to ECR URI..."
-sed -i "s|image: axerp:.*|image: \${ECR_IMAGE}|g" /opt/openproject/docker-compose.axerp.yml
+# Pattern matches both ECR URI format and bare local tag format
+sed -i "s|image:.*axerp:.*|image: \${ECR_IMAGE}|g" /opt/openproject/docker-compose.axerp.yml
+grep "image:.*axerp" /opt/openproject/docker-compose.axerp.yml | head -1 | xargs echo "  compose image now:"
 
-echo "[7] Pull fresh from ECR on this host (validates push)..."
-docker pull \${ECR_IMAGE}
-
-echo "[8] Deploy stack..."
+echo "[7] Deploy stack..."
 cd /opt/openproject
 docker compose -f docker-compose.axerp.yml up -d 2>&1 | grep -vE "^(Pulling|pulled)" | head -30
 
@@ -265,8 +294,18 @@ sleep 25
 docker ps --filter "name=axerp" --format "  {{.Names}} | {{.Status}}" | sort
 
 echo "[10] Wait for migrate to complete..."
+# Wait for container to exist and reach running/exited state before polling.
+# Using status=running alone misses the brief 'created' state — if polled then,
+# the loop exits immediately with docker inspect returning ExitCode=0 (unstarted default).
 MIGRATE_DEADLINE=\$(( \$(date +%s) + 600 ))
-while docker ps -a --filter "name=axerp-migrate" --filter "status=running" \
+# First wait for migrate to appear in any state
+for _ in \$(seq 1 12); do
+  docker ps -a --filter "name=axerp-migrate" --format "{{.Names}}" 2>/dev/null | grep -q axerp-migrate && break
+  sleep 5
+done
+# Then wait for it to finish (leave running/created states)
+while docker ps -a --filter "name=axerp-migrate" \
+  --filter "status=running" --filter "status=created" \
   --format "{{.Names}}" 2>/dev/null | grep -q axerp-migrate; do
   [ \$(date +%s) -gt \${MIGRATE_DEADLINE} ] && { echo "  WARN: migrate timeout"; break; }
   sleep 10
@@ -275,7 +314,7 @@ MIGRATE_EXIT=\$(docker inspect axerp-migrate --format "{{.State.ExitCode}}" 2>/d
 echo "  migrate exit: \${MIGRATE_EXIT}"
 docker logs axerp-migrate 2>&1 | tail -15
 if [ "\${MIGRATE_EXIT}" != "0" ] && [ "\${MIGRATE_EXIT}" != "?" ]; then
-  echo "ERROR: migration failed"
+  echo "ERROR: migration failed — check: docker logs axerp-migrate"
   exit 1
 fi
 
@@ -287,9 +326,13 @@ echo "[12] Ping..."
 CODE=\$(curl -sk -o /dev/null -w "%{http_code}" "https://\${SITE}/api/method/ping")
 [ "\${CODE}" = "200" ] && echo "  PASS: \${SITE} 200" || echo "  WARN: \${SITE} returned \${CODE}"
 
-echo "[13] Clean old local images (keep ECR copies)..."
-for OLD in axerp:v16.25.0-axerp.2 axerp:v16.25.0-axerp.1 axerp:v16.23.0-axerp.4 axerp:v16.23.0-axerp.2; do
-  docker rmi \${OLD} 2>/dev/null && echo "  Removed \${OLD}" || true
+echo "[13] Clean old local images (keep 3 most recent, remove the rest)..."
+# Dynamic cleanup — never hardcodes tags, so can't accidentally delete an active image.
+# Sort by creation date, keep the 3 newest, remove the rest.
+OLD_IMAGES=\$(docker images axerp --format "{{.CreatedAt}}\t{{.Repository}}:{{.Tag}}" 2>/dev/null | \
+  grep -v "<none>" | sort -r | awk 'NR>3 {print \$2}')
+for OLD in \${OLD_IMAGES}; do
+  docker rmi "\${OLD}" 2>/dev/null && echo "  Removed \${OLD}" || true
 done
 docker images axerp --format "  {{.Repository}}:{{.Tag}} | {{.Size}}"
 
@@ -329,7 +372,7 @@ else
   ssm_run "Step 3b/7 — Launch background build" \
     "bash /tmp/axerp-launch.sh" \
     "sleep 5" \
-    "pgrep -f axerp-deploy-run.sh && echo 'BUILD RUNNING' || echo 'NOT RUNNING'"
+    "pgrep -f axerp-deploy-run.sh > /dev/null && echo 'BUILD RUNNING' || { echo 'LAUNCH_FAILED: process not found after 5s'; exit 1; }"
 
   if ! $DRY_RUN; then
     poll_background_build
@@ -338,7 +381,13 @@ else
       --instance-ids "${EC2_INSTANCE}" --document-name "AWS-RunShellScript" \
       --parameters '{"commands":["tail -30 /tmp/axerp-deploy-run.log"]}' \
       --region "${AWS_REGION}" --query "Command.CommandId" --output text)
-    sleep 8
+    local _fs="InProgress" _fw=0
+    while [[ "$_fs" == "InProgress" || "$_fs" == "Pending" ]]; do
+      sleep 3; _fw=$((_fw+3))
+      _fs=$(aws ssm get-command-invocation --command-id "${FINAL_LOG_ID}" --instance-id "${EC2_INSTANCE}" \
+        --region "${AWS_REGION}" --query "Status" --output text 2>/dev/null || echo "Pending")
+      [[ $_fw -ge 30 ]] && break
+    done
     echo "── EC2 deploy log (tail) ────────────────────────────"
     aws ssm get-command-invocation \
       --command-id "${FINAL_LOG_ID}" --instance-id "${EC2_INSTANCE}" \
